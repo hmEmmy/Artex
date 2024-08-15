@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.emmy.artex.Artex;
 import org.bson.Document;
+import org.bukkit.OfflinePlayer;
 
 import java.util.HashMap;
 import java.util.Map;

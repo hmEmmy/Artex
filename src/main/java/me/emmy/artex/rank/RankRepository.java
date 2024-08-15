@@ -2,10 +2,12 @@ package me.emmy.artex.rank;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.var;
 import me.emmy.artex.Artex;
+import me.emmy.artex.util.CC;
 import org.bson.Document;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -26,24 +28,19 @@ public class RankRepository {
     /**
      * Initialize the rank repository
      */
-    public void saveRanks() {
-        Document document = Artex.getInstance().getDatabaseHandler().getDatabase().getCollection("ranks").find().first();
+    public void loadRanks() {
+        ranks.clear();
+        var rankCollection = Artex.getInstance().getDatabaseHandler().getDatabase().getCollection("ranks");
 
-        for (String key : document.keySet()) {
-            Document rankDocument = (Document) document.get(key);
-            ChatColor color = ChatColor.valueOf(rankDocument.getString("color"));
+        var cursor = rankCollection.find();
+        if (!cursor.iterator().hasNext()) {
+            createDefaultRank();
+            Bukkit.getConsoleSender().sendMessage(CC.translate(CC.PREFIX + "&cNo ranks found! Default rank created."));
+            return;
+        }
 
-            Rank rank = new Rank();
-            rank.setName(rankDocument.getString("name"));
-            rank.setPrefix(rankDocument.getString("prefix"));
-            rank.setSuffix(rankDocument.getString("suffix"));
-            rank.setWeight(rankDocument.getInteger("weight"));
-            rank.setColor(color);
-            rank.setBold(rankDocument.getBoolean("bold"));
-            rank.setItalic(rankDocument.getBoolean("italic"));
-            rank.setDefaultRank(rankDocument.getBoolean("defaultRank"));
-            rank.setPermissions((List<String>) rankDocument.get("permissions"));
-
+        for (var document : cursor) {
+            Rank rank = documentToRank(document);
             ranks.put(rank.getName(), rank);
         }
     }
@@ -51,38 +48,55 @@ public class RankRepository {
     /**
      * Load the ranks from the database
      */
-    public void loadRanks() {
-        Document document = new Document();
+    public void saveRanks() {
+        var rankCollection = Artex.getInstance().getDatabaseHandler().getDatabase().getCollection("ranks");
 
-        for (Map.Entry<String, Rank> entry : ranks.entrySet()) {
-            Rank rank = entry.getValue();
-            Document rankDocument = new Document();
-            rankDocument.put("name", rank.getName());
-            rankDocument.put("prefix", rank.getPrefix());
-            rankDocument.put("suffix", rank.getSuffix());
-            rankDocument.put("weight", rank.getWeight());
-            rankDocument.put("color", rank.getColor().name());
-            rankDocument.put("bold", rank.isBold());
-            rankDocument.put("italic", rank.isItalic());
-            rankDocument.put("defaultRank", rank.isDefaultRank());
-            rankDocument.put("permissions", rank.getPermissions());
+        rankCollection.deleteMany(new Document());
 
-            document.put(rank.getName(), rankDocument);
+        for (Rank rank : ranks.values()) {
+            Document rankDocument = rankToDocument(rank);
+            rankCollection.insertOne(rankDocument);
         }
+    }
 
-        Artex.getInstance().getDatabaseHandler().getDatabase().getCollection("ranks").insertOne(document);
+    /**
+     * Convert a Rank object to a Document
+     */
+    private Document rankToDocument(Rank rank) {
+        Document rankDocument = new Document();
+        rankDocument.put("name", rank.getName());
+        rankDocument.put("prefix", rank.getPrefix());
+        rankDocument.put("suffix", rank.getSuffix());
+        rankDocument.put("weight", rank.getWeight());
+        rankDocument.put("color", rank.getColor().name());
+        rankDocument.put("bold", rank.isBold());
+        rankDocument.put("italic", rank.isItalic());
+        rankDocument.put("defaultRank", rank.isDefaultRank());
+        rankDocument.put("permissions", rank.getPermissions());
+        return rankDocument;
+    }
+
+    /**
+     * Convert a Document to a Rank object
+     */
+    private Rank documentToRank(Document document) {
+        Rank rank = new Rank();
+        rank.setName(document.getString("name"));
+        rank.setPrefix(document.getString("prefix"));
+        rank.setSuffix(document.getString("suffix"));
+        rank.setWeight(document.getInteger("weight"));
+        rank.setColor(ChatColor.valueOf(document.getString("color")));
+        rank.setBold(document.getBoolean("bold"));
+        rank.setItalic(document.getBoolean("italic"));
+        rank.setDefaultRank(document.getBoolean("defaultRank"));
+        rank.setPermissions((List<String>) document.get("permissions"));
+        return rank;
     }
 
     /**
      * Create the default rank
      */
-    public void createDefaultRank() {
-        for (Rank rank : ranks.values()) {
-            if (rank.isDefaultRank()) {
-                return;
-            }
-        }
-
+    private void createDefaultRank() {
         Rank rank = new Rank();
         rank.setName("Default");
         rank.setPrefix("");
@@ -95,6 +109,8 @@ public class RankRepository {
         rank.setPermissions(Arrays.asList("example.permission", "example.permission2"));
 
         ranks.put(rank.getName(), rank);
+
+        saveRanks();
     }
 
     /**

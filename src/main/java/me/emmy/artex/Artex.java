@@ -7,6 +7,7 @@ import me.emmy.artex.profile.ProfileHandler;
 import me.emmy.artex.profile.ProfileRepository;
 import me.emmy.artex.rank.RankRepository;
 import me.emmy.artex.util.CC;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
 @Getter
@@ -43,12 +44,23 @@ public class Artex extends JavaPlugin {
         this.profileHandler = new ProfileHandler();
 
         this.rankRepository = new RankRepository();
-        this.rankRepository.createDefaultRank();
-        this.rankRepository.saveRanks();
+        this.rankRepository.loadRanks();
     }
 
     @Override
     public void onDisable() {
         CC.sendDisableMessage();
+    }
+
+    /**
+     * Get the exact bukkit version
+     *
+     * @return the exact bukkit version
+     */
+    public String getBukkitVersionExact() {
+        String version = Bukkit.getServer().getVersion();
+        version = version.split("MC: ")[1];
+        version = version.split("\\)")[0];
+        return version;
     }
 }
