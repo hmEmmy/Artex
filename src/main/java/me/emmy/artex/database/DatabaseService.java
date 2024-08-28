@@ -16,6 +16,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import java.util.Objects;
 
 /**
+ * TODO: Rewrite this class anytime soon because it sucks.
+ *
  * @author Emmy
  * @project Artex
  * @date 25/08/2024 - 21:05

@@ -1,16 +1,15 @@
 package me.emmy.artex.rank;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.var;
 import me.emmy.artex.Artex;
-import me.emmy.artex.grant.Grant;
-import me.emmy.artex.profile.Profile;
 import me.emmy.artex.util.CC;
 import me.emmy.artex.util.Logger;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.var;
 
 import java.util.*;
 
@@ -30,6 +29,7 @@ public class RankRepository {
      */
     public void loadRanks() {
         ranks.clear();
+
         var rankCollection = Artex.getInstance().getDatabaseService().getDatabase().getCollection("ranks");
 
         var cursor = rankCollection.find();
@@ -46,7 +46,7 @@ public class RankRepository {
     }
 
     /**
-     * Load the ranks from the database
+     * Save the ranks to the database
      */
     public void saveRanks() {
         var rankCollection = Artex.getInstance().getDatabaseService().getDatabase().getCollection("ranks");
@@ -59,6 +59,11 @@ public class RankRepository {
         }
     }
 
+    /**
+     * Save a rank to the database
+     *
+     * @param rank the rank to save
+     */
     public void saveRank(Rank rank) {
         var rankCollection = Artex.getInstance().getDatabaseService().getDatabase().getCollection("ranks");
 
@@ -179,5 +184,15 @@ public class RankRepository {
 
         ranks.put(rank.getName(), rank);
         saveRank(rank);
+    }
+
+    /**
+     * Deletes a rank.
+     *
+     * @param rank the rank to delete
+     */
+    public void deleteRank(Rank rank) {
+        ranks.remove(rank.getName());
+        saveRanks();
     }
 }

@@ -5,6 +5,7 @@ import lombok.Setter;
 import me.emmy.artex.Artex;
 import me.emmy.artex.api.menu.Button;
 import me.emmy.artex.api.menu.Menu;
+import me.emmy.artex.api.menu.button.PageGlassButton;
 import me.emmy.artex.util.CC;
 import me.emmy.artex.util.ItemBuilder;
 import org.bukkit.Bukkit;
@@ -117,18 +118,33 @@ public abstract class Menu {
         }
     }
 
-    /*
-    public void addBorder(Map<Integer, Button> buttons, byte data, int rows) {
-        for (int i = 0; i < 9; i++) {
-            buttons.putIfAbsent(i, Button.placeholder(Material.STAINED_GLASS_PANE, data, ""));
-            buttons.putIfAbsent(4 * 9 + i, Button.placeholder(Material.STAINED_GLASS_PANE, data, ""));
+    /**
+     * Addition by Emmy
+     * Adds a glass header to the paginated menu.
+     *
+     * @param buttons the button
+     */
+    public void addGlassHeader(Map<Integer, Button> buttons, int durability) {
+        for (int i = 1; i < 9; i++) {
+            if (i != 8) {
+                buttons.put(i, new PageGlassButton(durability));
+            }
         }
+    }
 
-        for (int i = 0; i < rows; i++) {
-            buttons.putIfAbsent(i * 9, Button.placeholder(Material.STAINED_GLASS_PANE, data, ""));
-            buttons.putIfAbsent(i * 9 + 8, Button.placeholder(Material.STAINED_GLASS_PANE, data, ""));
+    /**
+     * Addition by Emmy
+     * Refills glass to the empty slots of a menu.
+     *
+     * @param buttons the button
+     */
+    public void addGlass(Map<Integer, Button> buttons, int durability) {
+        for (int slot = 0; slot < getSize(); slot++) {
+            if (!buttons.containsKey(slot)) {
+                buttons.put(slot, new PageGlassButton(durability));
+            }
         }
-    }*/
+    }
 
     public int getSize() {
         return -1;

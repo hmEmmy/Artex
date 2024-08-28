@@ -16,19 +16,54 @@ public class RankCommand extends BaseCommand {
     @Override
     public void onCommand(CommandArgs command) {
         CommandSender sender = command.getSender();
+        String[] args = command.getArgs();
+        int page = 1;
+
+        if (args.length > 0) {
+            try {
+                page = Integer.parseInt(args[0]);
+            } catch (NumberFormatException e) {
+                sender.sendMessage(CC.translate("&cInvalid page number!"));
+                return;
+            }
+        }
+
+        if (page < 1 || page > 2) {
+            sender.sendMessage("");
+            sender.sendMessage(CC.translate("&b&lArtex &8- &7Rank Commands - &7(1&8/&73)"));
+            sender.sendMessage("");
+            sender.sendMessage(CC.translate(" &f&l● &b/rank create &f(name) - &7Create a rank"));
+            sender.sendMessage(CC.translate(" &f&l● &b/rank delete &f(name) - &7Delete a rank"));
+            sender.sendMessage(CC.translate(" &f&l● &b/rank list - &7List all ranks"));
+            sender.sendMessage(CC.translate(" &f&l● &b/rank info &f(name) - &7View rank information"));
+            sender.sendMessage("");
+            return;
+        }
 
         sender.sendMessage("");
-        sender.sendMessage(CC.translate("&b&lArtex &8- &7Rank Commands"));
-        sender.sendMessage(CC.translate(" &f&l● &b/rank create (name)"));
-        sender.sendMessage(CC.translate(" &f&l● &b/rank delete (name)"));
-        sender.sendMessage(CC.translate(" &f&l● &b/rank setprefix (name) (prefix)"));
-        sender.sendMessage(CC.translate(" &f&l● &b/rank setsuffix (name) (suffix)"));
-        sender.sendMessage(CC.translate(" &f&l● &b/rank setweight (name) (weight)"));
-        sender.sendMessage(CC.translate(" &f&l● &b/rank setcolor (name) (color)"));
-        sender.sendMessage(CC.translate(" &f&l● &b/rank setbold (name) (true/false)"));
-        sender.sendMessage(CC.translate(" &f&l● &b/rank setitalic (name) (true/false)"));
-        sender.sendMessage(CC.translate(" &f&l● &b/rank setdefault (name)"));
-        sender.sendMessage(CC.translate(" &f&l● &b/rank addpermission (name) (permission)"));
+        sender.sendMessage(CC.translate("&b&lArtex &8- &7Rank Commands - &7(" + page + "&8/&73)"));
+
+        if (page == 1) {
+            sender.sendMessage("");
+            sender.sendMessage(CC.translate(" &f&l● &b/rank create &f(name) - &7Create a rank"));
+            sender.sendMessage(CC.translate(" &f&l● &b/rank delete &f(name) - &7Delete a rank"));
+            sender.sendMessage(CC.translate(" &f&l● &b/rank list - &7List all ranks"));
+            sender.sendMessage(CC.translate(" &f&l● &b/rank info &f(name) - &7View rank information"));
+        } else if (page == 2) {
+            sender.sendMessage("");
+            sender.sendMessage(CC.translate(" &f&l● &b/rank setprefix &f(name) (prefix) - &7Set the prefix of a rank"));
+            sender.sendMessage(CC.translate(" &f&l● &b/rank setsuffix &f(name) (suffix) - &7Set the suffix of a rank"));
+            sender.sendMessage(CC.translate(" &f&l● &b/rank setcolor &f(name) (color) - &7Set the color of a rank"));
+            sender.sendMessage(CC.translate(" &f&l● &b/rank setbold &f(name) (true/false) - &7Set the bold of a rank"));
+            sender.sendMessage(CC.translate(" &f&l● &b/rank setitalic &f(name) (true/false) - &7Set the italic of a rank"));
+        } else if (page == 3) {
+            sender.sendMessage("");
+            sender.sendMessage(CC.translate(" &f&l● &b/rank setweight &f(name) (weight) - &7Set the weight of a rank"));
+            sender.sendMessage(CC.translate(" &f&l● &b/rank setdefault &f(name) - &7Set the default rank"));
+            sender.sendMessage(CC.translate(" &f&l● &b/rank addpermission &f(name) (permission) - &7Add a permission to a rank"));
+        }
+
+
         sender.sendMessage("");
     }
 }
