@@ -1,0 +1,47 @@
+package me.emmy.artex.grant;
+
+import lombok.Getter;
+import lombok.Setter;
+import me.emmy.artex.Artex;
+import me.emmy.artex.rank.Rank;
+
+/**
+ * @author Emmy
+ * @project Artex
+ * @date 16/08/2024 - 11:39
+ */
+@Getter
+@Setter
+public class Grant {
+    private String rankName;
+    private String server;
+    private String reason;
+    private String addedBy;
+    private String removedBy;
+    private String removedReason;
+
+    private long addedAt;
+    private long removedAt;
+    private long duration;
+
+    private boolean active;
+    private boolean permanent;
+
+    /**
+     * Get the rank object by accessing the rank repository
+     *
+     * @return the rank object
+     */
+    public Rank getRank() {
+        return Artex.getInstance().getRankRepository().getRank(rankName);
+    }
+
+    /**
+     * Check if the grant has expired
+     *
+     * @return if the grant has expired
+     */
+    public boolean hasExpired() {
+        return !permanent && System.currentTimeMillis() >= addedAt + duration;
+    }
+}

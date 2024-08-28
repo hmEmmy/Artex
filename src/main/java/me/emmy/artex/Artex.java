@@ -2,13 +2,18 @@ package me.emmy.artex;
 
 import lombok.Getter;
 import lombok.Setter;
-import me.emmy.artex.database.DatabaseHandler;
-import me.emmy.artex.profile.ProfileHandler;
+import me.emmy.artex.chat.listener.ChatListener;
+import me.emmy.artex.database.DatabaseService;
 import me.emmy.artex.profile.ProfileRepository;
+import me.emmy.artex.profile.listener.ProfileListener;
 import me.emmy.artex.rank.RankRepository;
 import me.emmy.artex.util.CC;
 import org.bukkit.Bukkit;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Getter
 @Setter
@@ -17,38 +22,54 @@ public class Artex extends JavaPlugin {
     @Getter
     private static Artex instance;
 
-    private DatabaseHandler databaseHandler;
+    private DatabaseService databaseService;
     private ProfileRepository profileRepository;
-    private ProfileHandler profileHandler;
     private RankRepository rankRepository;
 
     @Override
     public void onEnable() {
         instance = this;
         saveDefaultConfig();
-        initializeHandlers();
+        setupMongoDatabase();
+        initializeRepositories();
+        registerEvents();
 
         CC.sendEnableMessage();
     }
 
     /**
-     * Initialize all handlers
+     * Connect to the mongo database.
      */
-    private void initializeHandlers() {
-        this.databaseHandler = new DatabaseHandler();
-        this.databaseHandler.createConnection();
+    private void setupMongoDatabase() {
+        this.databaseService = new DatabaseService();
+    }
 
+    /**
+     * Initialize all handlers.
+     */
+    private void initializeRepositories() {
         this.profileRepository = new ProfileRepository();
-        this.profileRepository.initialize();
-
-        this.profileHandler = new ProfileHandler();
 
         this.rankRepository = new RankRepository();
         this.rankRepository.loadRanks();
     }
 
+    /**
+     * Register all events by looping through a list of listeners.
+     */
+    private void registerEvents() {
+        List<Listener> listeners = Arrays.asList(
+                new ProfileListener(),
+                new ChatListener()
+        );
+        listeners.forEach(event -> Bukkit.getPluginManager().registerEvents(event, this));
+    }
+
     @Override
     public void onDisable() {
+        this.databaseService.close();
+        this.profileRepository.saveProfiles();
+
         CC.sendDisableMessage();
     }
 

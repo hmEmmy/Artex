@@ -1,3 +1,6 @@
+plugin:
+  debugging: true #Sends debug messages to the console (development purposes)
+
 mongo:
   host: localhost
   port: 27017

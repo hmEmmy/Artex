@@ -4,15 +4,15 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.var;
 import me.emmy.artex.Artex;
+import me.emmy.artex.grant.Grant;
+import me.emmy.artex.profile.Profile;
 import me.emmy.artex.util.CC;
+import me.emmy.artex.util.Logger;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author Emmy
@@ -30,7 +30,7 @@ public class RankRepository {
      */
     public void loadRanks() {
         ranks.clear();
-        var rankCollection = Artex.getInstance().getDatabaseHandler().getDatabase().getCollection("ranks");
+        var rankCollection = Artex.getInstance().getDatabaseService().getDatabase().getCollection("ranks");
 
         var cursor = rankCollection.find();
         if (!cursor.iterator().hasNext()) {
@@ -49,7 +49,7 @@ public class RankRepository {
      * Load the ranks from the database
      */
     public void saveRanks() {
-        var rankCollection = Artex.getInstance().getDatabaseHandler().getDatabase().getCollection("ranks");
+        var rankCollection = Artex.getInstance().getDatabaseService().getDatabase().getCollection("ranks");
 
         rankCollection.deleteMany(new Document());
 
@@ -97,6 +97,13 @@ public class RankRepository {
      * Create the default rank
      */
     private void createDefaultRank() {
+        for (Rank rank : ranks.values()) {
+            if (rank.isDefaultRank()) {
+                Logger.debug(rank.getName() + " has defaultRank set as true. Not creating the default rank.");
+                return;
+            }
+        }
+
         Rank rank = new Rank();
         rank.setName("Default");
         rank.setPrefix("");
@@ -121,5 +128,15 @@ public class RankRepository {
      */
     public Rank getRank(String name) {
         return ranks.get(name);
+    }
+
+    public Rank getDefaultRank() {
+        for (Rank rank : ranks.values()) {
+            if (rank.isDefaultRank()) {
+                return rank;
+            }
+        }
+
+        return null;
     }
 }
