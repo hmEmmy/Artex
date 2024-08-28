@@ -14,6 +14,8 @@ import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import java.util.UUID;
+
 /**
  * @author Emmy
  * @project Artex
@@ -24,16 +26,22 @@ public class ProfileListener implements Listener {
     @EventHandler
     private void onLogin(PlayerLoginEvent event) {
         ProfileRepository profileRepository = Artex.getInstance().getProfileRepository();
-        Profile profile = new Profile(event.getPlayer().getUniqueId());
-        profile.setUsername(event.getPlayer().getName());
+        UUID uuid = event.getPlayer().getUniqueId();
+        Profile profile = profileRepository.getProfile(uuid);
+
+        if (profile == null) {
+            Logger.debug("Creating new profile for " + event.getPlayer().getName());
+            profile = new Profile(uuid);
+            profileRepository.addProfile(uuid);
+        }
+
+        profile.load();
 
         Logger.debug("Determining rank for " + event.getPlayer().getName() + ".");
         profileRepository.determineRank(profile);
-        Logger.debug("Rank determined for " + event.getPlayer().getName() + ".");
-        Logger.debug("Loaded profile for " + event.getPlayer().getName() + ".");
-        profile.load();
 
-        profileRepository.getProfiles().put(profile.getUuid(), profile);
+        Logger.debug("Rank determined for " + event.getPlayer().getName() + ".");
+
     }
 
     @EventHandler

@@ -3,7 +3,6 @@ package me.emmy.artex.chat.listener;
 import lombok.Getter;
 import me.emmy.artex.Artex;
 import me.emmy.artex.profile.Profile;
-import me.emmy.artex.rank.Rank;
 import me.emmy.artex.util.CC;
 import me.emmy.artex.util.Logger;
 import org.bukkit.ChatColor;
@@ -11,8 +10,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-
-import java.util.List;
 
 /**
  * @author Emmy
@@ -28,11 +25,11 @@ public class ChatListener implements Listener {
         Profile profile = Artex.getInstance().getProfileRepository().getProfile(player.getUniqueId());
 
         String message = event.getMessage();
-        String rankPrefix = profile.getHighestRank(player.getUniqueId()).getPrefix();
-        String rankSuffix = profile.getHighestRank(player.getUniqueId()).getSuffix();
-        ChatColor rankColor = profile.getHighestRank(player.getUniqueId()).getColor();
+        String rankPrefix = profile.getHighestRankBasedOnGrant(player.getUniqueId()).getPrefix();
+        String rankSuffix = profile.getHighestRankBasedOnGrant(player.getUniqueId()).getSuffix();
+        ChatColor rankColor = profile.getHighestRankBasedOnGrant(player.getUniqueId()).getColor();
 
-        if (profile.getHighestRank(player.getUniqueId()) == null) {
+        if (profile.getHighestRankBasedOnGrant(player.getUniqueId()) == null) {
             Logger.debug("Highest rank is null for " + player.getName() + ".");
             event.setFormat(CC.translate("&7" + player.getName() + "&f" + ": " + message));
             return;

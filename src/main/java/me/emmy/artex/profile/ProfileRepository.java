@@ -7,11 +7,10 @@ import lombok.Getter;
 import me.emmy.artex.Artex;
 import me.emmy.artex.grant.Grant;
 import me.emmy.artex.grant.GrantSerializer;
+import me.emmy.artex.locale.Locale;
 import me.emmy.artex.rank.Rank;
-import me.emmy.artex.rank.RankRepository;
 import me.emmy.artex.util.Logger;
 import org.bson.Document;
-import org.bukkit.Bukkit;
 
 import java.util.*;
 
@@ -117,39 +116,37 @@ public class ProfileRepository {
     }
 
     /**
-     * Add a grant to the player's profile
+     * Add the default grant to the player's profile
      *
-     * @param playerUUID player's UUID
-     * @param grant grant to add
+     * @param uuid player's UUID
      */
+    public void addFirstDefaultGrant(UUID uuid) {
+        Logger.debug("addFirstDefaultGrant method called for " + uuid.toString() + ".");
+        Grant grant = new Grant();
+        grant.setRank(Artex.getInstance().getRankRepository().getDefaultRank().getName());
+        grant.setPermanent(true);
+        grant.setDuration(0);
+        grant.setReason("Default rank");
+        grant.setAddedBy("Console");
+        grant.setAddedAt(System.currentTimeMillis());
+        grant.setAddedOn(Locale.SERVER_NAME.getString());
+        grant.setActive(true);
+
+        Artex.getInstance().getProfileRepository().getProfile(uuid).setRank(Artex.getInstance().getRankRepository().getDefaultRank());
+
+        addGrant(uuid, grant);
+    }
+
     public void addGrant(UUID playerUUID, Grant grant) {
         Profile profile = profiles.get(playerUUID);
         List<Grant> grants = profile.getGrants();
 
-        if (grants == null) {
-            grants = new ArrayList<>();
-        } else {
-            grants = new ArrayList<>(grants);
-        }
+        Logger.debug("addGrant method called for " + profile.getUsername() + " with rank " + grant.getRank().getName() + ".");
 
         grants.add(grant);
         profile.setGrants(grants);
-    }
 
-    /**
-     * Deletes a grant from the player's profile
-     *
-     * @param playerUUID player's UUID
-     * @param grant grant to delete
-     */
-    public void expireGrant(UUID playerUUID, Grant grant) {
-        Profile profile = profiles.get(playerUUID);
-        List<Grant> grants = profile.getGrants();
-
-        if (grants != null) {
-            grants.removeIf(g -> g.getRank().equals(grant.getRank()));
-            profile.setGrants(grants);
-        }
+        profile.save();
     }
 
     /**
@@ -158,22 +155,18 @@ public class ProfileRepository {
      * @param profile the player's profile
      */
     public void determineRank(Profile profile) {
+        ProfileRepository profileRepository = Artex.getInstance().getProfileRepository();
+
         Logger.debug("Getting grant list for " + profile.getUsername() + ".");
         List<Grant> grants = profile.getGrants();
 
-        Logger.debug("Checking if grants are empty for " + profile.getUsername() + ".");
-        if (grants == null || grants.isEmpty()) {
-            Logger.debug("No grants found for " + profile.getUsername() + ".");
-            Logger.debug("Setting default rank for " + profile.getUsername() + ".");
-            profile.setRank(Artex.getInstance().getRankRepository().getDefaultRank());
-
-            profile.save();
-            return;
+        Logger.debug("Checking if player has default grant for " + profile.getUsername() + ".");
+        if (!profile.hasDefaultGrant(profile.getUuid())) {
+            Logger.debug("Adding default grant for " + profile.getUsername() + ".");
+            profileRepository.addFirstDefaultGrant(profile.getUuid());
         }
 
-        Grant highestGrant = grants.stream().max(Comparator.comparingInt(g -> g.getRank().getWeight())).orElse(null);
-
-        Logger.debug("Settings highest rank for " + profile.getUsername() + " to " + highestGrant.getRank().getName() + ".");
-        profile.setRank(highestGrant.getRank());
+        Rank highestGrant = profile.getHighestRankBasedOnGrant(profile.getUuid());
+        profile.setRank(highestGrant);
     }
 }

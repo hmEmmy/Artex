@@ -1,5 +1,6 @@
 package me.emmy.artex.grant;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import me.emmy.artex.Artex;
@@ -10,11 +11,12 @@ import me.emmy.artex.rank.Rank;
  * @project Artex
  * @date 16/08/2024 - 11:39
  */
+@Data
 @Getter
 @Setter
 public class Grant {
-    private String rankName;
-    private String server;
+    private String rank;
+    private String addedOn;
     private String reason;
     private String addedBy;
     private String removedBy;
@@ -33,7 +35,7 @@ public class Grant {
      * @return the rank object
      */
     public Rank getRank() {
-        return Artex.getInstance().getRankRepository().getRank(rankName);
+        return Artex.getInstance().getRankRepository().getRank(rank);
     }
 
     /**

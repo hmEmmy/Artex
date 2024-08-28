@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * Utility class for serializing and deserializing grants.
+ *
  * @author Emmy
  * @project Artex
  * @date 28/08/2024 - 16:15
@@ -19,7 +21,7 @@ public class GrantSerializer {
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     /**
-     * Serialize a list of grants
+     * Serialize a list of grants.
      *
      * @param grants the list of grants
      * @return the serialized list of grants
@@ -37,13 +39,13 @@ public class GrantSerializer {
     }
 
     /**
-     * Deserialize a list of grants
+     * Deserialize a list of grants.
      *
      * @param serialized the serialized list of grants
      * @return the deserialized list of grants
      */
     public List<Grant> deserialize(List<String> serialized) {
-        if (serialized == null || serialized.isEmpty() || serialized.get(0).isEmpty()) {
+        if (serialized == null || serialized.isEmpty()) {
             return Collections.emptyList();
         }
 
@@ -55,7 +57,7 @@ public class GrantSerializer {
     }
 
     /**
-     * Serialize a grant
+     * Serialize a single grant.
      *
      * @param grant the grant
      * @return the serialized grant
@@ -65,7 +67,7 @@ public class GrantSerializer {
     }
 
     /**
-     * Deserialize a grant
+     * Deserialize a single grant.
      *
      * @param serialized the serialized grant
      * @return the deserialized grant
@@ -73,5 +75,4 @@ public class GrantSerializer {
     private Grant deserializeGrant(String serialized) {
         return gson.fromJson(serialized, Grant.class);
     }
-
 }
