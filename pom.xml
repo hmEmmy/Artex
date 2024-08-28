@@ -61,6 +61,8 @@
   </repositories>
 
   <dependencies>
+
+      <!-- Spigot API -->
       <dependency>
           <groupId>org.spigotmc</groupId>
           <artifactId>spigot-api</artifactId>
@@ -76,12 +78,19 @@
           <scope>compile</scope>
       </dependency>
 
-        <!-- Lombok -->
+      <!-- Lombok -->
       <dependency>
           <groupId>org.projectlombok</groupId>
           <artifactId>lombok</artifactId>
           <version>1.18.12</version>
           <scope>provided</scope>
+      </dependency>
+
+      <!-- Reflections -->
+      <dependency>
+          <groupId>org.reflections</groupId>
+          <artifactId>reflections</artifactId>
+          <version>0.9.12</version>
       </dependency>
   </dependencies>
 </project>

@@ -2,6 +2,8 @@ package me.emmy.artex;
 
 import lombok.Getter;
 import lombok.Setter;
+import me.emmy.artex.api.command.CommandFramework;
+import me.emmy.artex.api.menu.listener.MenuListener;
 import me.emmy.artex.chat.listener.ChatListener;
 import me.emmy.artex.database.DatabaseService;
 import me.emmy.artex.profile.ProfileRepository;
@@ -22,6 +24,7 @@ public class Artex extends JavaPlugin {
     @Getter
     private static Artex instance;
 
+    private CommandFramework commandFramework;
     private DatabaseService databaseService;
     private ProfileRepository profileRepository;
     private RankRepository rankRepository;
@@ -29,6 +32,10 @@ public class Artex extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+
+        this.commandFramework = new CommandFramework();
+        this.commandFramework.registerCommandsInPackage("me.emmy.artex");
+
         saveDefaultConfig();
         setupMongoDatabase();
         initializeRepositories();
@@ -60,7 +67,8 @@ public class Artex extends JavaPlugin {
     private void registerEvents() {
         List<Listener> listeners = Arrays.asList(
                 new ProfileListener(),
-                new ChatListener()
+                new ChatListener(),
+                new MenuListener()
         );
         listeners.forEach(event -> Bukkit.getPluginManager().registerEvents(event, this));
     }

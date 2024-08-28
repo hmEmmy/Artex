@@ -157,15 +157,13 @@ public class ProfileRepository {
     public void determineRank(Profile profile) {
         ProfileRepository profileRepository = Artex.getInstance().getProfileRepository();
 
-        Logger.debug("Getting grant list for " + profile.getUsername() + ".");
-        List<Grant> grants = profile.getGrants();
-
         Logger.debug("Checking if player has default grant for " + profile.getUsername() + ".");
         if (!profile.hasDefaultGrant(profile.getUuid())) {
             Logger.debug("Adding default grant for " + profile.getUsername() + ".");
             profileRepository.addFirstDefaultGrant(profile.getUuid());
         }
 
+        Logger.debug("Getting highest rank based on grant for " + profile.getUsername() + ".");
         Rank highestGrant = profile.getHighestRankBasedOnGrant(profile.getUuid());
         profile.setRank(highestGrant);
     }

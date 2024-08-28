@@ -59,6 +59,13 @@ public class RankRepository {
         }
     }
 
+    public void saveRank(Rank rank) {
+        var rankCollection = Artex.getInstance().getDatabaseService().getDatabase().getCollection("ranks");
+
+        Document rankDocument = rankToDocument(rank);
+        rankCollection.insertOne(rankDocument);
+    }
+
     /**
      * Convert a Rank object to a Document
      */
@@ -130,6 +137,11 @@ public class RankRepository {
         return ranks.get(name);
     }
 
+    /**
+     * Get the default rank
+     *
+     * @return the default rank
+     */
     public Rank getDefaultRank() {
         for (Rank rank : ranks.values()) {
             if (rank.isDefaultRank()) {
@@ -138,5 +150,34 @@ public class RankRepository {
         }
 
         return null;
+    }
+
+    /**
+     * Creates a new rank with the specified name.
+     *
+     * @param name the name of the rank
+     * @param doPrefix whether to add a prefix to the rank
+     */
+    public void createRank(String name, boolean doPrefix) {
+        Rank rank = new Rank();
+
+        rank.setName(name);
+
+        if (doPrefix) {
+            rank.setPrefix("&7[&b" + name + "&7] ");
+        } else {
+            rank.setPrefix("");
+        }
+
+        rank.setSuffix("");
+        rank.setWeight(0);
+        rank.setColor(ChatColor.GREEN);
+        rank.setBold(false);
+        rank.setItalic(false);
+        rank.setDefaultRank(false);
+        rank.setPermissions(new ArrayList<>());
+
+        ranks.put(rank.getName(), rank);
+        saveRank(rank);
     }
 }
