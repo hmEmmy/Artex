@@ -1,5 +1,6 @@
-package me.emmy.artex;
+package me.emmy.artex.debug;
 
+import me.emmy.artex.Artex;
 import me.emmy.artex.api.command.BaseCommand;
 import me.emmy.artex.api.command.CommandArgs;
 import me.emmy.artex.api.command.annotation.Command;

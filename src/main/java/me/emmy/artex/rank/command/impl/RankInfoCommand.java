@@ -34,17 +34,17 @@ public class RankInfoCommand extends BaseCommand {
         }
 
         sender.sendMessage("");
-        sender.sendMessage(CC.translate("&b&lArtex &8- &7Rank Information"));
+        sender.sendMessage(CC.translate("&d&lArtex &8- &7Rank Information"));
         sender.sendMessage("");
-        sender.sendMessage(CC.translate(" &f&l● &bName: &f" + rank.getName()));
-        sender.sendMessage(CC.translate(" &f&l● &bPrefix: &f" + rank.getPrefix()));
-        sender.sendMessage(CC.translate(" &f&l● &bSuffix: &f" + rank.getSuffix()));
-        sender.sendMessage(CC.translate(" &f&l● &bWeight: &f" + rank.getWeight()));
-        sender.sendMessage(CC.translate(" &f&l● &bColor: &f" + rank.getColor().toString()));
-        sender.sendMessage(CC.translate(" &f&l● &bBold: &f" + rank.isBold()));
-        sender.sendMessage(CC.translate(" &f&l● &bItalic: &f" + rank.isItalic()));
-        sender.sendMessage(CC.translate(" &f&l● &bDefault: &f" + rank.isDefaultRank()));
-        sender.sendMessage(CC.translate(" &f&l● &bPermissions:"));
+        sender.sendMessage(CC.translate(" &f&l● &dName: &f" + rank.getName()));
+        sender.sendMessage(CC.translate(" &f&l● &dPrefix: &f" + rank.getPrefix()));
+        sender.sendMessage(CC.translate(" &f&l● &dSuffix: &f" + rank.getSuffix()));
+        sender.sendMessage(CC.translate(" &f&l● &dWeight: &f" + rank.getWeight()));
+        sender.sendMessage(CC.translate(" &f&l● &dColor: &f" + rank.getColor().toString()));
+        sender.sendMessage(CC.translate(" &f&l● &dBold: &f" + rank.isBold()));
+        sender.sendMessage(CC.translate(" &f&l● &dItalic: &f" + rank.isItalic()));
+        sender.sendMessage(CC.translate(" &f&l● &dDefault: &f" + rank.isDefaultRank()));
+        sender.sendMessage(CC.translate(" &f&l● &dPermissions:"));
         if (rank.getPermissions().isEmpty()) {
             sender.sendMessage(CC.translate("   &7None"));
             sender.sendMessage("");

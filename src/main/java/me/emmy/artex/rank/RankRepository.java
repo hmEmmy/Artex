@@ -169,7 +169,7 @@ public class RankRepository {
         rank.setName(name);
 
         if (doPrefix) {
-            rank.setPrefix("&7[&b" + name + "&7] ");
+            rank.setPrefix("&7[&d" + name + "&7] ");
         } else {
             rank.setPrefix("");
         }

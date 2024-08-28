@@ -69,10 +69,10 @@ public class SetRankCommand extends BaseCommand {
         profile.getGrants().add(grant);
         profile.setRank(grantedRank);
 
-        sender.sendMessage(CC.translate("&aYou have granted the rank &b" + rank + " &ato &b" + targetName + "&a."));
+        sender.sendMessage(CC.translate("&aYou have granted the rank &d" + rank + " &ato &d" + targetName + "&a."));
 
         if (target.isOnline()) {
-            target.getPlayer().sendMessage(CC.translate("&aYou have been granted the rank &b" + rank + "&a."));
+            target.getPlayer().sendMessage(CC.translate("&aYou have been granted the rank &d" + rank + "&a."));
         }
     }
 }

@@ -26,12 +26,12 @@ public class RankListCommand extends BaseCommand {
 
 
         sender.sendMessage("");
-        sender.sendMessage(CC.translate("&b&lArtex &8- &7Ranks"));
+        sender.sendMessage(CC.translate("&d&lArtex &8- &7Ranks"));
         sender.sendMessage("");
 
         RankRepository rankRepository = Artex.getInstance().getRankRepository();
         if (rankRepository.getRanks() == null || rankRepository.getRanks().isEmpty()) {
-            sender.sendMessage(CC.translate("&f&l● &bNo ranks found."));
+            sender.sendMessage(CC.translate("&f&l● &dNo ranks found."));
             sender.sendMessage("");
             return;
         }
@@ -41,7 +41,7 @@ public class RankListCommand extends BaseCommand {
                 .collect(Collectors.toList());
 
         for (Rank rank : sortedRanks) {
-            sender.sendMessage(CC.translate("&f&l● &b" + rank.getName() + " &7- &f" + rank.getPrefix() + "&8[&7" + rank.getWeight() + "&8]" + (rank.isDefaultRank() ? " &7&o(Default Rank)" : "")));
+            sender.sendMessage(CC.translate("&f&l● &d" + rank.getName() + " &7- &f" + rank.getPrefix() + "&8[&7" + rank.getWeight() + "&8]" + (rank.isDefaultRank() ? " &7&o(Default Rank)" : "")));
         }
         sender.sendMessage("");
 

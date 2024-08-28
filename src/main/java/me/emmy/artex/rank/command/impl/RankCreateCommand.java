@@ -47,6 +47,6 @@ public class RankCreateCommand extends BaseCommand {
         }
 
         Artex.getInstance().getRankRepository().createRank(name, doPrefix);
-        sender.sendMessage(CC.translate("&aSuccessfully created a new rank called &b" + name + "&a."));
+        sender.sendMessage(CC.translate("&aSuccessfully created a new rank called &d" + name + "&a."));
     }
 }
