@@ -24,6 +24,10 @@ public class RankRepository {
 
     private Map<String, Rank> ranks = new HashMap<>();
 
+    public RankRepository() {
+        loadRanks();
+    }
+
     /**
      * Initialize the rank repository
      */
@@ -169,7 +173,7 @@ public class RankRepository {
         rank.setName(name);
 
         if (doPrefix) {
-            rank.setPrefix("&7[&d" + name + "&7] ");
+            rank.setPrefix("&7[&4" + name + "&7] ");
         } else {
             rank.setPrefix("");
         }

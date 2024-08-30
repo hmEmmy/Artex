@@ -30,39 +30,38 @@ public class RankCommand extends BaseCommand {
 
         if (page < 1 || page > 3) {
             sender.sendMessage("");
-            sender.sendMessage(CC.translate("&d&lArtex &8- &7Rank Commands - &7(1&8/&73)"));
+            sender.sendMessage(CC.translate("&4&lArtex &8- &7Rank Commands - &7(1&8/&73)"));
             sender.sendMessage("");
-            sender.sendMessage(CC.translate(" &f&l● &d/rank create &f(name) - &7Create a rank"));
-            sender.sendMessage(CC.translate(" &f&l● &d/rank delete &f(name) - &7Delete a rank"));
-            sender.sendMessage(CC.translate(" &f&l● &d/rank list - &7List all ranks"));
-            sender.sendMessage(CC.translate(" &f&l● &d/rank info &f(name) - &7View rank information"));
+            sender.sendMessage(CC.translate(" &f&l● &4/rank create &f(name) - &7Create a rank"));
+            sender.sendMessage(CC.translate(" &f&l● &4/rank delete &f(name) - &7Delete a rank"));
+            sender.sendMessage(CC.translate(" &f&l● &4/rank list - &7List all ranks"));
+            sender.sendMessage(CC.translate(" &f&l● &4/rank info &f(name) - &7View rank information"));
             sender.sendMessage("");
             return;
         }
 
         sender.sendMessage("");
-        sender.sendMessage(CC.translate("&d&lArtex &8- &7Rank Commands - &7(" + page + "&8/&73)"));
+        sender.sendMessage(CC.translate("&4&lArtex &8- &7Rank Commands - &7(" + page + "&8/&73)"));
 
         if (page == 1) {
             sender.sendMessage("");
-            sender.sendMessage(CC.translate(" &f&l● &d/rank create &f(name) - &7Create a rank"));
-            sender.sendMessage(CC.translate(" &f&l● &d/rank delete &f(name) - &7Delete a rank"));
-            sender.sendMessage(CC.translate(" &f&l● &d/rank list - &7List all ranks"));
-            sender.sendMessage(CC.translate(" &f&l● &d/rank info &f(name) - &7View rank information"));
+            sender.sendMessage(CC.translate(" &f&l● &4/rank create &f(name) - &7Create a rank"));
+            sender.sendMessage(CC.translate(" &f&l● &4/rank delete &f(name) - &7Delete a rank"));
+            sender.sendMessage(CC.translate(" &f&l● &4/rank list - &7List all ranks"));
+            sender.sendMessage(CC.translate(" &f&l● &4/rank info &f(name) - &7View rank information"));
         } else if (page == 2) {
             sender.sendMessage("");
-            sender.sendMessage(CC.translate(" &f&l● &d/rank setprefix &f(name) (prefix) - &7Set the prefix of a rank"));
-            sender.sendMessage(CC.translate(" &f&l● &d/rank setsuffix &f(name) (suffix) - &7Set the suffix of a rank"));
-            sender.sendMessage(CC.translate(" &f&l● &d/rank setcolor &f(name) (color) - &7Set the color of a rank"));
-            sender.sendMessage(CC.translate(" &f&l● &d/rank setbold &f(name) (true/false) - &7Makes the rank bold"));
-            sender.sendMessage(CC.translate(" &f&l● &d/rank setitalic &f(name) (true/false) - &7Makes the rank italic"));
-        } else if (page == 3) {
+            sender.sendMessage(CC.translate(" &f&l● &4/rank setprefix &f(name) (prefix) - &7Set the prefix of a rank"));
+            sender.sendMessage(CC.translate(" &f&l● &4/rank setsuffix &f(name) (suffix) - &7Set the suffix of a rank"));
+            sender.sendMessage(CC.translate(" &f&l● &4/rank setcolor &f(name) (color) - &7Set the color of a rank"));
+            sender.sendMessage(CC.translate(" &f&l● &4/rank setbold &f(name) (true/false) - &7Makes the rank bold"));
+            sender.sendMessage(CC.translate(" &f&l● &4/rank setitalic &f(name) (true/false) - &7Makes the rank italic"));
+        } else {
             sender.sendMessage("");
-            sender.sendMessage(CC.translate(" &f&l● &d/rank setweight &f(name) (weight) - &7Set the weight of a rank"));
-            sender.sendMessage(CC.translate(" &f&l● &d/rank setdefault &f(name) - &7Set the default rank"));
-            sender.sendMessage(CC.translate(" &f&l● &d/rank addpermission &f(name) (permission) - &7Add a permission to a rank"));
+            sender.sendMessage(CC.translate(" &f&l● &4/rank setweight &f(name) (weight) - &7Set the weight of a rank"));
+            sender.sendMessage(CC.translate(" &f&l● &4/rank setdefault &f(name) - &7Set the default rank"));
+            sender.sendMessage(CC.translate(" &f&l● &4/rank addpermission &f(name) (permission) - &7Add a permission to a rank"));
         }
-
 
         sender.sendMessage("");
     }
