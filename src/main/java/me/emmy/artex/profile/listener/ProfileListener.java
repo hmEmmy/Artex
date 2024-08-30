@@ -27,7 +27,7 @@ public class ProfileListener implements Listener {
     private void onLogin(PlayerLoginEvent event) {
         ProfileRepository profileRepository = Artex.getInstance().getProfileRepository();
         UUID uuid = event.getPlayer().getUniqueId();
-        Profile profile = profileRepository.getProfile(uuid);
+        Profile profile = profileRepository.getProfileWithNoAdding(uuid);
 
         if (profile == null) {
             Logger.debug("Creating new profile for " + event.getPlayer().getName());

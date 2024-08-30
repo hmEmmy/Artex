@@ -34,7 +34,7 @@ public class DatabaseService {
     }
 
     /**
-     * Load MongoDB settings from the config and initialize the connection.
+     * Load MongoDB setting from the config and initialize the connection.
      */
     public void loadMongo() {
         try {
@@ -60,8 +60,11 @@ public class DatabaseService {
      * Close the MongoDB connection.
      */
     public void close() {
-        if (mongoClient != null) {
+        try {
             mongoClient.close();
+            Bukkit.getConsoleSender().sendMessage(CC.translate("&cDisconnected from MongoDB!"));
+        } catch (Exception e) {
+            Bukkit.getConsoleSender().sendMessage(CC.translate("&cFailed to disconnect from MongoDB: &f" + e.getMessage()));
         }
     }
 }

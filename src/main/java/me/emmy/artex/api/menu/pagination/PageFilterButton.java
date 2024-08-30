@@ -49,8 +49,8 @@ public class PageFilterButton<T> extends Button {
             lore.add(decoration + color + icon + " " + filter.getName());
         }
 
-        lore.add("&dLeft click to scroll.");
-        lore.add("&dRight click to toggle a filter.");
+        lore.add("&4Left click to scroll.");
+        lore.add("&4Right click to toggle a filter.");
 
         return new ItemBuilder(Material.HOPPER)
                 .name("&7Filters")

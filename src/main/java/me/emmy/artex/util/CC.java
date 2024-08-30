@@ -17,7 +17,7 @@ import java.util.List;
 @UtilityClass
 public class CC {
 
-    public final String PREFIX = "§8[§bArtex§8] §7";
+    public final String PREFIX = "§8[§4Artex§8] §7";
 
     /**
      * Translate a string with color codes
@@ -35,27 +35,27 @@ public class CC {
     public void sendEnableMessage() {
         List<String> message = Arrays.asList(
                 "",
-                " &5<---------- &d&l" + Artex.getInstance().getDescription().getName() + " Core &5---------->",
+                " &c<---------- &4&l" + Artex.getInstance().getDescription().getName() + " Core &c---------->",
                 "",
-                "   &dPlugin Info:",
-                "   &7| &d&lAuthor: &f" + Artex.getInstance().getDescription().getAuthors().get(0),
-                "   &7| &d&lVersion: &f" + Artex.getInstance().getDescription().getVersion(),
-                "   &7| &d&lWebsite: &f" + Artex.getInstance().getDescription().getWebsite(),
-                "   &7| &d&lDescription: &f" + Artex.getInstance().getDescription().getDescription(),
+                "   &4Plugin Info:",
+                "   &7| &4&lAuthor: &f" + Artex.getInstance().getDescription().getAuthors().get(0),
+                "   &7| &4&lVersion: &f" + Artex.getInstance().getDescription().getVersion(),
+                "   &7| &4&lWebsite: &f" + Artex.getInstance().getDescription().getWebsite(),
+                "   &7| &4&lDescription: &f" + Artex.getInstance().getDescription().getDescription(),
                 "",
-                "   &dDatabase Info:",
-                "   &7| &dHost: &f" + Artex.getInstance().getConfig().getString("mongo.host"),
-                "   &7| &dPort: &f" + Artex.getInstance().getConfig().getInt("mongo.port"),
-                "   &7| &dDatabase: &f" + Artex.getInstance().getConfig().getString("mongo.database"),
+                "   &4Database Info:",
+                "   &7| &4Host: &f" + Artex.getInstance().getConfig().getString("mongo.host"),
+                "   &7| &4Port: &f" + Artex.getInstance().getConfig().getInt("mongo.port"),
+                "   &7| &4Database: &f" + Artex.getInstance().getConfig().getString("mongo.database"),
                 "",
-                "   &dInstance:",
-                "   &7| &d&lServer Name: &f" + Locale.SERVER_NAME.getString(),
-                "   &7| &d&lServer Region: &f" + Locale.SERVER_REGION.getString(),
-                "   &7| &d&lServer Version: &f" + Artex.getInstance().getBukkitVersionExact(),
-                "   &7| &d&lSpigot: &f" + Bukkit.getName(),
-                "   &7| &d&lRanks: &f" + Artex.getInstance().getRankRepository().getRanks().size(),
+                "   &4Instance:",
+                "   &7| &4&lServer Name: &f" + Locale.SERVER_NAME.getString(),
+                "   &7| &4&lServer Region: &f" + Locale.SERVER_REGION.getString(),
+                "   &7| &4&lServer Version: &f" + Artex.getInstance().getBukkitVersionExact(),
+                "   &7| &4&lSpigot: &f" + Bukkit.getName(),
+                "   &7| &4&lRanks: &f" + Artex.getInstance().getRankRepository().getRanks().size(),
                 "",
-                " &5<-------------------------------->",
+                " &c<-------------------------------->",
                 ""
         );
 

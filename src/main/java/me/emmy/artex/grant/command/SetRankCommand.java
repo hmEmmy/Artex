@@ -1,4 +1,4 @@
-package me.emmy.artex.rank.command.impl;
+package me.emmy.artex.grant.command;
 
 import me.emmy.artex.Artex;
 import me.emmy.artex.api.command.BaseCommand;
@@ -33,15 +33,18 @@ public class SetRankCommand extends BaseCommand {
         }
 
         String targetName = args[0];
-        String rank = args[1];
+        String rankName = args[1];
         long duration;
         String reason = String.join(" ", Arrays.copyOfRange(args, 3, args.length));
 
         OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
         Profile profile = Artex.getInstance().getProfileRepository().getProfile(target.getUniqueId());
+        Rank grantedRank = Artex.getInstance().getRankRepository().getRank(rankName);
 
-        Grant grant = new Grant();
-        Rank grantedRank = Artex.getInstance().getRankRepository().getRank(rank);
+        if (grantedRank == null) {
+            sender.sendMessage(CC.translate("&cThe rank '" + rankName + "' does not exist."));
+            return;
+        }
 
         boolean isPermanent;
         if (args[2].equalsIgnoreCase("perm") || args[2].equalsIgnoreCase("permanent")) {
@@ -57,7 +60,13 @@ public class SetRankCommand extends BaseCommand {
             }
         }
 
-        grant.setRank(rank);
+        if (profile.getGrants().stream().anyMatch(grant1 -> grant1.getRank().equals(grantedRank) && grant1.isActive())) {
+            sender.sendMessage(CC.translate("&cThat player already has the rank '" + rankName + "' granted and active."));
+            return;
+        }
+
+        Grant grant = new Grant();
+        grant.setRank(grantedRank.getName());
         grant.setDuration(duration);
         grant.setReason(reason);
         grant.setAddedBy(sender.getName());
@@ -69,10 +78,10 @@ public class SetRankCommand extends BaseCommand {
         profile.getGrants().add(grant);
         profile.setRank(grantedRank);
 
-        sender.sendMessage(CC.translate("&aYou have granted the rank &d" + rank + " &ato &d" + targetName + "&a."));
+        sender.sendMessage(CC.translate("&aYou have granted the rank &4" + rankName + " &ato &4" + targetName + "&a."));
 
         if (target.isOnline()) {
-            target.getPlayer().sendMessage(CC.translate("&aYou have been granted the rank &d" + rank + "&a."));
+            target.getPlayer().sendMessage(CC.translate("&aYou have been granted the rank &4" + rankName + "&a."));
         }
     }
 }

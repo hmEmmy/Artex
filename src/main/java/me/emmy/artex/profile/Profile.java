@@ -8,9 +8,7 @@ import me.emmy.artex.rank.Rank;
 import me.emmy.artex.util.Logger;
 import org.bukkit.Bukkit;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * @author Emmy
@@ -70,28 +68,11 @@ public class Profile {
      */
     public Rank getHighestRankBasedOnGrant(UUID playerUUID) {
         Profile profile = Artex.getInstance().getProfileRepository().getProfile(playerUUID);
-        List<Grant> grants = profile.getGrants();
-
-        if (grants == null || grants.isEmpty()) {
-            return Artex.getInstance().getRankRepository().getDefaultRank();
-        }
-
-        Grant highestGrant = null;
-        for (Grant grant : grants) {
-            if (!grant.isActive() || grant.hasExpired()) {
-                continue;
-            }
-
-            if (highestGrant == null || grant.getRank().getWeight() > highestGrant.getRank().getWeight()) {
-                highestGrant = grant;
-            }
-        }
-
-        if (highestGrant == null) {
-            return Artex.getInstance().getRankRepository().getDefaultRank();
-        }
-
-        return highestGrant.getRank();
+        return profile.getGrants().stream()
+                .filter(Grant::isActive)
+                .max(Comparator.comparingInt(grant -> grant.getRank().getWeight()))
+                .map(Grant::getRank)
+                .orElse(Artex.getInstance().getRankRepository().getDefaultRank());
     }
 
     /**
@@ -101,7 +82,7 @@ public class Profile {
      * @return if the player has a default grant
      */
     public boolean hasDefaultGrant(UUID playerUUID) {
-        return Artex.getInstance().getProfileRepository().getProfile(playerUUID).getGrants()
+        return Artex.getInstance().getProfileRepository().getProfileWithNoAdding(playerUUID).getGrants()
                 .stream()
                 .anyMatch(grant -> grant.getRank().isDefaultRank());
     }

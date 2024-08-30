@@ -11,6 +11,7 @@ import me.emmy.artex.locale.Locale;
 import me.emmy.artex.rank.Rank;
 import me.emmy.artex.util.Logger;
 import org.bson.Document;
+import org.bukkit.Bukkit;
 
 import java.util.*;
 
@@ -33,10 +34,11 @@ public class ProfileRepository {
         MongoCollection<Document> collection = Artex.getInstance().getDatabaseService().getProfilesCollection();
         Document document = new Document("uuid", profile.getUuid().toString())
                 .append("name", profile.getUsername())
-                .append("rank", profile.getRank().getName())
+                .append("rank", profile.getHighestRankBasedOnGrant(profile.getUuid()).getName())
                 .append("grants", GrantSerializer.serialize(profile.getGrants()))
 
                 ;
+
 
         collection.replaceOne(Filters.eq("uuid", profile.getUuid().toString()), document, new ReplaceOptions().upsert(true));
     }
@@ -54,7 +56,7 @@ public class ProfileRepository {
             Profile profile = new Profile(uuid);
             profile.setUsername(document.getString("name"));
             profile.setRank(Artex.getInstance().getRankRepository().getRank(document.getString("rank")));
-            profile.setGrants(GrantSerializer.deserialize(document.getList("grants", String.class)))
+            profile.setGrants(GrantSerializer.deserialize(document.getList("grants", String.class)));
 
             ;
 
@@ -77,13 +79,33 @@ public class ProfileRepository {
     }
 
     /**
+     * Add a new profile with default values.
+     *
+     * @param uuid the UUID of the profile
+     * @return the profile
+     */
+    public Profile addProfileWithDefaultValues(UUID uuid) {
+        Profile profile = new Profile(uuid);
+        profiles.put(uuid, profile);
+        profile.setUsername(Bukkit.getOfflinePlayer(uuid).getName());
+        profile.setRank(Artex.getInstance().getRankRepository().getDefaultRank());
+        profile.setGrants(new ArrayList<>());
+        Artex.getInstance().getProfileRepository().addFirstDefaultGrant(uuid);
+        return profile;
+    }
+
+    /**
      * Get a profile by UUID, or create a new one if it doesn't exist.
      *
      * @param uuid the UUID of the profile
      * @return the profile
      */
     public Profile getProfile(UUID uuid) {
-        if (!profiles.containsKey(uuid)) return addProfile(uuid);
+        if (profiles.get(uuid) == null) {
+            Logger.debug("getProfile method called for " + uuid.toString() + ", adding new profile.");
+            return addProfileWithDefaultValues(uuid);
+        }
+
         return profiles.get(uuid);
     }
 
@@ -144,8 +166,6 @@ public class ProfileRepository {
         Logger.debug("addGrant method called for " + profile.getUsername() + " with rank " + grant.getRank().getName() + ".");
 
         grants.add(grant);
-        profile.setGrants(grants);
-
         profile.save();
     }
 

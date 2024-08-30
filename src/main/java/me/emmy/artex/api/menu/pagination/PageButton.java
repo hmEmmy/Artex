@@ -25,7 +25,7 @@ public class PageButton extends Button {
         if (this.mod > 0) {
             if (hasNext(player)) {
                 return new ItemBuilder(Material.REDSTONE_TORCH_ON)
-                        .name(CC.translate("&dNext Page"))
+                        .name(CC.translate("&4Next Page"))
                         .lore(Arrays.asList(
                                 CC.translate("&aClick here to jump"),
                                 CC.translate("&ato the next page.")

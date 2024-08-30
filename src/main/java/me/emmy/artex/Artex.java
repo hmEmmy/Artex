@@ -4,11 +4,13 @@ import lombok.Getter;
 import lombok.Setter;
 import me.emmy.artex.api.command.CommandFramework;
 import me.emmy.artex.api.menu.listener.MenuListener;
+import me.emmy.artex.chat.ChatRepository;
 import me.emmy.artex.chat.listener.ChatListener;
 import me.emmy.artex.database.DatabaseService;
 import me.emmy.artex.profile.ProfileRepository;
 import me.emmy.artex.profile.listener.ProfileListener;
 import me.emmy.artex.rank.RankRepository;
+import me.emmy.artex.tag.TagRepository;
 import me.emmy.artex.util.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -28,6 +30,8 @@ public class Artex extends JavaPlugin {
     private DatabaseService databaseService;
     private ProfileRepository profileRepository;
     private RankRepository rankRepository;
+    private TagRepository tagRepository;
+    private ChatRepository chatRepository;
 
     @Override
     public void onEnable() {
@@ -58,7 +62,10 @@ public class Artex extends JavaPlugin {
         this.profileRepository = new ProfileRepository();
 
         this.rankRepository = new RankRepository();
-        this.rankRepository.loadRanks();
+
+        this.tagRepository = new TagRepository();
+
+        this.chatRepository = new ChatRepository(false);
     }
 
     /**
@@ -75,8 +82,8 @@ public class Artex extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        this.databaseService.close();
         this.profileRepository.saveProfiles();
+        this.databaseService.close();
 
         CC.sendDisableMessage();
     }

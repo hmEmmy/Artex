@@ -48,6 +48,15 @@ public class ChatListener implements Listener {
         }
 
         event.setFormat(CC.translate(rankPrefix + rankColor + player.getName() + rankSuffix + "&f" + ": " + message));
+
+        if (Artex.getInstance().getChatRepository().isChatMuted()) {
+            if (player.hasPermission("artex.bypass.mutechat")) {
+                return;
+            }
+
+            event.setCancelled(true);
+            player.sendMessage(CC.translate("&cChat is currently muted."));
+        }
     }
 
 }
