@@ -75,7 +75,7 @@ public class TagRepository {
         var tagCollection = Artex.getInstance().getDatabaseService().getDatabase().getCollection("tags");
 
         Document tagDocument = tagToDocument(tag);
-        tagCollection.insertOne(tagDocument);
+        tagCollection.replaceOne(new Document("name", tag.getName()), tagDocument);
     }
 
     /**

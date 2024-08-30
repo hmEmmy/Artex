@@ -23,7 +23,14 @@ public class RankCommand extends BaseCommand {
             try {
                 page = Integer.parseInt(args[0]);
             } catch (NumberFormatException e) {
-                sender.sendMessage(CC.translate("&cInvalid page number!"));
+                sender.sendMessage("");
+                sender.sendMessage(CC.translate("&4&lArtex &8- &7Rank Commands - &7(1&8/&73)"));
+                sender.sendMessage("");
+                sender.sendMessage(CC.translate(" &f&l● &4/rank create &f(name) - &7Create a rank"));
+                sender.sendMessage(CC.translate(" &f&l● &4/rank delete &f(name) - &7Delete a rank"));
+                sender.sendMessage(CC.translate(" &f&l● &4/rank list - &7List all ranks"));
+                sender.sendMessage(CC.translate(" &f&l● &4/rank info &f(name) - &7View rank information"));
+                sender.sendMessage("");
                 return;
             }
         }

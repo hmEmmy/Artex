@@ -34,8 +34,15 @@ public class RankAddPermissionCommand extends BaseCommand {
 
         String permission = args[1];
 
+        if (rank.getPermissions().contains(permission)) {
+            rank.getPermissions().remove(permission);
+            Artex.getInstance().getRankRepository().saveRank(rank);
+            sender.sendMessage(CC.translate("&aSuccessfully &cremoved &athe permission &4" + permission + " &afrom &4" + name + "&a."));
+            return;
+        }
+
         rank.getPermissions().add(permission);
         Artex.getInstance().getRankRepository().saveRank(rank);
-        sender.sendMessage(CC.translate("&aSuccessfully added the permission &4" + permission + " &ato &4" + name + "&a."));
+        sender.sendMessage(CC.translate("&aSuccessfully &eadded the permission &4" + permission + " &ato &4" + name + "&a."));
     }
 }

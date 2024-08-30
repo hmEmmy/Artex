@@ -53,7 +53,10 @@ public class CC {
                 "   &7| &4&lServer Region: &f" + Locale.SERVER_REGION.getString(),
                 "   &7| &4&lServer Version: &f" + Artex.getInstance().getBukkitVersionExact(),
                 "   &7| &4&lSpigot: &f" + Bukkit.getName(),
+                "",
+                "   &4&lStorage:",
                 "   &7| &4&lRanks: &f" + Artex.getInstance().getRankRepository().getRanks().size(),
+                "   &7| &4&lTags: &f" + Artex.getInstance().getTagRepository().getTags().size(),
                 "",
                 " &c<-------------------------------->",
                 ""

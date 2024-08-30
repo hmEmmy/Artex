@@ -72,7 +72,7 @@ public class RankRepository {
         var rankCollection = Artex.getInstance().getDatabaseService().getDatabase().getCollection("ranks");
 
         Document rankDocument = rankToDocument(rank);
-        rankCollection.insertOne(rankDocument);
+        rankCollection.replaceOne(new Document("name", rank.getName()), rankDocument);
     }
 
     /**
