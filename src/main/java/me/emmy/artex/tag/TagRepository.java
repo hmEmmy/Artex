@@ -90,7 +90,9 @@ public class TagRepository {
                 .append("displayName", tag.getDisplayName())
                 .append("icon", tag.getIcon().name())
                 .append("color", tag.getColor().name())
-                .append("durability", tag.getDurability());
+                .append("durability", tag.getDurability())
+                .append("bold", tag.isBold())
+                .append("italic", tag.isItalic());
     }
 
     /**
@@ -106,7 +108,9 @@ public class TagRepository {
                 document.getString("displayName"),
                 Material.valueOf(document.getString("icon")),
                 ChatColor.valueOf(document.getString("color")),
-                document.getInteger("durability")
+                document.getInteger("durability"),
+                document.getBoolean("bold"),
+                document.getBoolean("italic")
         );
     }
 
@@ -114,13 +118,25 @@ public class TagRepository {
      * Create the default tag
      */
     private void createDefaultTags() {
-        Tag tag = new Tag("Heart Symbol", "❤", Material.REDSTONE, ChatColor.RED, 0);
-        Tag tag2 = new Tag("Diamond Symbol", "♦", Material.DIAMOND, ChatColor.AQUA, 0);
-        Tag tag3 = new Tag("Star Symbol", "★", Material.NETHER_STAR, ChatColor.YELLOW, 0);
+        Tag heart = new Tag("Heart", "❤", Material.NAME_TAG, ChatColor.RED, 0, false, false);
+        Tag BlackHeart = new Tag("BlackHeart", "🖤", Material.NAME_TAG, ChatColor.BLACK, 0, false, false);
+        Tag diamond = new Tag("Diamond", "♦", Material.NAME_TAG, ChatColor.AQUA, 0, false, false);
+        Tag star = new Tag("Star", "★", Material.NAME_TAG, ChatColor.YELLOW, 0, false, false);
+        Tag BestWW = new Tag("BestWW", "BestWW", Material.NAME_TAG, ChatColor.DARK_RED, 0, true, false);
+        Tag Crown = new Tag("Crown", "♛", Material.NAME_TAG, ChatColor.GOLD, 0, false, false);
+        Tag King = new Tag("King", "King ♚", Material.NAME_TAG, ChatColor.RED, 0, false, false);
+        Tag Queen = new Tag("Queen", "Queen ♛", Material.NAME_TAG, ChatColor.LIGHT_PURPLE, 0, false, false);
+        Tag tick = new Tag("Tick", "✔", Material.NAME_TAG, ChatColor.GREEN, 0, false, false);
 
-        tags.put(tag.getName(), tag);
-        tags.put(tag2.getName(), tag2);
-        tags.put(tag3.getName(), tag3);
+        tags.put(heart.getName(), heart);
+        tags.put(diamond.getName(), diamond);
+        tags.put(star.getName(), star);
+        tags.put(BlackHeart.getName(), BlackHeart);
+        tags.put(BestWW.getName(), BestWW);
+        tags.put(Crown.getName(), Crown);
+        tags.put(King.getName(), King);
+        tags.put(Queen.getName(), Queen);
+        tags.put(tick.getName(), tick);
 
         saveTags();
     }

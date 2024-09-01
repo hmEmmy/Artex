@@ -34,6 +34,7 @@ public class ProfileRepository {
         MongoCollection<Document> collection = Artex.getInstance().getDatabaseService().getProfilesCollection();
         Document document = new Document("uuid", profile.getUuid().toString())
                 .append("name", profile.getUsername())
+                .append("tag", profile.getTag().getName() == null ? "" : profile.getTag().getName())
                 .append("rank", profile.getHighestRankBasedOnGrant(profile.getUuid()).getName())
                 .append("grants", GrantSerializer.serialize(profile.getGrants()))
 
@@ -55,10 +56,9 @@ public class ProfileRepository {
         if (document != null) {
             Profile profile = new Profile(uuid);
             profile.setUsername(document.getString("name"));
+            profile.setTag(Artex.getInstance().getTagRepository().getTag(document.getString("tag")).getName());
             profile.setRank(Artex.getInstance().getRankRepository().getRank(document.getString("rank")));
             profile.setGrants(GrantSerializer.deserialize(document.getList("grants", String.class)));
-
-            ;
 
             profiles.put(uuid, profile);
         } else {
@@ -70,12 +70,10 @@ public class ProfileRepository {
      * Add a new profile or retrieve an existing one.
      *
      * @param uuid the UUID of the profile
-     * @return the profile
      */
-    public Profile addProfile(UUID uuid) {
+    public void addProfile(UUID uuid) {
         Profile profile = new Profile(uuid);
         profiles.put(uuid, profile);
-        return profile;
     }
 
     /**
@@ -90,6 +88,7 @@ public class ProfileRepository {
         profile.setUsername(Bukkit.getOfflinePlayer(uuid).getName());
         profile.setRank(Artex.getInstance().getRankRepository().getDefaultRank());
         profile.setGrants(new ArrayList<>());
+        profile.setTag("");
         Artex.getInstance().getProfileRepository().addFirstDefaultGrant(uuid);
         return profile;
     }

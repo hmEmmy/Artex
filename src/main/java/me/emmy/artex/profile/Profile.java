@@ -5,6 +5,7 @@ import lombok.Setter;
 import me.emmy.artex.Artex;
 import me.emmy.artex.grant.Grant;
 import me.emmy.artex.rank.Rank;
+import me.emmy.artex.tag.Tag;
 import me.emmy.artex.util.Logger;
 import org.bukkit.Bukkit;
 
@@ -21,6 +22,7 @@ public class Profile {
 
     private final UUID uuid;
     private String username;
+    private String tag;
     private Rank rank;
     private List<Grant> grants;
 
@@ -33,6 +35,7 @@ public class Profile {
         this.uuid = uuid;
         this.username = Bukkit.getOfflinePlayer(this.uuid).getName();
         this.grants = new ArrayList<>();
+        this.tag = "";
     }
 
     public void load() {
@@ -85,5 +88,9 @@ public class Profile {
         return Artex.getInstance().getProfileRepository().getProfileWithNoAdding(playerUUID).getGrants()
                 .stream()
                 .anyMatch(grant -> grant.getRank().isDefaultRank());
+    }
+
+    public Tag getTag() {
+        return Artex.getInstance().getTagRepository().getTag(tag);
     }
 }

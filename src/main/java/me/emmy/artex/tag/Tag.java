@@ -23,6 +23,9 @@ public class Tag {
 
     private int durability;
 
+    private boolean bold;
+    private boolean italic;
+
     /**
      * Constructor for the Tag class.
      *
@@ -32,11 +35,21 @@ public class Tag {
      * @param color the color of the tag
      * @param durability the data/durability of the tag icon
      */
-    public Tag(String name, String displayName, Material icon, ChatColor color, int durability) {
+    public Tag(String name, String displayName, Material icon, ChatColor color, int durability, boolean bold, boolean italic) {
         this.name = name;
         this.displayName = displayName;
         this.icon = icon;
         this.color = color;
         this.durability = durability;
+        this.bold = bold;
+        this.italic = italic;
+    }
+
+    public ChatColor getColorOrDefault() {
+        return color == null ? ChatColor.WHITE : color;
+    }
+
+    public String getTagNameOrNull() {
+        return name == null ? "" : name;
     }
 }
