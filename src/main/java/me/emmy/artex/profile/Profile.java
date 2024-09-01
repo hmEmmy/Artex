@@ -35,7 +35,7 @@ public class Profile {
         this.uuid = uuid;
         this.username = Bukkit.getOfflinePlayer(this.uuid).getName();
         this.grants = new ArrayList<>();
-        this.tag = "";
+        tag = "";
     }
 
     public void load() {

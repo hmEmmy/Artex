@@ -9,9 +9,12 @@ import me.emmy.artex.grant.Grant;
 import me.emmy.artex.grant.GrantSerializer;
 import me.emmy.artex.locale.Locale;
 import me.emmy.artex.rank.Rank;
+import me.emmy.artex.tag.Tag;
+import me.emmy.artex.tag.TagRepository;
 import me.emmy.artex.util.Logger;
 import org.bson.Document;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 
 import java.util.*;
 
@@ -34,7 +37,7 @@ public class ProfileRepository {
         MongoCollection<Document> collection = Artex.getInstance().getDatabaseService().getProfilesCollection();
         Document document = new Document("uuid", profile.getUuid().toString())
                 .append("name", profile.getUsername())
-                .append("tag", profile.getTag().getName() == null ? "" : profile.getTag().getName())
+                .append("tag", profile.getTag() == null ? "none" : profile.getTag().getName())
                 .append("rank", profile.getHighestRankBasedOnGrant(profile.getUuid()).getName())
                 .append("grants", GrantSerializer.serialize(profile.getGrants()))
 
@@ -88,7 +91,7 @@ public class ProfileRepository {
         profile.setUsername(Bukkit.getOfflinePlayer(uuid).getName());
         profile.setRank(Artex.getInstance().getRankRepository().getDefaultRank());
         profile.setGrants(new ArrayList<>());
-        profile.setTag("");
+        profile.setTag(null);
         Artex.getInstance().getProfileRepository().addFirstDefaultGrant(uuid);
         return profile;
     }
@@ -185,5 +188,17 @@ public class ProfileRepository {
         Logger.debug("Getting highest rank based on grant for " + profile.getUsername() + ".");
         Rank highestGrant = profile.getHighestRankBasedOnGrant(profile.getUuid());
         profile.setRank(highestGrant);
+    }
+
+    public void determineTag(Profile profile) {
+        Logger.debug("determineTag called for " + profile.getUsername() + ", checking if tag is null.");
+        Tag tag = profile.getTag();
+        if (tag == null) {
+            Logger.debug("Tag is null for " + profile.getUsername() + ", returning.");
+            return;
+        }
+
+        Logger.debug("Tag is not null for " + profile.getUsername() + ", setting tag.");
+        profile.setTag(Artex.getInstance().getTagRepository().getTag(tag.getName()).getName());
     }
 }

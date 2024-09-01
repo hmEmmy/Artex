@@ -119,13 +119,13 @@ public class TagRepository {
      */
     private void createDefaultTags() {
         Tag heart = new Tag("Heart", "❤", Material.NAME_TAG, ChatColor.RED, 0, false, false);
-        Tag BlackHeart = new Tag("BlackHeart", "🖤", Material.NAME_TAG, ChatColor.BLACK, 0, false, false);
-        Tag diamond = new Tag("Diamond", "♦", Material.NAME_TAG, ChatColor.AQUA, 0, false, false);
-        Tag star = new Tag("Star", "★", Material.NAME_TAG, ChatColor.YELLOW, 0, false, false);
+        Tag BlackHeart = new Tag("BlackHeart", "❤", Material.NAME_TAG, ChatColor.BLACK, 0, true, false);
+        Tag diamond = new Tag("Diamond", "♦", Material.NAME_TAG, ChatColor.AQUA, 0, true, false);
+        Tag star = new Tag("Star", "★", Material.NAME_TAG, ChatColor.YELLOW, 0, true, false);
         Tag BestWW = new Tag("BestWW", "BestWW", Material.NAME_TAG, ChatColor.DARK_RED, 0, true, false);
-        Tag Crown = new Tag("Crown", "♛", Material.NAME_TAG, ChatColor.GOLD, 0, false, false);
-        Tag King = new Tag("King", "King ♚", Material.NAME_TAG, ChatColor.RED, 0, false, false);
-        Tag Queen = new Tag("Queen", "Queen ♛", Material.NAME_TAG, ChatColor.LIGHT_PURPLE, 0, false, false);
+        Tag Crown = new Tag("Crown", "♛", Material.NAME_TAG, ChatColor.GOLD, 0, true, false);
+        Tag King = new Tag("King", "King ♚", Material.NAME_TAG, ChatColor.RED, 0, true, false);
+        Tag Queen = new Tag("Queen", "Queen ♛", Material.NAME_TAG, ChatColor.LIGHT_PURPLE, 0, true, false);
         Tag tick = new Tag("Tick", "✔", Material.NAME_TAG, ChatColor.GREEN, 0, false, false);
 
         tags.put(heart.getName(), heart);

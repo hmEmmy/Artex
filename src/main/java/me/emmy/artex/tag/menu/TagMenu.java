@@ -9,6 +9,7 @@ import me.emmy.artex.tag.Tag;
 import me.emmy.artex.util.CC;
 import me.emmy.artex.util.ItemBuilder;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
@@ -35,9 +36,9 @@ public class TagMenu extends PaginatedMenu {
     public Map<Integer, Button> getGlobalButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        buttons.put(3, new RemoveCurrentTagButton());
-
         addGlassHeader(buttons, 15);
+
+        buttons.put(4, new RemoveCurrentTagButton());
 
         return buttons;
     }
@@ -46,8 +47,10 @@ public class TagMenu extends PaginatedMenu {
     public Map<Integer, Button> getAllPagesButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
+        int slot = 0;
+
         for (Tag tag : Artex.getInstance().getTagRepository().getTags().values()) {
-            buttons.put(0, new TagButton(tag));
+            buttons.put(slot++, new TagButton(tag));
         }
 
         return buttons;
@@ -101,9 +104,8 @@ public class TagMenu extends PaginatedMenu {
             }
 
             Profile profile = Artex.getInstance().getProfileRepository().getProfileWithNoAdding(player.getUniqueId());
-            Tag selectedTag = profile.getTag();
 
-            if (selectedTag.getName().equals(tag.getName())) {
+            if (profile.getTag() != null && profile.getTag().equals(tag)) {
                 player.sendMessage(CC.translate("&cYou already have this tag selected."));
                 return;
             }
@@ -119,18 +121,19 @@ public class TagMenu extends PaginatedMenu {
         @Override
         public ItemStack getButtonItem(Player player) {
             Profile profile = Artex.getInstance().getProfileRepository().getProfileWithNoAdding(player.getUniqueId());
+            String tag = profile.getTag() == null ? "None" : profile.getTag().getName();
 
             List<String> lore = Arrays.asList(
                     "",
-                    "&cCurrent Tag: &4" + profile.getTag().getColorOrDefault() + profile.getTag().getTagNameOrNull(),
+                    "&fCurrent Tag: &c" + tag,
                     "",
-                    "&cClick to remove your current tag."
+                    profile.getTag() == null ? "&cYou do not have a tag selected." : "&aClick to remove your current tag."
             );
 
-            return new ItemBuilder(profile.getTag().getIcon())
-                    .name("&cRemove Current Tag")
+            return new ItemBuilder(profile.getTag() == null ? Material.BARRIER : profile.getTag().getIcon())
+                    .name(profile.getTag() == null ? "&cNone selected." : profile.getTag().getNiceName())
                     .lore(lore)
-                    .durability(profile.getTag().getDurability())
+                    .durability(profile.getTag() == null ? 0 : profile.getTag().getDurability())
                     .build();
         }
 
@@ -144,7 +147,7 @@ public class TagMenu extends PaginatedMenu {
                 return;
             }
 
-            profile.setTag("");
+            profile.setTag(null);
             player.sendMessage(CC.translate("&cYou have removed your current tag."));
             player.closeInventory();
         }

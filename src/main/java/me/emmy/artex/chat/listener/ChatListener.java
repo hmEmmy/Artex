@@ -28,7 +28,6 @@ public class ChatListener implements Listener {
         String rankPrefix = profile.getHighestRankBasedOnGrant(player.getUniqueId()).getPrefix();
         String rankSuffix = profile.getHighestRankBasedOnGrant(player.getUniqueId()).getSuffix();
         ChatColor rankColor = profile.getHighestRankBasedOnGrant(player.getUniqueId()).getColor();
-        String tag = profile.getTag().getTagNameOrNull();
 
         if (profile.getHighestRankBasedOnGrant(player.getUniqueId()) == null) {
             Logger.debug("Highest rank is null for " + player.getName() + ".");
@@ -48,13 +47,13 @@ public class ChatListener implements Listener {
             return;
         }
 
-        if (tag == null || tag.isEmpty()) {
+        if (profile.getTag() == null || profile.getTag().getName().isEmpty()) {
             Logger.debug("Tag is null or empty for " + player.getName() + ".");
             event.setFormat(CC.translate(rankPrefix + rankColor + player.getName() + rankSuffix + "&f" + ": " + message));
             return;
         }
 
-        event.setFormat(CC.translate(rankPrefix + rankColor + player.getName() + rankSuffix + " " + tag + "&f" + ": " + message));
+        event.setFormat(CC.translate(rankPrefix + rankColor + player.getName() + rankSuffix + " " + profile.getTag().getColor() + profile.getTag().getNiceName() + "&f" + ": " + message));
 
         if (Artex.getInstance().getChatRepository().isChatMuted()) {
             if (player.hasPermission("artex.bypass.mutechat")) {

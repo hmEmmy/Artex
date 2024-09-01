@@ -45,11 +45,19 @@ public class Tag {
         this.italic = italic;
     }
 
-    public ChatColor getColorOrDefault() {
-        return color == null ? ChatColor.WHITE : color;
-    }
+    public String getNiceName() {
+        String coloredName;
 
-    public String getTagNameOrNull() {
-        return name == null ? "" : name;
+        if (isBold()) {
+            displayName = ChatColor.BOLD + displayName;
+        }
+
+        if (isItalic()) {
+            displayName = ChatColor.ITALIC + displayName;
+        }
+
+        coloredName = getColor() + displayName;
+
+        return coloredName;
     }
 }
