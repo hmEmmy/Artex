@@ -24,42 +24,52 @@ public class PageButton extends Button {
     public ItemStack getButtonItem(Player player) {
         if (this.mod > 0) {
             if (hasNext(player)) {
-                return new ItemBuilder(Material.REDSTONE_TORCH_ON)
-                        .name(CC.translate("&4Next Page"))
+                return new ItemBuilder(Material.RED_ROSE)
+                        .name(CC.translate("&4&lNext Page"))
                         .lore(Arrays.asList(
-                                CC.translate("&aClick here to jump"),
-                                CC.translate("&ato the next page.")
+                                CC.translate("&8&m------------------------"),
+                                CC.translate(" &fPage: &4" + (this.menu.getPage() + this.mod) + "&f/&4" + this.menu.getPages(player)),
+                                CC.translate(" "),
+                                CC.translate("&aClick to view the next page."),
+                                CC.translate("&8&m------------------------")
                         ))
-                        .hideMeta()
+                        .clearFlags()
                         .build();
             } else {
-                return new ItemBuilder(Material.LEVER)
-                        .name(CC.translate("&cNext Page"))
+                return new ItemBuilder(Material.RED_ROSE)
+                        .name(CC.translate("&4&lNext Page"))
                         .lore(Arrays.asList(
-                                ChatColor.RED + "There is no available",
-                                ChatColor.RED + "next page."
+                                CC.translate("&8&m------------------------"),
+                                CC.translate(" "),
+                                CC.translate("&cTheres no next page."),
+                                CC.translate("&8&m------------------------")
                         ))
-                        .hideMeta()
+                        .clearFlags()
                         .build();
             }
         } else {
             if (hasPrevious(player)) {
-                return new ItemBuilder(Material.REDSTONE_TORCH_ON)
-                        .name(CC.translate("&6Previous Page"))
+                return new ItemBuilder(Material.RED_ROSE)
+                        .name(CC.translate("&4&lPrevious Page"))
                         .lore(Arrays.asList(
-                                ChatColor.GOLD + "Click here to jump",
-                                ChatColor.GOLD + "to the previous page."
+                                CC.translate("&8&m------------------------"),
+                                CC.translate(" &fPage: &4" + (this.menu.getPage() + this.mod) + "&f/&4" + this.menu.getPages(player)),
+                                CC.translate(" "),
+                                CC.translate("&aClick to view the previous page."),
+                                CC.translate("&8&m------------------------")
                         ))
-                        .hideMeta()
+                        .clearFlags()
                         .build();
             } else {
-                return new ItemBuilder(Material.LEVER)
-                        .name(CC.translate("&cPrevious Page"))
+                return new ItemBuilder(Material.RED_ROSE)
+                        .name(CC.translate("&4&lPrevious Page"))
                         .lore(Arrays.asList(
-                                ChatColor.RED + "There is no available",
-                                ChatColor.RED + "previous page."
+                                CC.translate("&8&m------------------------"),
+                                CC.translate(" "),
+                                CC.translate("&cTheres no previous page."),
+                                CC.translate("&8&m------------------------")
                         ))
-                        .hideMeta()
+                        .clearFlags()
                         .build();
             }
         }
@@ -93,5 +103,4 @@ public class PageButton extends Button {
         int pg = this.menu.getPage() + this.mod;
         return pg > 0;
     }
-
 }

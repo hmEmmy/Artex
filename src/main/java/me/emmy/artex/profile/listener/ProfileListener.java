@@ -40,9 +40,6 @@ public class ProfileListener implements Listener {
         Logger.debug("(!) Determining rank for " + event.getPlayer().getName() + ".");
         profileRepository.determineRank(profile);
         Logger.debug("Rank determined for " + event.getPlayer().getName() + ".");
-        Logger.debug("(!) Determining tag for " + event.getPlayer().getName() + ".");
-        profileRepository.determineTag(profile);
-        Logger.debug("Tag determined for " + event.getPlayer().getName() + ".");
     }
 
     @EventHandler

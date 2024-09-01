@@ -4,12 +4,12 @@ import lombok.Getter;
 import me.emmy.artex.Artex;
 import me.emmy.artex.api.menu.Button;
 import me.emmy.artex.api.menu.Menu;
+import me.emmy.artex.api.menu.button.PageGlassButton;
 import me.emmy.artex.util.CC;
 import me.emmy.artex.util.ItemBuilder;
 import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 @Getter
 public abstract class PaginatedMenu extends Menu {

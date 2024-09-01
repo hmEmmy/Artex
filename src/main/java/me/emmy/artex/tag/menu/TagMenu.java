@@ -14,10 +14,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Emmy
@@ -47,9 +45,14 @@ public class TagMenu extends PaginatedMenu {
     public Map<Integer, Button> getAllPagesButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
+        List<Tag> sortedTags = Artex.getInstance().getTagRepository().getTags().values()
+                .stream()
+                .sorted(Comparator.comparing(Tag::getName))
+                .collect(Collectors.toList());
+
         int slot = 0;
 
-        for (Tag tag : Artex.getInstance().getTagRepository().getTags().values()) {
+        for (Tag tag : sortedTags) {
             buttons.put(slot++, new TagButton(tag));
         }
 
@@ -78,11 +81,7 @@ public class TagMenu extends PaginatedMenu {
             List<String> lore = Arrays.asList(
                     "",
                     tag.getColor() + "Tag Info:",
-                    " &f● Name: &4" + tag.getColor() + tag.getName(),
-                    " &f● Display Name: &4" + coloredName,
-                    " &f● Color: &4" + tag.getColor() + tag.getColor().name(),
-                    " &f● Bold: &4" + tag.getColor() + tag.isBold(),
-                    " &f● Italic: &4" + tag.getColor() + tag.isItalic(),
+                    " &f● Appearance: &7[&4Owner&7] &4HmEmmy " + tag.getNiceName() + "&7: &f<3",
                     "",
                     "&aClick to select this tag."
             );
@@ -127,13 +126,12 @@ public class TagMenu extends PaginatedMenu {
                     "",
                     "&fCurrent Tag: &c" + tag,
                     "",
-                    profile.getTag() == null ? "&cYou do not have a tag selected." : "&aClick to remove your current tag."
+                    profile.getTag() == null ? "&cYou do not have a tag selected." : "&cClick to remove your current tag."
             );
 
-            return new ItemBuilder(profile.getTag() == null ? Material.BARRIER : profile.getTag().getIcon())
-                    .name(profile.getTag() == null ? "&cNone selected." : profile.getTag().getNiceName())
+            return new ItemBuilder(Material.REDSTONE)
+                    .name(profile.getTag() == null ? "&cNone selected." : "&f" + profile.getTag().getColor() + profile.getTag().getName() + " &7(" + profile.getTag().getNiceName() + "&7)")
                     .lore(lore)
-                    .durability(profile.getTag() == null ? 0 : profile.getTag().getDurability())
                     .build();
         }
 

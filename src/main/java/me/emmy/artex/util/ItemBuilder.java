@@ -126,6 +126,15 @@ public class ItemBuilder implements Listener {
 		return this;
 	}
 
+	public ItemBuilder clearFlags() {
+		ItemMeta itemMeta = itemStack.getItemMeta();
+		itemMeta.addItemFlags(ItemFlag.values());
+
+		itemStack.setItemMeta(itemMeta);
+
+		return this;
+	}
+
 	public ItemBuilder hideMeta() {
 		ItemMeta meta = itemStack.getItemMeta();
 		meta.addItemFlags(ItemFlag.HIDE_UNBREAKABLE);

@@ -118,25 +118,49 @@ public class TagRepository {
      * Create the default tag
      */
     private void createDefaultTags() {
-        Tag heart = new Tag("Heart", "❤", Material.NAME_TAG, ChatColor.RED, 0, false, false);
+        Tag Heart = new Tag("Heart", "❤", Material.NAME_TAG, ChatColor.RED, 0, false, false);
         Tag BlackHeart = new Tag("BlackHeart", "❤", Material.NAME_TAG, ChatColor.BLACK, 0, true, false);
-        Tag diamond = new Tag("Diamond", "♦", Material.NAME_TAG, ChatColor.AQUA, 0, true, false);
-        Tag star = new Tag("Star", "★", Material.NAME_TAG, ChatColor.YELLOW, 0, true, false);
+        Tag Diamond = new Tag("Diamond", "&7[&b&l♦&7]", Material.NAME_TAG, ChatColor.AQUA, 0, false, false);
+        Tag Star = new Tag("Star", "★", Material.NAME_TAG, ChatColor.YELLOW, 0, true, false);
         Tag BestWW = new Tag("BestWW", "BestWW", Material.NAME_TAG, ChatColor.DARK_RED, 0, true, false);
-        Tag Crown = new Tag("Crown", "♛", Material.NAME_TAG, ChatColor.GOLD, 0, true, false);
+        Tag Crown = new Tag("Crown", "&7[&6&l♛&7]", Material.NAME_TAG, ChatColor.GOLD, 0, false, false);
         Tag King = new Tag("King", "King ♚", Material.NAME_TAG, ChatColor.RED, 0, true, false);
         Tag Queen = new Tag("Queen", "Queen ♛", Material.NAME_TAG, ChatColor.LIGHT_PURPLE, 0, true, false);
-        Tag tick = new Tag("Tick", "✔", Material.NAME_TAG, ChatColor.GREEN, 0, false, false);
+        Tag Tick = new Tag("Tick", "✔", Material.NAME_TAG, ChatColor.GREEN, 0, false, false);
+        Tag Flower = new Tag("Flower", "&7[&d&l❖&7]", Material.NAME_TAG, ChatColor.LIGHT_PURPLE, 0, false, false);
+        Tag Cross = new Tag("Cross", "✖", Material.NAME_TAG, ChatColor.RED, 0, true, false);
+        Tag Blood = new Tag("Blood", "BLOOD", Material.EMERALD, ChatColor.RED, 0, true, false);
+        Tag Goat = new Tag("Goat", "GOAT", Material.EMERALD, ChatColor.AQUA, 0, true, false);
+        Tag Banana = new Tag("Banana", "Banana", Material.EMERALD, ChatColor.YELLOW, 0, true, true);
+        Tag Love = new Tag("Love", "Love", Material.EMERALD, ChatColor.RED, 0, true, false);
+        Tag Yurrrrrrr = new Tag("Yurrrrrrr", "yurrrrrrr", Material.EMERALD, ChatColor.GREEN, 0, false, false);
+        Tag Legend = new Tag("Legend", "&r&k|&r&9Legend&r&k|&r", Material.EMERALD, ChatColor.GOLD, 0, false, false);
+        Tag First = new Tag("#1", "#1", Material.EMERALD, ChatColor.RED, 0, true, false);
+        Tag Godly = new Tag("Godly", "Godly", Material.EMERALD, ChatColor.DARK_RED, 0, true, false);
+        Tag Prince = new Tag("Prince", "Prince", Material.RED_ROSE, ChatColor.LIGHT_PURPLE, 1, false, false);
+        Tag Princess = new Tag("Princess", "Princess", Material.RED_ROSE, ChatColor.LIGHT_PURPLE, 7, false, false);
 
-        tags.put(heart.getName(), heart);
-        tags.put(diamond.getName(), diamond);
-        tags.put(star.getName(), star);
+        tags.put(Heart.getName(), Heart);
+        tags.put(Diamond.getName(), Diamond);
+        tags.put(Star.getName(), Star);
         tags.put(BlackHeart.getName(), BlackHeart);
         tags.put(BestWW.getName(), BestWW);
         tags.put(Crown.getName(), Crown);
         tags.put(King.getName(), King);
         tags.put(Queen.getName(), Queen);
-        tags.put(tick.getName(), tick);
+        tags.put(Tick.getName(), Tick);
+        tags.put(Flower.getName(), Flower);
+        tags.put(Cross.getName(), Cross);
+        tags.put(Blood.getName(), Blood);
+        tags.put(Goat.getName(), Goat);
+        tags.put(Banana.getName(), Banana);
+        tags.put(Love.getName(), Love);
+        tags.put(Yurrrrrrr.getName(), Yurrrrrrr);
+        tags.put(Legend.getName(), Legend);
+        tags.put(First.getName(), First);
+        tags.put(Godly.getName(), Godly);
+        tags.put(Prince.getName(), Prince);
+        tags.put(Princess.getName(), Princess);
 
         saveTags();
     }
@@ -159,5 +183,11 @@ public class TagRepository {
      */
     public Tag getTag(Tag tag) {
         return tags.get(tag.getName());
+    }
+
+    public void createTag(String name, String displayName, Material icon, ChatColor color, int durability, boolean bold, boolean italic) {
+        Tag tag = new Tag(name, displayName, icon, color, durability, bold, italic);
+        tags.put(name, tag);
+        saveTag(tag);
     }
 }
