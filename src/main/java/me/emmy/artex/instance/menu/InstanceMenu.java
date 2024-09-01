@@ -1,13 +1,13 @@
 package me.emmy.artex.instance.menu;
 
-import me.emmy.artex.Artex;
 import me.emmy.artex.api.menu.Button;
 import me.emmy.artex.api.menu.Menu;
 import me.emmy.artex.api.menu.button.BuilderButton;
 import me.emmy.artex.instance.menu.button.ShutDownButton;
 import me.emmy.artex.locale.Locale;
-import me.emmy.artex.util.DateUtils;
-import me.emmy.artex.util.TPSUtils;
+import me.emmy.artex.util.DateUtil;
+import me.emmy.artex.util.ProjectInfo;
+import me.emmy.artex.util.TPSUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -38,7 +38,7 @@ public class InstanceMenu extends Menu {
                         "",
                         "&f● Server Name: &4" + Locale.SERVER_NAME.getString(),
                         "&f● Server Region: &4" + Locale.SERVER_REGION.getString(),
-                        "&f● Version: &4" + Artex.getInstance().getBukkitVersionExact(),
+                        "&f● Version: &4" + ProjectInfo.BUKKIT_VERSION_EXACT,
                         "&f● Spigot: &4" + Bukkit.getName(),
                         "&f● Server Port: &4" + Bukkit.getServer().getPort(),
                         "&f● Server MOTD:",
@@ -51,8 +51,8 @@ public class InstanceMenu extends Menu {
                         "",
                         "&f● Online Players: &4" + Bukkit.getOnlinePlayers().size(),
                         "&f● Max Players: &4" + Bukkit.getMaxPlayers(),
-                        "&f● Server TPS: &4" + TPSUtils.getTPSStatus(TPSUtils.getRecentTps()[0]),
-                        "&f● Uptime: &4" + DateUtils.formatTimeMillis(System.currentTimeMillis() - ManagementFactory.getRuntimeMXBean().getStartTime()),
+                        "&f● Server TPS: &4" + TPSUtil.getTPSStatus(TPSUtil.getRecentTps()[0]),
+                        "&f● Uptime: &4" + DateUtil.formatTimeMillis(System.currentTimeMillis() - ManagementFactory.getRuntimeMXBean().getStartTime()),
                         ""
                 )));
 

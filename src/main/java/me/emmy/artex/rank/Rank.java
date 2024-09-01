@@ -28,4 +28,13 @@ public class Rank {
     private boolean defaultRank;
 
     private List<String> permissions;
+
+    /**
+     * Get color and name of the rank.
+     *
+     * @return the rank color and the rank name
+     */
+    public String getRankWithColor() {
+        return color + name;
+    }
 }

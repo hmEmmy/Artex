@@ -1,10 +1,11 @@
 package me.emmy.artex.command;
 
-import me.emmy.artex.Artex;
 import me.emmy.artex.api.command.BaseCommand;
 import me.emmy.artex.api.command.CommandArgs;
 import me.emmy.artex.api.command.annotation.Command;
+import me.emmy.artex.locale.Locale;
 import me.emmy.artex.util.CC;
+import me.emmy.artex.util.ProjectInfo;
 import org.bukkit.command.CommandSender;
 
 /**
@@ -19,12 +20,12 @@ public class ArtexCommand extends BaseCommand {
         CommandSender sender = command.getSender();
 
         sender.sendMessage("");
-        sender.sendMessage(CC.translate("  &4&l" + Artex.getInstance().getDescription().getName() + " Core &8- &7Information"));
-        sender.sendMessage(CC.translate("   &4● &fAuthor: &4" + Artex.getInstance().getDescription().getAuthors().get(0)));
-        sender.sendMessage(CC.translate("   &4● &fVersion: &4" + Artex.getInstance().getDescription().getVersion()));
-        sender.sendMessage(CC.translate("   &4● &fDiscord: &4https://discord.gg/eT4B65k5E4"));
-        sender.sendMessage(CC.translate("   &4● &fDescription: &4" + Artex.getInstance().getDescription().getDescription()));
-        sender.sendMessage(CC.translate("   &4● &fGitHub: &4https://github.com/Cloudy-Development/Artex"));
+        sender.sendMessage(CC.translate("  &4&l" + ProjectInfo.NAME + " Core &8- &7Information"));
+        sender.sendMessage(CC.translate("   &4● &fAuthor: &4" + ProjectInfo.AUTHOR));
+        sender.sendMessage(CC.translate("   &4● &fVersion: &4" + ProjectInfo.VERSION));
+        sender.sendMessage(CC.translate("   &4● &fDiscord: &4" + ProjectInfo.DISCORD));
+        sender.sendMessage(CC.translate("   &4● &fDescription: &4" + ProjectInfo.DESCRIPTION));
+        sender.sendMessage(CC.translate("   &4● &fGitHub: &4" + ProjectInfo.GITHUB));
         sender.sendMessage("");
     }
 }

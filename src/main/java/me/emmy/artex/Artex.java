@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.emmy.artex.api.command.CommandFramework;
 import me.emmy.artex.api.menu.listener.MenuListener;
+import me.emmy.artex.broadcast.BroadcastTask;
 import me.emmy.artex.chat.ChatRepository;
 import me.emmy.artex.chat.listener.ChatListener;
 import me.emmy.artex.database.DatabaseService;
@@ -32,6 +33,7 @@ public class Artex extends JavaPlugin {
     private RankRepository rankRepository;
     private TagRepository tagRepository;
     private ChatRepository chatRepository;
+    private BroadcastTask broadcastTask;
 
     @Override
     public void onEnable() {
@@ -44,8 +46,17 @@ public class Artex extends JavaPlugin {
         setupMongoDatabase();
         initializeRepositories();
         registerEvents();
+        runTasks();
 
         CC.sendEnableMessage();
+    }
+
+    @Override
+    public void onDisable() {
+        this.profileRepository.saveProfiles();
+        this.databaseService.close();
+
+        CC.sendDisableMessage();
     }
 
     /**
@@ -80,12 +91,15 @@ public class Artex extends JavaPlugin {
         listeners.forEach(event -> Bukkit.getPluginManager().registerEvents(event, this));
     }
 
-    @Override
-    public void onDisable() {
-        this.profileRepository.saveProfiles();
-        this.databaseService.close();
-
-        CC.sendDisableMessage();
+    /**
+     * Run all tasks.
+     */
+    private void runTasks() {
+        this.broadcastTask = new BroadcastTask();
+        if (getConfig().getBoolean("broadcast.enabled")) {
+            int interval = getConfig().getInt("broadcast.send-every");
+            this.broadcastTask.runTaskTimerAsynchronously(this, 20L * interval, 20L * interval);
+        }
     }
 
     /**

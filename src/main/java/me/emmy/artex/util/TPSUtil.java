@@ -14,7 +14,7 @@ import java.text.DecimalFormat;
  * @credit Activated
  */
 @UtilityClass
-public class TPSUtils {
+public class TPSUtil {
     private Object minecraftServer;
     private Field recentTps;
     private final DecimalFormat SECONDS_FORMAT = new DecimalFormat("#0.0");

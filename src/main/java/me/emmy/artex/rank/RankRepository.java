@@ -112,7 +112,7 @@ public class RankRepository {
     /**
      * Create the default rank
      */
-    private void createDefaultRank() {
+    public void createDefaultRank() {
         for (Rank rank : ranks.values()) {
             if (rank.isDefaultRank()) {
                 Logger.debug(rank.getName() + " has defaultRank set as true. Not creating the default rank.");

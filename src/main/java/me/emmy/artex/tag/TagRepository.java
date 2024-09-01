@@ -90,7 +90,7 @@ public class TagRepository {
                 .append("displayName", tag.getDisplayName())
                 .append("icon", tag.getIcon().name())
                 .append("color", tag.getColor().name())
-                .append("data", tag.getData());
+                .append("durability", tag.getDurability());
     }
 
     /**
@@ -106,7 +106,7 @@ public class TagRepository {
                 document.getString("displayName"),
                 Material.valueOf(document.getString("icon")),
                 ChatColor.valueOf(document.getString("color")),
-                document.getInteger("data")
+                document.getInteger("durability")
         );
     }
 

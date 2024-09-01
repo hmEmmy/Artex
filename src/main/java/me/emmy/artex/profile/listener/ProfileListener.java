@@ -3,9 +3,9 @@ package me.emmy.artex.profile.listener;
 import me.emmy.artex.Artex;
 import me.emmy.artex.profile.Profile;
 import me.emmy.artex.profile.ProfileRepository;
-import me.emmy.artex.util.CC;
 import me.emmy.artex.util.Logger;
-import org.bukkit.Bukkit;
+import me.emmy.artex.util.PlayerUtil;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -47,9 +47,17 @@ public class ProfileListener implements Listener {
     @EventHandler
     private void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
+        FileConfiguration config = Artex.getInstance().getConfig();
         Profile profile = Artex.getInstance().getProfileRepository().getProfile(player.getUniqueId());
 
         event.setJoinMessage(null);
+
+        Logger.debug("Resetting player (on join) for " + player.getName() + ".");
+        if (config.getBoolean("on-join.reset-player", false)) {
+            PlayerUtil.onJoinReset(player);
+        }
+
+        PlayerUtil.sendWelcomeMessage(player, profile, config);
     }
 
     @EventHandler

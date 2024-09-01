@@ -3,4 +3,4 @@ version: '${project.version}'
 main: me.emmy.artex.Artex
 author: Emmy
 description: Server Management Plugin
-website: https://discord.gg/U6FTRKycsf
+website: cloudy.dev

@@ -75,7 +75,7 @@ public class GrantMenu extends PaginatedMenu {
             List<String> lore = Arrays.asList(
                     "",
                     rank.getColor() + "Rank info",
-                    " &f● Name: &4" + rank.getColor() + rank.getName(),
+                    " &f● Name: &4" + rank.getRankWithColor(),
                     " &f● Weight: &4" + rank.getColor() + rank.getWeight(),
                     " &f● Prefix: &4" + rank.getPrefix(),
                     " &f● Suffix: &4" + rank.getSuffix(),
@@ -86,7 +86,7 @@ public class GrantMenu extends PaginatedMenu {
                     rank.isDefaultRank() ? "&cYou cannot grant the default rank." : "&aClick to grant the rank."
             );
             return new ItemBuilder(Material.PAPER)
-                    .name(rank.getColor() + rank.getName())
+                    .name(rank.getRankWithColor())
                     .lore(lore)
                     .build();
         }

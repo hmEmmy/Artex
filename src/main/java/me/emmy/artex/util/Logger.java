@@ -11,7 +11,11 @@ import org.bukkit.Bukkit;
  */
 @UtilityClass
 public class Logger {
-
+    /**
+     * Log a message to the console.
+     *
+     * @param message The message to log.
+     */
     public void debug(String message) {
         if (Artex.getInstance().getConfig().getBoolean("plugin.debugging")) {
             Bukkit.getConsoleSender().sendMessage(CC.translate("&8&o[&7&oDEBUG&8&o] &f&o" + message));

@@ -2,12 +2,15 @@ package me.emmy.artex.util;
 
 import lombok.experimental.UtilityClass;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 @UtilityClass
-public class DateUtils {
+public class DateUtil {
 
+    /**
+     * Format the time in milliseconds.
+     *
+     * @param millis The time in milliseconds.
+     * @return The formatted time.
+     */
     public String formatTimeMillis(long millis) {
         long seconds = millis / 1000L;
 

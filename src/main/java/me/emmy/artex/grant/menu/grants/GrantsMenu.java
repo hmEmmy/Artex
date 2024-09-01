@@ -112,7 +112,7 @@ public class GrantsMenu extends PaginatedMenu {
             );
 
             return new ItemBuilder(Material.PAPER)
-                    .name(grant.getRank().getColor() + grant.getRank().getName())
+                    .name(grant.getRank().getRankWithColor())
                     .lore(displayInactiveGrants ? inActiveLore : activeLore)
                     .build();
         }

@@ -9,3 +9,61 @@ mongo:
 server:
   name: Lobby
   region: Europe
+
+socials:
+  store: "https://store.artex.com"
+  website: "https://artex.com"
+  discord: "https://discord.gg/eT4B65k5E4"
+  youtube: "https://youtube.com/Artex"
+  twitter: "https://twitter.com/Artex"
+  tiktok: "https://tiktok.com/Artex"
+  github: "https://github.com/Cloudy-Development/Artex"
+  teamspeak: "ts.artex.com"
+  facebook: "facebook.com/Artex"
+  instagram: "instagram.com/Artex"
+
+on-join:
+  reset-player: true #Resets player's inventory, health, hunger, and effects on join
+  welcome-message:
+    enabled: true
+    # Available placeholders:
+    # {player}, {rank}, {color}, {online}, {max}, {store}, {discord}, {website}, {teamspeak},
+    # {twitter}, {instagram}, {youtube}, {tiktok}, {facebook}, {github}, {server}, {region}.
+    context:
+      - " "
+      - "&fWelcome to &cArtex Network, &f{color}{player}&c!"
+      - " "
+      - " &7► &fWebsite: &c{website}"
+      - " &7► &fDiscord: &c{discord}"
+      - " "
+      - " &fYour current Rank is &c{rank}&f, upgrade it now at &c{store}&f."
+      - " "
+
+broadcast:
+  enabled: true
+  send-every: 60
+  list:
+    message-1:
+      - " "
+      - "&4&lAnnouncement:"
+      - " &fJoin our discord to get informed about news & updates!"
+      - "  &7► &c{discord}"
+      - " "
+    message-2:
+      - " "
+      - "&4&lAnnouncement:"
+      - " &fWatch us on YouTube to have some fun!"
+      - "  &7► &c{youtube}"
+      - " "
+    message-3:
+      - " "
+      - "&4&lAnnouncement:"
+      - " &fDon't forget to check our store for exclusive offers!"
+      - "  &7► &c{store}"
+      - " "
+    message-4:
+      - " "
+      - "&4&lAnnouncement:"
+      - " &fYour current Rank is &c{rank}&f, upgrade it now at:"
+      - "  &7► &c{store}"
+      - " "
