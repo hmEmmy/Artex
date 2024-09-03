@@ -22,12 +22,12 @@ public class TagAdminCommand extends BaseCommand {
         sender.sendMessage("");
         sender.sendMessage(CC.translate(" &f&l● &4/tagadmin create &f(name) - &7Create a tag"));
         sender.sendMessage(CC.translate(" &f&l● &4/tagadmin delete &f(name) - &7Delete a tag"));
-        sender.sendMessage(CC.translate(" &f&l● &4/tagadmin list - &7List all tags"));
         sender.sendMessage(CC.translate(" &f&l● &4/tagadmin info &f(name) - &7View tag information"));
+        sender.sendMessage(CC.translate(" &f&l● &4/tagadmin list - &7List all tags"));
+        sender.sendMessage(CC.translate(" &f&l● &4/tagadmin setbold &f(name) (true/false) - &7Set the bold of a tag"));
+        sender.sendMessage(CC.translate(" &f&l● &4/tagadmin setcolor &f(name) (color) - &7Set the color of a tag"));
         sender.sendMessage(CC.translate(" &f&l● &4/tagadmin setdisplayname &f(name) (displayname) - &7Set the display name of a tag"));
         sender.sendMessage(CC.translate(" &f&l● &4/tagadmin seticon &f(name) - &7Set the icon of a tag"));
-        sender.sendMessage(CC.translate(" &f&l● &4/tagadmin setcolor &f(name) (color) - &7Set the color of a tag"));
-        sender.sendMessage(CC.translate(" &f&l● &4/tagadmin setbold &f(name) (true/false) - &7Set the bold of a tag"));
         sender.sendMessage(CC.translate(" &f&l● &4/tagadmin setitalic &f(name) (true/false) - &7Set the italic of a tag"));
         sender.sendMessage("");
     }

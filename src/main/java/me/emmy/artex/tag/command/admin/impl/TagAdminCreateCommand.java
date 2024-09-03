@@ -18,7 +18,7 @@ import java.util.Arrays;
  * @date 01/09/2024 - 20:31
  */
 public class TagAdminCreateCommand extends BaseCommand {
-    @Command(name = "tagadmin.create", permission = "artex.tag.admin", inGameOnly = false)
+    @Command(name = "tagadmin.create", permission = "artex.tag.admin.create", inGameOnly = false)
     @Override
     public void onCommand(CommandArgs command) {
         CommandSender sender = command.getSender();
@@ -31,11 +31,6 @@ public class TagAdminCreateCommand extends BaseCommand {
             sender.sendMessage(CC.translate(
                     "&7Note: &cPlease avoid using color codes in the display name. \n&cUse &e'/tagadmin setcolor' &cfor color settings. \n&cBold and italic may not work \n&cwith additional formatting codes like &nunderline&r&7."
             ));
-            sender.sendMessage("");
-            sender.sendMessage(CC.translate("&cExample:"));
-            sender.sendMessage(CC.translate(" &c1. &f'/tagadmin create &6Artex &7Artex #1' &f- DisplayName supports spaces."));
-            sender.sendMessage(CC.translate(" &c2. &f'/tagadmin setcolor &4DARK_RED' &f- Color codes won't work. Use the color name."));
-            sender.sendMessage(CC.translate(" &c3. &f'/tagadmin setbold &atrue' &f- Set the tag to bold."));
             sender.sendMessage("");
             return;
 
@@ -50,5 +45,6 @@ public class TagAdminCreateCommand extends BaseCommand {
         }
 
         Artex.getInstance().getTagRepository().createTag(name, displayName, Material.NAME_TAG, ChatColor.WHITE, 0, false, false);
+        sender.sendMessage(CC.translate("&aSuccessfully created a new tag called &f" + name + " &awith the display name &f" + displayName + "&r&a."));
     }
 }

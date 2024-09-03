@@ -53,11 +53,14 @@ public class RankRepository {
      * Save the ranks to the database
      */
     public void saveRanks() {
+        Logger.debug("Saving ranks to the database.");
         var rankCollection = Artex.getInstance().getDatabaseService().getDatabase().getCollection("ranks");
 
+        Logger.debug("Deleting all ranks from the database.");
         rankCollection.deleteMany(new Document());
 
         for (Rank rank : ranks.values()) {
+            Logger.debug("Saving rank " + rank.getName() + " to the database.");
             Document rankDocument = rankToDocument(rank);
             rankCollection.insertOne(rankDocument);
         }
@@ -79,6 +82,7 @@ public class RankRepository {
      * Convert a Rank object to a Document
      */
     private Document rankToDocument(Rank rank) {
+        Logger.debug("Converting rank " + rank.getName() + " to document.");
         Document rankDocument = new Document();
         rankDocument.put("name", rank.getName());
         rankDocument.put("prefix", rank.getPrefix());
@@ -96,6 +100,7 @@ public class RankRepository {
      * Convert a Document to a Rank object
      */
     private Rank documentToRank(Document document) {
+        Logger.debug("Converting document to rank.");
         Rank rank = new Rank();
         rank.setName(document.getString("name"));
         rank.setPrefix(document.getString("prefix"));

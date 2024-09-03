@@ -1,9 +1,8 @@
-package me.emmy.artex.command;
+package me.emmy.artex.command.impl;
 
 import me.emmy.artex.api.command.BaseCommand;
 import me.emmy.artex.api.command.CommandArgs;
 import me.emmy.artex.api.command.annotation.Command;
-import me.emmy.artex.locale.Locale;
 import me.emmy.artex.util.CC;
 import me.emmy.artex.util.ProjectInfo;
 import org.bukkit.command.CommandSender;

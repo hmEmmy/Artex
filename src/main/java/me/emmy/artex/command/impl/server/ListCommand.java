@@ -1,4 +1,4 @@
-package me.emmy.artex.command.server;
+package me.emmy.artex.command.impl.server;
 
 import me.emmy.artex.Artex;
 import me.emmy.artex.api.command.BaseCommand;

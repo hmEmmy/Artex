@@ -190,4 +190,14 @@ public class TagRepository {
         tags.put(name, tag);
         saveTag(tag);
     }
+
+    /**
+     * Delete a tag
+     *
+     * @param tag the tag to delete
+     */
+    public void deleteTag(Tag tag) {
+        tags.remove(tag.getName());
+        saveTags();
+    }
 }
