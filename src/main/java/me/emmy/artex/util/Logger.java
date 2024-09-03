@@ -21,4 +21,13 @@ public class Logger {
             Bukkit.getConsoleSender().sendMessage(CC.translate("&8&o[&7&oDEBUG&8&o] &f&o" + message));
         }
     }
+
+    /**
+     * Log a message to the console.
+     *
+     * @param message The message to log.
+     */
+    public void logError(String message) {
+        Bukkit.getConsoleSender().sendMessage(CC.translate("&4" + ProjectInfo.NAME + " &8- &cError: &7" + message));
+    }
 }

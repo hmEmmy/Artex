@@ -39,7 +39,7 @@ public class InstanceMenu extends Menu {
                         "&f● Server Name: &4" + Locale.SERVER_NAME.getString(),
                         "&f● Server Region: &4" + Locale.SERVER_REGION.getString(),
                         "&f● Version: &4" + ProjectInfo.BUKKIT_VERSION_EXACT,
-                        "&f● Spigot: &4" + Bukkit.getName(),
+                        "&f● Spigot: &4" + ProjectInfo.SPIGOT,
                         "&f● Server Port: &4" + Bukkit.getServer().getPort(),
                         "&f● Server MOTD:",
                         "&f&l| &r" + String.format(Bukkit.getServer().getMotd()),

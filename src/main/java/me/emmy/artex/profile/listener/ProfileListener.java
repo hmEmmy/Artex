@@ -48,6 +48,10 @@ public class ProfileListener implements Listener {
         FileConfiguration config = Artex.getInstance().getConfig();
         Profile profile = Artex.getInstance().getProfileRepository().getProfile(player.getUniqueId());
 
+        if (config.getBoolean("on-join.tp-to-spawn")) {
+            Artex.getInstance().getSpawnHandler().teleportToSpawn(player);
+        }
+
         event.setJoinMessage(null);
 
         Logger.debug("Resetting player (on join) for " + player.getName() + ".");

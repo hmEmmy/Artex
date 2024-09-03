@@ -1,4 +1,4 @@
-package me.emmy.artex.command.impl.gamemode;
+package me.emmy.artex.command.impl.admin.gamemode;
 
 import me.emmy.artex.api.command.BaseCommand;
 import me.emmy.artex.util.CC;

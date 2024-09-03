@@ -22,7 +22,7 @@ public class RankCreateCommand extends BaseCommand {
         boolean doPrefix;
 
         if (args.length < 2 ) {
-            sender.sendMessage(CC.translate("&cUsage: /rank create (name) (doPrefix)"));
+            sender.sendMessage(CC.translate("&6Usage: &e/rank create &b(name) &b(doPrefix)"));
             sender.sendMessage(CC.translate("&7&oIf 'doPrefix' is true, the rank will automatically have a prefix."));
             return;
         }

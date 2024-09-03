@@ -21,7 +21,7 @@ public class RankSetItalicCommand extends BaseCommand {
         String[] args = command.getArgs();
 
         if (args.length < 2) {
-            sender.sendMessage(CC.translate("&cUsage: /rank setitalic (name) (italic)"));
+            sender.sendMessage(CC.translate("&6Usage: &e/rank setitalic &b(name) &b(true/false)"));
             return;
         }
 

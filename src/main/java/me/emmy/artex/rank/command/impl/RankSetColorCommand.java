@@ -22,7 +22,7 @@ public class RankSetColorCommand extends BaseCommand {
         String[] args = command.getArgs();
 
         if (args.length < 2) {
-            sender.sendMessage(CC.translate("&cUsage: /rank setcolor (name) (color)"));
+            sender.sendMessage(CC.translate("&6Usage: &e/rank setcolor &b(name) &b(color)"));
             return;
         }
 

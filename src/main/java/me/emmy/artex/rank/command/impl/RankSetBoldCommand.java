@@ -21,7 +21,7 @@ public class RankSetBoldCommand extends BaseCommand {
         String[] args = command.getArgs();
 
         if (args.length < 2) {
-            sender.sendMessage(CC.translate("&cUsage: /rank setbold (name) (bold)"));
+            sender.sendMessage(CC.translate("&6Usage: &e/rank setbold &b(name) &b(true/false)"));
             return;
         }
 

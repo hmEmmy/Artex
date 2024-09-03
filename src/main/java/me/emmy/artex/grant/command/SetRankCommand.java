@@ -28,7 +28,8 @@ public class SetRankCommand extends BaseCommand {
         String[] args = command.getArgs();
 
         if (args.length < 4) {
-            sender.sendMessage(CC.translate("&cUsage: /setrank (player) (rank) (duration) (reason)"));
+            sender.sendMessage(CC.translate("&6Usage: &e/setrank &b(name) &b(rank) &b(duration/perm) &b(reason)"));
+            sender.sendMessage(CC.translate("&6Example: &e/setrank &ahmEmmy &4Owner &cperm &7Reason can have spaces."));
             return;
         }
 

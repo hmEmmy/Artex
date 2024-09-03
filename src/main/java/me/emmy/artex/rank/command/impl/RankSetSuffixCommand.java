@@ -23,7 +23,7 @@ public class RankSetSuffixCommand extends BaseCommand {
         String[] args = command.getArgs();
 
         if (args.length < 2) {
-            sender.sendMessage(CC.translate("&cUsage: /rank setsuffix (name) (suffix)"));
+            sender.sendMessage(CC.translate("&6Usage: &e/rank setsuffix &b(name) &b(suffix)"));
             return;
         }
 

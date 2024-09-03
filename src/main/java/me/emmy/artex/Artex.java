@@ -8,9 +8,11 @@ import me.emmy.artex.broadcast.BroadcastTask;
 import me.emmy.artex.chat.ChatRepository;
 import me.emmy.artex.chat.listener.ChatListener;
 import me.emmy.artex.database.DatabaseService;
+import me.emmy.artex.godmode.GodModeRepository;
 import me.emmy.artex.profile.ProfileRepository;
 import me.emmy.artex.profile.listener.ProfileListener;
 import me.emmy.artex.rank.RankRepository;
+import me.emmy.artex.spawn.SpawnHandler;
 import me.emmy.artex.tag.TagRepository;
 import me.emmy.artex.util.CC;
 import me.emmy.artex.command.CommandUtility;
@@ -35,6 +37,8 @@ public class Artex extends JavaPlugin {
     private TagRepository tagRepository;
     private ChatRepository chatRepository;
     private BroadcastTask broadcastTask;
+    private GodModeRepository godModeRepository;
+    private SpawnHandler spawnHandler;
 
     @Override
     public void onEnable() {
@@ -44,6 +48,7 @@ public class Artex extends JavaPlugin {
         saveDefaultConfig();
         setupMongoDatabase();
         initializeRepositories();
+        registerHandlers();
         registerEvents();
         runTasks();
 
@@ -84,6 +89,15 @@ public class Artex extends JavaPlugin {
         this.tagRepository = new TagRepository();
 
         this.chatRepository = new ChatRepository(false);
+
+        this.godModeRepository = new GodModeRepository();
+    }
+
+    /**
+     * Register all handlers.
+     */
+    private void registerHandlers() {
+        this.spawnHandler = new SpawnHandler();
     }
 
     /**

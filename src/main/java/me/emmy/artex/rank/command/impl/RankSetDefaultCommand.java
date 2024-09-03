@@ -24,7 +24,7 @@ public class RankSetDefaultCommand extends BaseCommand {
         String[] args = command.getArgs();
 
         if (args.length < 1) {
-            sender.sendMessage(CC.translate("&cUsage: /rank setdefault (name)"));
+            sender.sendMessage(CC.translate("&6Usage: &e/rank setdefault &b(name)"));
             return;
         }
 

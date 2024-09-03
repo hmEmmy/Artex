@@ -1,4 +1,4 @@
-package me.emmy.artex.command.impl.gamemode;
+package me.emmy.artex.command.impl.admin.gamemode;
 
 import me.emmy.artex.api.command.BaseCommand;
 import me.emmy.artex.api.command.CommandArgs;
@@ -11,18 +11,18 @@ import org.bukkit.entity.Player;
 /**
  * @author Emmy
  * @project Artex
- * @date 30/08/2024 - 20:59
+ * @date 30/08/2024 - 20:57
  */
-public class SpectatorCommand extends BaseCommand {
-    @Command(name = "gmsp", aliases = {"gm.sp", "gamemode.sp", "gm.3", "gm3", "gamemode.3", "gamemode.spectator"}, permission = "artex.command.gmsp")
+public class SurvivalCommand extends BaseCommand {
+    @Command(name = "gms", aliases = {"gm.s", "gamemode.s", "gm.0", "gm0", "gamemode.0", "gamemode.survival"}, permission = "artex.command.gms")
     @Override
     public void onCommand(CommandArgs command) {
         Player player = command.getPlayer();
         String[] args = command.getArgs();
 
         if (args.length < 1) {
-            player.setGameMode(GameMode.SPECTATOR);
-            player.sendMessage(CC.translate("&eYour gamemode has been updated to Spectator."));
+            player.setGameMode(GameMode.SURVIVAL);
+            player.sendMessage(CC.translate("&eYour gamemode has been updated to Survival."));
             return;
         }
 
@@ -32,8 +32,8 @@ public class SpectatorCommand extends BaseCommand {
             return;
         }
 
-        targetPlayer.setGameMode(GameMode.SPECTATOR);
-        player.sendMessage(CC.translate("&eYou have updated &d" + targetPlayer.getName() + "'s &egamemode to Spectator."));
-        targetPlayer.sendMessage(CC.translate("&eYour gamemode has been updated to Spectator."));
+        targetPlayer.setGameMode(GameMode.SURVIVAL);
+        player.sendMessage(CC.translate("&eYou have updated &d" + targetPlayer.getName() + "'s &egamemode to Survival."));
+        targetPlayer.sendMessage(CC.translate("&eYour gamemode has been updated to Survival."));
     }
 }

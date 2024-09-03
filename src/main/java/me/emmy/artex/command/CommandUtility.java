@@ -4,11 +4,19 @@ import lombok.experimental.UtilityClass;
 import me.emmy.artex.chat.command.MuteChatCommand;
 import me.emmy.artex.chat.command.UnMuteChatCommand;
 import me.emmy.artex.command.impl.ArtexCommand;
-import me.emmy.artex.command.impl.gamemode.AdventureCommand;
-import me.emmy.artex.command.impl.gamemode.CreativeCommand;
-import me.emmy.artex.command.impl.gamemode.SpectatorCommand;
-import me.emmy.artex.command.impl.gamemode.SurvivalCommand;
-import me.emmy.artex.command.impl.server.ListCommand;
+import me.emmy.artex.command.impl.admin.ReloadCommand;
+import me.emmy.artex.command.impl.admin.essential.CraftCommand;
+import me.emmy.artex.command.impl.admin.essential.FlyCommand;
+import me.emmy.artex.command.impl.admin.essential.HealCommand;
+import me.emmy.artex.command.impl.admin.gamemode.AdventureCommand;
+import me.emmy.artex.command.impl.admin.gamemode.CreativeCommand;
+import me.emmy.artex.command.impl.admin.gamemode.SpectatorCommand;
+import me.emmy.artex.command.impl.admin.gamemode.SurvivalCommand;
+import me.emmy.artex.command.impl.admin.troll.FakeOpCommand;
+import me.emmy.artex.command.impl.admin.troll.LaunchCommand;
+import me.emmy.artex.command.impl.admin.troll.TrollCommand;
+import me.emmy.artex.command.impl.user.ListCommand;
+import me.emmy.artex.godmode.command.GodModeCommand;
 import me.emmy.artex.grant.command.GrantCommand;
 import me.emmy.artex.grant.command.GrantsCommand;
 import me.emmy.artex.grant.command.RemoveRankCommand;
@@ -17,6 +25,8 @@ import me.emmy.artex.instance.command.InstanceCommand;
 import me.emmy.artex.rank.command.RankCommand;
 import me.emmy.artex.rank.command.impl.*;
 import me.emmy.artex.rank.utility.command.CreateDefaultRanksCommand;
+import me.emmy.artex.spawn.command.SetJoinLocationCommand;
+import me.emmy.artex.spawn.command.TeleportToSpawnCommand;
 import me.emmy.artex.tag.command.TagCommand;
 import me.emmy.artex.tag.command.admin.impl.*;
 import me.emmy.artex.util.Logger;
@@ -60,6 +70,21 @@ public class CommandUtility {
         new ArtexCommand();
 
         new InstanceCommand();
+
+        new FakeOpCommand();
+        new LaunchCommand();
+        new TrollCommand();
+
+        new CraftCommand();
+        new HealCommand();
+        new FlyCommand();
+
+        new GodModeCommand();
+
+        new SetJoinLocationCommand();
+        new TeleportToSpawnCommand();
+
+        new ReloadCommand();
     }
 
     public void registerGrantCommands() {

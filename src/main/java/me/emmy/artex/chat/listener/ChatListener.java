@@ -2,10 +2,13 @@ package me.emmy.artex.chat.listener;
 
 import lombok.Getter;
 import me.emmy.artex.Artex;
+import me.emmy.artex.chat.utility.ChatResponseUtility;
 import me.emmy.artex.profile.Profile;
 import me.emmy.artex.util.CC;
 import me.emmy.artex.util.Logger;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -23,10 +26,12 @@ public class ChatListener implements Listener {
     private void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         Profile profile = Artex.getInstance().getProfileRepository().getProfile(player.getUniqueId());
+        FileConfiguration config = Artex.getInstance().getConfig();
 
         String message = event.getMessage();
         String rankPrefix = profile.getHighestRankBasedOnGrant(player.getUniqueId()).getPrefix();
         String rankSuffix = profile.getHighestRankBasedOnGrant(player.getUniqueId()).getSuffix();
+
         ChatColor rankColor = profile.getHighestRankBasedOnGrant(player.getUniqueId()).getColor();
 
         if (profile.getHighestRankBasedOnGrant(player.getUniqueId()) == null) {
@@ -63,6 +68,12 @@ public class ChatListener implements Listener {
             event.setCancelled(true);
             player.sendMessage(CC.translate("&cChat is currently muted."));
         }
-    }
 
+        if (!config.getBoolean("chat-replies.enabled")) {
+            Logger.debug("Chat replies are disabled. Therefore, not sending any responses to " + player.getName() + ".");
+            return;
+        }
+
+        Bukkit.getScheduler().runTaskLater(Artex.getInstance(), () -> ChatResponseUtility.sendResponse(message, config, player, profile), 1L);
+    }
 }

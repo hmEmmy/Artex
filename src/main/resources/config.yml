@@ -22,7 +22,46 @@ socials:
   facebook: "facebook.com/Artex"
   instagram: "instagram.com/Artex"
 
+grant:
+  default-reason: "No reason specified."
+
+chat-replies:
+  enabled: true
+  replies:
+    reply-1:
+      trigger:
+        - "hi"
+        - "hello"
+        - "hey"
+      response: "&7&oServer whispers to you: &f&oWhat's up? If you wanna communicate with me, I have to shock you... Because you apparently can't."
+    reply-2:
+      trigger:
+        - "best server"
+        - "i love the kb"
+        - "great server"
+        - "awesome kb"
+        - "better than hypixel"
+      response: "&7&oServer whispers to you: &f&oIf you wanna make me happy, please buy me a sandwich! &c&o{store} &4&l❤"
+    reply-3:
+      trigger:
+        - "good server"
+        - "w server"
+        - "nice kb"
+        - "better than mmc"
+      response: "&7&oServer whispers to you: &f&oWe're glad you're enjoying the server! Consider checking out our ranks at: &c&o{store}"
+    reply-4:
+      trigger:
+        - "bad server"
+        - "poor server"
+        - "awful server"
+        - "shitty kb"
+      response: "&7&oServer whispers to you: &f&oSorry to hear that you're not satisfied. We're working on improvements."
+
+spawn:
+  join-location: ""
+
 on-join:
+  tp-to-spawn: true #Teleports player to spawn on join
   reset-player: true #Resets player's inventory, health, hunger, and effects on join
   welcome-message:
     enabled: true

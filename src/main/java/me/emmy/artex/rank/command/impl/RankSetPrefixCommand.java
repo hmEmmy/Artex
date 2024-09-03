@@ -23,7 +23,7 @@ public class RankSetPrefixCommand extends BaseCommand {
         String[] args = command.getArgs();
 
         if (args.length < 2) {
-            sender.sendMessage(CC.translate("&cUsage: /rank setprefix (name) (prefix)"));
+            sender.sendMessage(CC.translate("&6Usage: &e/rank setprefix &b(name) &b(prefix)"));
             return;
         }
 

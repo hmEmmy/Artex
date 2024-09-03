@@ -1,5 +1,6 @@
 package me.emmy.artex.grant.command;
 
+import me.emmy.artex.Artex;
 import me.emmy.artex.api.command.BaseCommand;
 import me.emmy.artex.api.command.CommandArgs;
 import me.emmy.artex.api.command.annotation.Command;
@@ -24,7 +25,7 @@ public class GrantCommand extends BaseCommand {
         String[] args = command.getArgs();
 
         if (args.length < 1) {
-            player.sendMessage(CC.translate("&cUsage: /grant (player) [reason]"));
+            player.sendMessage(CC.translate("&6Usage: &e/grant &b(player) &7[reason]"));
             return;
         }
 
@@ -37,7 +38,7 @@ public class GrantCommand extends BaseCommand {
             return;
         }
 
-        reason = "No reason specified.";
+        reason = Artex.getInstance().getConfig().getString("grant.default-reason");
         new GrantMenu(target, reason).openMenu(player);
     }
 }

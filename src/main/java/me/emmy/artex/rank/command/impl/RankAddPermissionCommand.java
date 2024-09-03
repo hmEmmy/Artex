@@ -21,7 +21,7 @@ public class RankAddPermissionCommand extends BaseCommand {
         String[] args = command.getArgs();
 
         if (args.length < 2) {
-            sender.sendMessage(CC.translate("&cUsage: /rank addpermission (name) (permission)"));
+            sender.sendMessage(CC.translate("&6Usage: &e/rank addpermission &b(name) &b(permission)"));
             return;
         }
 

@@ -11,6 +11,7 @@ import me.emmy.artex.Artex;
 import me.emmy.artex.util.CC;
 import org.bson.Document;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.Objects;

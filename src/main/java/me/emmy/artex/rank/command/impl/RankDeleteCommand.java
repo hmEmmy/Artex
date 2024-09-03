@@ -21,7 +21,7 @@ public class RankDeleteCommand extends BaseCommand {
         String[] args = command.getArgs();
 
         if (args.length < 1) {
-            sender.sendMessage(CC.translate("&cUsage: /rank delete (name)"));
+            sender.sendMessage(CC.translate("&6Usage: &e/rank delete &b(name)"));
             return;
         }
 

@@ -25,7 +25,7 @@ public class RemoveRankCommand extends BaseCommand {
         String[] args = command.getArgs();
 
         if (args.length < 2) {
-            sender.sendMessage(CC.translate("&cUsage: /removerank (player) (rank)"));
+            sender.sendMessage(CC.translate("&6Usage: &e/removerank &b(player) &b(rank)"));
             return;
         }
 
