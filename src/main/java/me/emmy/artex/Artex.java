@@ -13,6 +13,7 @@ import me.emmy.artex.profile.listener.ProfileListener;
 import me.emmy.artex.rank.RankRepository;
 import me.emmy.artex.tag.TagRepository;
 import me.emmy.artex.util.CC;
+import me.emmy.artex.command.CommandUtility;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -39,9 +40,7 @@ public class Artex extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        this.commandFramework = new CommandFramework();
-        this.commandFramework.registerCommandsInPackage("me.emmy.artex");
-
+        registerCommands();
         saveDefaultConfig();
         setupMongoDatabase();
         initializeRepositories();
@@ -60,6 +59,14 @@ public class Artex extends JavaPlugin {
     }
 
     /**
+     * Register all commands.
+     */
+    private void registerCommands() {
+        this.commandFramework = new CommandFramework();
+        CommandUtility.registerCommands();
+    }
+
+    /**
      * Connect to the mongo database.
      */
     private void setupMongoDatabase() {
@@ -67,7 +74,7 @@ public class Artex extends JavaPlugin {
     }
 
     /**
-     * Initialize all handlers.
+     * Initialize all repositories.
      */
     private void initializeRepositories() {
         this.profileRepository = new ProfileRepository();
