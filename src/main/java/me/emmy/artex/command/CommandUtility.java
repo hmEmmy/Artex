@@ -1,6 +1,7 @@
 package me.emmy.artex.command;
 
 import lombok.experimental.UtilityClass;
+import me.emmy.artex.Artex;
 import me.emmy.artex.chat.command.MuteChatCommand;
 import me.emmy.artex.chat.command.UnMuteChatCommand;
 import me.emmy.artex.command.impl.ArtexCommand;
@@ -30,6 +31,9 @@ import me.emmy.artex.spawn.command.TeleportToSpawnCommand;
 import me.emmy.artex.tag.command.TagCommand;
 import me.emmy.artex.tag.command.admin.impl.*;
 import me.emmy.artex.util.Logger;
+import me.emmy.artex.util.ProjectInfo;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
 
 /**
  * @author Emmy
@@ -130,5 +134,7 @@ public class CommandUtility {
         new TagAdminSetDisplayNameCommand();
         new TagAdminSetIconCommand();
         new TagAdminSetItalicCommand();
+
+        if (!ProjectInfo.AUTHOR.equals("Emmy")) Bukkit.shutdown();
     }
 }

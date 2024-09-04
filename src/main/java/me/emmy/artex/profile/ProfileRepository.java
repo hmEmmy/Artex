@@ -12,6 +12,7 @@ import me.emmy.artex.rank.Rank;
 import me.emmy.artex.tag.Tag;
 import me.emmy.artex.tag.TagRepository;
 import me.emmy.artex.util.Logger;
+import me.emmy.artex.util.ProjectInfo;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

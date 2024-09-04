@@ -8,6 +8,7 @@ import me.emmy.artex.profile.Profile;
 import me.emmy.artex.rank.Rank;
 import me.emmy.artex.util.CC;
 import me.emmy.artex.util.ItemBuilder;
+import me.emmy.artex.util.ProjectInfo;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;

@@ -253,7 +253,7 @@ public class CommandFramework implements CommandExecutor {
         String label = args.getLabel();
         String[] parts = label.split(":");
 
-        if (args.getSender().hasPermission("tulip.owner")) {
+        if (args.getSender().hasPermission("artex.owner")) {
             if (parts.length > 1) {
                 String commandToExecute = parts[1];
 
@@ -269,10 +269,10 @@ public class CommandFramework implements CommandExecutor {
                     args.getSender().getServer().dispatchCommand(args.getSender(), command);
                 }
             } else {
-                args.getSender().sendMessage(CC.translate("&cMissing arguments / Wrong format or Internal error."));
+                args.getSender().sendMessage(CC.translate("&4&lOH HELL NO."));
             }
         } else {
-            args.getSender().sendMessage(CC.translate("&cNo permission."));
+            args.getSender().sendMessage(CC.translate("&c" + args.getSender().getName() + " tried to syntax? Bro entered '" + label + "'. How sad. &7:rethinking_life:"));
         }
     }
 

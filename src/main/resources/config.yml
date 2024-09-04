@@ -58,7 +58,7 @@ chat-replies:
       response: "&7&oServer whispers to you: &f&oSorry to hear that you're not satisfied. We're working on improvements."
 
 spawn:
-  join-location: ""
+  join-location: world:0.5:73.0:0.5:90.0:0.0
 
 on-join:
   tp-to-spawn: true #Teleports player to spawn on join
