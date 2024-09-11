@@ -24,7 +24,6 @@ public class RankListCommand extends BaseCommand {
     public void onCommand(CommandArgs command) {
         CommandSender sender = command.getSender();
 
-
         sender.sendMessage("");
         sender.sendMessage(CC.translate("&4&lArtex &8- &7Ranks"));
         sender.sendMessage("");

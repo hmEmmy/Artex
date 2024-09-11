@@ -49,7 +49,7 @@ public class ListCommand extends BaseCommand {
         StringBuilder playerList = new StringBuilder();
         for (Player player : Bukkit.getOnlinePlayers()) {
             Profile profile = Artex.getInstance().getProfileRepository().getProfile(player.getUniqueId());
-            Rank playerRank = profile.getHighestRankBasedOnGrant(player.getUniqueId());
+            Rank playerRank = profile.getHighestRankBasedOnGrant();
             String playerName = player.getName();
             ChatColor rankColor = playerRank.getColor();
 

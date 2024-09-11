@@ -29,12 +29,12 @@ public class ChatListener implements Listener {
         FileConfiguration config = Artex.getInstance().getConfig();
 
         String message = event.getMessage();
-        String rankPrefix = profile.getHighestRankBasedOnGrant(player.getUniqueId()).getPrefix();
-        String rankSuffix = profile.getHighestRankBasedOnGrant(player.getUniqueId()).getSuffix();
+        String rankPrefix = profile.getHighestRankBasedOnGrant().getPrefix();
+        String rankSuffix = profile.getHighestRankBasedOnGrant().getSuffix();
 
-        ChatColor rankColor = profile.getHighestRankBasedOnGrant(player.getUniqueId()).getColor();
+        ChatColor rankColor = profile.getHighestRankBasedOnGrant().getColor();
 
-        if (profile.getHighestRankBasedOnGrant(player.getUniqueId()) == null) {
+        if (profile.getHighestRankBasedOnGrant() == null) {
             Logger.debug("Highest rank is null for " + player.getName() + ".");
             event.setFormat(CC.translate("&7" + player.getName() + "&f" + ": " + message));
             return;

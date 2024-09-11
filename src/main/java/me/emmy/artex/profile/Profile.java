@@ -64,13 +64,13 @@ public class Profile {
     }*/
 
     /**
-     * Get the highest rank of a player
+     * Get the highest rank based on the grants of the player.
+     * Filter by active grants and their rank weight.
      *
-     * @param playerUUID player's UUID
-     * @return the highest rank
+     * @return the highest rank based on the grants of the player or else the default rank.
      */
-    public Rank getHighestRankBasedOnGrant(UUID playerUUID) {
-        Profile profile = Artex.getInstance().getProfileRepository().getProfile(playerUUID);
+    public Rank getHighestRankBasedOnGrant() {
+        Profile profile = Artex.getInstance().getProfileRepository().getProfile(uuid);
         return profile.getGrants().stream()
                 .filter(Grant::isActive)
                 .max(Comparator.comparingInt(grant -> grant.getRank().getWeight()))
@@ -79,13 +79,12 @@ public class Profile {
     }
 
     /**
-     * Check if the player has a grant with the default rank
+     * Check if the player has the default grant.
      *
-     * @param playerUUID player's UUID
-     * @return if the player has a default grant
+     * @return true if the player has the default grant, false otherwise
      */
-    public boolean hasDefaultGrant(UUID playerUUID) {
-        return Artex.getInstance().getProfileRepository().getProfileWithNoAdding(playerUUID).getGrants()
+    public boolean hasDefaultGrant() {
+        return Artex.getInstance().getProfileRepository().getProfileWithNoAdding(uuid).getGrants()
                 .stream()
                 .anyMatch(grant -> grant.getRank().isDefaultRank());
     }

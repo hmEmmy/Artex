@@ -52,7 +52,7 @@ public class BroadcastTask extends BukkitRunnable {
         for (String line : announcements.get(random.nextInt(announcements.size())).getLines()) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 FileConfiguration config = Artex.getInstance().getConfig();
-                Rank playerRank = Artex.getInstance().getProfileRepository().getProfileWithNoAdding(player.getUniqueId()).getHighestRankBasedOnGrant(player.getUniqueId());
+                Rank playerRank = Artex.getInstance().getProfileRepository().getProfileWithNoAdding(player.getUniqueId()).getHighestRankBasedOnGrant();
 
                 player.sendMessage(CC.translate(line)
                         .replace("{online}", String.valueOf(Bukkit.getOnlinePlayers().size()))

@@ -39,7 +39,7 @@ public class ProfileRepository {
         Document document = new Document("uuid", profile.getUuid().toString())
                 .append("name", profile.getUsername())
                 .append("tag", profile.getTag() == null ? "none" : profile.getTag().getName())
-                .append("rank", profile.getHighestRankBasedOnGrant(profile.getUuid()).getName())
+                .append("rank", profile.getHighestRankBasedOnGrant().getName())
                 .append("grants", GrantSerializer.serialize(profile.getGrants()))
 
                 ;
@@ -181,25 +181,13 @@ public class ProfileRepository {
         ProfileRepository profileRepository = Artex.getInstance().getProfileRepository();
 
         Logger.debug("Checking if player has default grant for " + profile.getUsername() + ".");
-        if (!profile.hasDefaultGrant(profile.getUuid())) {
+        if (!profile.hasDefaultGrant()) {
             Logger.debug("Adding default grant for " + profile.getUsername() + ".");
             profileRepository.addFirstDefaultGrant(profile.getUuid());
         }
 
         Logger.debug("Getting highest rank based on grant for " + profile.getUsername() + ".");
-        Rank highestGrant = profile.getHighestRankBasedOnGrant(profile.getUuid());
+        Rank highestGrant = profile.getHighestRankBasedOnGrant();
         profile.setRank(highestGrant);
-    }
-
-    public void determineTag(Profile profile) {
-        Logger.debug("determineTag called for " + profile.getUsername() + ", checking if tag is null.");
-        Tag tag = profile.getTag();
-        if (tag == null) {
-            Logger.debug("Tag is null for " + profile.getUsername() + ", returning.");
-            return;
-        }
-
-        Logger.debug("Tag is not null for " + profile.getUsername() + ", setting tag.");
-        profile.setTag(Artex.getInstance().getTagRepository().getTag(tag.getName()).getName());
     }
 }

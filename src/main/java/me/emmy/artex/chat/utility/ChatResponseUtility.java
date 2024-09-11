@@ -33,7 +33,7 @@ public class ChatResponseUtility {
             response = CC.translate(response
                     .replace("{store}", Locale.STORE.getString())
                     .replace("{player}", player.getName())
-                    .replace("{rank}", profile.getHighestRankBasedOnGrant(player.getUniqueId()).getName())
+                    .replace("{rank}", profile.getHighestRankBasedOnGrant().getName())
                     .replace("{tag}", profile.getTag().getName())
                     .replace("{server}", Locale.SERVER_NAME.getString())
                     .replace("{discord}", Locale.DISCORD.getString())
