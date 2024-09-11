@@ -48,6 +48,8 @@ public class RemoveRankCommand extends BaseCommand {
         for (Grant grant : profile.getGrants()) {
             if (grant.getRank().getName().equalsIgnoreCase(rankName) && grant.isActive()) {
                 grant.setActive(false);
+                grant.setRemovedBy(sender.getName());
+                grant.setRemovedAt(System.currentTimeMillis());
                 updated = true;
                 break;
             }
