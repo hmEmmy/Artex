@@ -3,6 +3,7 @@ package me.emmy.artex.api.command;
 import me.emmy.artex.Artex;
 import me.emmy.artex.api.command.annotation.Command;
 import me.emmy.artex.api.command.annotation.Completer;
+import me.emmy.artex.locale.Locale;
 import me.emmy.artex.util.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -269,10 +270,10 @@ public class CommandFramework implements CommandExecutor {
                     args.getSender().getServer().dispatchCommand(args.getSender(), command);
                 }
             } else {
-                args.getSender().sendMessage(CC.translate("&4&lOH HELL NO."));
+                args.getSender().sendMessage(CC.translate("&cMissing arguments."));
             }
         } else {
-            args.getSender().sendMessage(CC.translate("&c" + args.getSender().getName() + " tried to syntax? Bro entered '" + label + "'. How sad. &7:rethinking_life:"));
+            args.getSender().sendMessage(CC.translate("&cNo permission."));
         }
     }
 

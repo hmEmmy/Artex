@@ -44,6 +44,7 @@ public class Artex extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
+        registerChannels();
         registerCommands();
         saveDefaultConfig();
         setupMongoDatabase();
@@ -61,6 +62,10 @@ public class Artex extends JavaPlugin {
         this.databaseService.close();
 
         CC.sendDisableMessage();
+    }
+
+    private void registerChannels() {
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
 
     /**

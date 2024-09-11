@@ -14,7 +14,7 @@ import org.bukkit.command.CommandSender;
  * @date 03/09/2024 - 15:55
  */
 public class ReloadCommand extends BaseCommand {
-    @Command(name = "reload", permission = "artex.command.reload", inGameOnly = false)
+    @Command(name = "artex.reload", permission = "artex.command.reload", inGameOnly = false)
     @Override
     public void onCommand(CommandArgs command) {
         CommandSender sender = command.getSender();

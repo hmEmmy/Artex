@@ -8,6 +8,7 @@ import org.bukkit.ChatColor;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author Emmy
@@ -27,6 +28,19 @@ public class CC {
      */
     public String translate(String string) {
         return ChatColor.translateAlternateColorCodes('&', string);
+    }
+
+    /**
+     * Make a string readable by capitalizing the first letter of each word
+     * and splitting the words by spaces and underscores
+     *
+     * @param name the name to make readable
+     * @return the readable name
+     */
+    public String toReadAble(String name) {
+        return Arrays.stream(name.split("_"))
+                .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase())
+                .collect(Collectors.joining(" "));
     }
 
     /**

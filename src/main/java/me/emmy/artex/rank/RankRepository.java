@@ -39,7 +39,7 @@ public class RankRepository {
         var cursor = rankCollection.find();
         if (!cursor.iterator().hasNext()) {
             createDefaultRank();
-            Bukkit.getConsoleSender().sendMessage(CC.translate(CC.PREFIX + "&cNo ranks found! Default rank created."));
+            Logger.debug("No ranks found in the database. Creating default rank.");
             return;
         }
 
