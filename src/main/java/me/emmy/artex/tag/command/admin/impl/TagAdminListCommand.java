@@ -30,8 +30,8 @@ public class TagAdminListCommand extends BaseCommand {
             return;
         }
 
-        tagRepository.getTags().forEach((name, tag) -> {
-            sender.sendMessage(CC.translate("&f&l● &7" + name + " &f- &7" + tag.getNiceName()));
+        tagRepository.getTags().stream().sorted().forEach(tag -> {
+            sender.sendMessage(CC.translate("&f&l● &7" + tag.getName() + " &f- &7" + tag.getNiceName()));
         });
 
         sender.sendMessage("");

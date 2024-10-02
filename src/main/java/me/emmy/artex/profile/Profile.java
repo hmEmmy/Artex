@@ -9,7 +9,10 @@ import me.emmy.artex.tag.Tag;
 import me.emmy.artex.util.Logger;
 import org.bukkit.Bukkit;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * @author Emmy
@@ -19,7 +22,6 @@ import java.util.*;
 @Getter
 @Setter
 public class Profile {
-
     private final UUID uuid;
     private String username;
     private String tag;
@@ -35,33 +37,19 @@ public class Profile {
         this.uuid = uuid;
         this.username = Bukkit.getOfflinePlayer(this.uuid).getName();
         this.grants = new ArrayList<>();
-        tag = "";
+        this.rank = Artex.getInstance().getRankRepository().getDefaultRank();
+        this.tag = "";
     }
 
     public void load() {
-        Artex.getInstance().getProfileRepository().loadProfile(uuid);
+        Artex.getInstance().getProfileRepository().getProfile().loadProfile(this);
         Logger.debug("Loaded profile for " + username + ".");
     }
 
     public void save() {
-        Artex.getInstance().getProfileRepository().saveProfile(this);
+        Artex.getInstance().getProfileRepository().getProfile().saveProfile(this);
         Logger.debug("Saved profile for " + username + ".");
     }
-
-    /*public Rank getHighestRank(UUID playerUUID) {
-        Profile profile = Artex.getInstance().getProfileRepository().getProfile(playerUUID);
-        List<Grant> grants = profile.getGrants();
-        if (grants == null || grants.isEmpty()) {
-            return Artex.getInstance().getRankRepository().getDefaultRank();
-        }
-        Grant highestGrant = null;
-        for (Grant grant : grants) {
-            if (highestGrant == null || grant.getRank().getWeight() > highestGrant.getRank().getWeight()) {
-                highestGrant = grant;
-            }
-        }
-        return highestGrant.getRank();
-    }*/
 
     /**
      * Get the highest rank based on the grants of the player.
@@ -70,8 +58,7 @@ public class Profile {
      * @return the highest rank based on the grants of the player or else the default rank.
      */
     public Rank getHighestRankBasedOnGrant() {
-        Profile profile = Artex.getInstance().getProfileRepository().getProfile(uuid);
-        return profile.getGrants().stream()
+        return this.getGrants().stream()
                 .filter(Grant::isActive)
                 .max(Comparator.comparingInt(grant -> grant.getRank().getWeight()))
                 .map(Grant::getRank)

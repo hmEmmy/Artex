@@ -35,7 +35,7 @@ public class RankListCommand extends BaseCommand {
             return;
         }
 
-        List<Rank> sortedRanks = rankRepository.getRanks().values().stream()
+        List<Rank> sortedRanks = rankRepository.getRanks().stream()
                 .sorted(Comparator.comparingInt(Rank::getWeight).reversed())
                 .collect(Collectors.toList());
 

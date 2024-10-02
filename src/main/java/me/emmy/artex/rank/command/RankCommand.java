@@ -31,6 +31,8 @@ public class RankCommand extends BaseCommand {
                 sender.sendMessage(CC.translate(" &f&l● &4/rank list - &7List all ranks"));
                 sender.sendMessage(CC.translate(" &f&l● &4/rank info &f(name) - &7View rank information"));
                 sender.sendMessage("");
+                sender.sendMessage(CC.translate("&7&oFor more detailed instructions, use &f&o/rank help&7&o."));
+                sender.sendMessage("");
                 return;
             }
         }
@@ -44,6 +46,8 @@ public class RankCommand extends BaseCommand {
             sender.sendMessage(CC.translate(" &f&l● &4/rank list - &7List all ranks"));
             sender.sendMessage(CC.translate(" &f&l● &4/rank info &f(name) - &7View rank information"));
             sender.sendMessage("");
+            sender.sendMessage(CC.translate("&7&oFor more detailed instructions, use &f&o/rank help&7&o."));
+            sender.sendMessage("");
             return;
         }
 
@@ -56,6 +60,9 @@ public class RankCommand extends BaseCommand {
             sender.sendMessage(CC.translate(" &f&l● &4/rank delete &f(name) - &7Delete a rank"));
             sender.sendMessage(CC.translate(" &f&l● &4/rank list - &7List all ranks"));
             sender.sendMessage(CC.translate(" &f&l● &4/rank info &f(name) - &7View rank information"));
+            sender.sendMessage("");
+            sender.sendMessage(CC.translate("&7&oFor more detailed instructions, use &f&o/rank help&7&o."));
+            sender.sendMessage("");
         } else if (page == 2) {
             sender.sendMessage("");
             sender.sendMessage(CC.translate(" &f&l● &4/rank setprefix &f(name) (prefix) - &7Set the prefix of a rank"));

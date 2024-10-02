@@ -13,6 +13,7 @@ import me.emmy.artex.command.impl.admin.gamemode.SurvivalCommand;
 import me.emmy.artex.command.impl.admin.troll.FakeOpCommand;
 import me.emmy.artex.command.impl.admin.troll.LaunchCommand;
 import me.emmy.artex.command.impl.admin.troll.TrollCommand;
+import me.emmy.artex.command.impl.user.JoinCommand;
 import me.emmy.artex.command.impl.user.ListCommand;
 import me.emmy.artex.godmode.command.GodModeCommand;
 import me.emmy.artex.grant.command.GrantCommand;
@@ -66,6 +67,7 @@ public class CommandUtility {
         new SpectatorCommand();
         new SurvivalCommand();
 
+        new JoinCommand();
         new ListCommand();
 
         new ArtexCommand();
@@ -117,6 +119,8 @@ public class CommandUtility {
         new RankSetPrefixCommand();
         new RankSetSuffixCommand();
         new RankSetWeightCommand();
+
+        new RankHelpCommand();
 
         new CreateDefaultRanksCommand();
     }

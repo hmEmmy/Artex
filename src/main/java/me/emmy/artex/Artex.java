@@ -59,7 +59,6 @@ public class Artex extends JavaPlugin {
     @Override
     public void onDisable() {
         this.profileRepository.saveProfiles();
-        this.databaseService.close();
 
         CC.sendDisableMessage();
     }
@@ -88,6 +87,7 @@ public class Artex extends JavaPlugin {
      */
     private void initializeRepositories() {
         this.profileRepository = new ProfileRepository();
+        this.profileRepository.initializeEveryProfile();
 
         this.rankRepository = new RankRepository();
 

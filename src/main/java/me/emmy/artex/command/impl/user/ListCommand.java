@@ -33,7 +33,7 @@ public class ListCommand extends BaseCommand {
 
         sender.sendMessage("");
 
-        List<Rank> sortedRanks = Artex.getInstance().getRankRepository().getRanks().values().stream()
+        List<Rank> sortedRanks = Artex.getInstance().getRankRepository().getRanks().stream()
                 .sorted(Comparator.comparingInt(Rank::getWeight).reversed())
                 .collect(Collectors.toList());
 

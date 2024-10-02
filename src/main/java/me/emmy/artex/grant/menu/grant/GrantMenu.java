@@ -47,7 +47,7 @@ public class GrantMenu extends PaginatedMenu {
     public Map<Integer, Button> getAllPagesButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        List<Rank> sortedRanks = Artex.getInstance().getRankRepository().getRanks().values().stream()
+        List<Rank> sortedRanks = Artex.getInstance().getRankRepository().getRanks().stream()
                 .sorted(Comparator.comparingInt(Rank::getWeight).reversed())
                 .collect(Collectors.toList());
 

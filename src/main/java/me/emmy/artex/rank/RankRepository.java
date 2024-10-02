@@ -1,17 +1,17 @@
 package me.emmy.artex.rank;
 
-import me.emmy.artex.Artex;
-import me.emmy.artex.util.CC;
-import me.emmy.artex.util.Logger;
-import org.bson.Document;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-
+import com.mongodb.client.model.ReplaceOptions;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.var;
+import me.emmy.artex.Artex;
+import me.emmy.artex.util.Logger;
+import org.bson.Document;
+import org.bukkit.ChatColor;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Emmy
@@ -22,7 +22,7 @@ import java.util.*;
 @Setter
 public class RankRepository {
 
-    private Map<String, Rank> ranks = new HashMap<>();
+    private List<Rank> ranks = new ArrayList<>();
 
     public RankRepository() {
         loadRanks();
@@ -45,7 +45,7 @@ public class RankRepository {
 
         for (var document : cursor) {
             Rank rank = documentToRank(document);
-            ranks.put(rank.getName(), rank);
+            ranks.add(rank);
         }
     }
 
@@ -59,10 +59,10 @@ public class RankRepository {
         Logger.debug("Deleting all ranks from the database.");
         rankCollection.deleteMany(new Document());
 
-        for (Rank rank : ranks.values()) {
+        for (Rank rank : ranks) {
             Logger.debug("Saving rank " + rank.getName() + " to the database.");
             Document rankDocument = rankToDocument(rank);
-            rankCollection.insertOne(rankDocument);
+            rankCollection.replaceOne(new Document("name", rank.getName()), rankDocument, new ReplaceOptions().upsert(true));
         }
     }
 
@@ -118,7 +118,7 @@ public class RankRepository {
      * Create the default rank
      */
     public void createDefaultRank() {
-        for (Rank rank : ranks.values()) {
+        for (Rank rank : ranks) {
             if (rank.isDefaultRank()) {
                 Logger.debug(rank.getName() + " has defaultRank set as true. Not creating the default rank.");
                 return;
@@ -136,7 +136,7 @@ public class RankRepository {
         rank.setDefaultRank(true);
         rank.setPermissions(Arrays.asList("example.permission", "example.permission2"));
 
-        ranks.put(rank.getName(), rank);
+        ranks.add(rank);
 
         saveRanks();
     }
@@ -148,7 +148,10 @@ public class RankRepository {
      * @return the rank
      */
     public Rank getRank(String name) {
-        return ranks.get(name);
+        return ranks.stream()
+                .filter(rank -> rank.getName().equalsIgnoreCase(name))
+                .findFirst()
+                .orElse(null);
     }
 
     /**
@@ -157,7 +160,7 @@ public class RankRepository {
      * @return the default rank
      */
     public Rank getDefaultRank() {
-        for (Rank rank : ranks.values()) {
+        for (Rank rank : ranks) {
             if (rank.isDefaultRank()) {
                 return rank;
             }
@@ -191,7 +194,7 @@ public class RankRepository {
         rank.setDefaultRank(false);
         rank.setPermissions(new ArrayList<>());
 
-        ranks.put(rank.getName(), rank);
+        ranks.add(rank);
         saveRank(rank);
     }
 
@@ -201,7 +204,7 @@ public class RankRepository {
      * @param rank the rank to delete
      */
     public void deleteRank(Rank rank) {
-        ranks.remove(rank.getName());
+        ranks.remove(rank);
         saveRanks();
     }
 }

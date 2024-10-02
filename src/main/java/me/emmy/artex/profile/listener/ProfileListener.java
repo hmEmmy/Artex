@@ -8,6 +8,7 @@ import me.emmy.artex.util.PlayerUtil;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -23,31 +24,31 @@ import java.util.UUID;
  */
 public class ProfileListener implements Listener {
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     private void onLogin(PlayerLoginEvent event) {
-        ProfileRepository profileRepository = Artex.getInstance().getProfileRepository();
-        UUID uuid = event.getPlayer().getUniqueId();
-        Profile profile = profileRepository.getProfileWithNoAdding(uuid);
-
-        if (profile == null) {
-            Logger.debug("Creating new profile for " + event.getPlayer().getName());
-            profile = new Profile(uuid);
-            profileRepository.addProfile(uuid);
+        Player player = event.getPlayer();
+        if (event.getResult() != PlayerLoginEvent.Result.ALLOWED) {
+            return;
         }
 
+        Profile profile = new Profile(player.getUniqueId());
         profile.load();
+
+        ProfileRepository profileRepository = Artex.getInstance().getProfileRepository();
+        profileRepository.addProfile(profile.getUuid(), profile);
 
         Logger.debug("(!) Determining rank for " + event.getPlayer().getName() + ".");
         profileRepository.determineRank(profile);
         Logger.debug("Rank determined for " + event.getPlayer().getName() + ".");
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGHEST)
     private void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        FileConfiguration config = Artex.getInstance().getConfig();
         Profile profile = Artex.getInstance().getProfileRepository().getProfile(player.getUniqueId());
+        profile.setUsername(player.getName());
 
+        FileConfiguration config = Artex.getInstance().getConfig();
         if (config.getBoolean("on-join.tp-to-spawn")) {
             Artex.getInstance().getSpawnHandler().teleportToSpawn(player);
         }

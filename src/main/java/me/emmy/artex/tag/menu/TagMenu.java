@@ -45,7 +45,7 @@ public class TagMenu extends PaginatedMenu {
     public Map<Integer, Button> getAllPagesButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        List<Tag> sortedTags = Artex.getInstance().getTagRepository().getTags().values()
+        List<Tag> sortedTags = Artex.getInstance().getTagRepository().getTags()
                 .stream()
                 .sorted(Comparator.comparing(Tag::getName))
                 .collect(Collectors.toList());

@@ -49,7 +49,7 @@ public class PlayerUtil {
                     .replace("{color}", profile.getRank().getColor().toString())
                     .replace("{rank}", profile.getRank().getRankWithColor())
                     .replace("{online}", String.valueOf(Bukkit.getOnlinePlayers().size()))
-                    .replace("{max}", String.valueOf(Bukkit.getMaxPlayers()))
+                    .replace("{max-online}", String.valueOf(Bukkit.getMaxPlayers()))
                     .replace("{rank}", profile.getRank().getRankWithColor())
                     .replace("{store}", Locale.STORE.getString())
                     .replace("{discord}", Locale.DISCORD.getString())

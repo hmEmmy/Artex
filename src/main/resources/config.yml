@@ -2,9 +2,8 @@ plugin:
   debugging: true #Sends debug messages to the console (development purposes)
 
 mongo:
-  host: localhost
-  port: 27017
-  database: Artex
+  uri: mongodb://localhost:27017
+  database: Artex-Core
 
 server:
   name: Lobby
@@ -26,7 +25,7 @@ grant:
   default-reason: "No reason specified."
 
 chat-replies:
-  enabled: true
+  enabled: false
   replies:
     reply-1:
       trigger:
@@ -61,21 +60,22 @@ spawn:
   join-location: world:0.5:73.0:0.5:90.0:0.0
 
 on-join:
-  tp-to-spawn: true #Teleports player to spawn on join
-  reset-player: true #Resets player's inventory, health, hunger, and effects on join
+  tp-to-spawn: false #Teleports player to spawn on join
+  reset-player: false #Resets player's inventory, health, hunger, and effects on join
   welcome-message:
     enabled: true
     # Available placeholders:
-    # {player}, {rank}, {color}, {online}, {max}, {store}, {discord}, {website}, {teamspeak},
+    # {player}, {rank}, {color}, {online}, {max-online}, {store}, {discord}, {website}, {teamspeak},
     # {twitter}, {instagram}, {youtube}, {tiktok}, {facebook}, {github}, {server}, {region}.
     context:
       - " "
-      - "&fWelcome to &cArtex Network, &f{color}{player}&c!"
+      - "&fWelcome to &4Artex Network, &f{color}{player}&f!"
       - " "
-      - " &7► &fWebsite: &c{website}"
-      - " &7► &fDiscord: &c{discord}"
+      - " &e► &fWebsite: &4{website}"
+      - " &e► &fDiscord: &4{discord}"
+      - " &e► &fStore: &4{store}"
       - " "
-      - " &fYour current Rank is &c{rank}&f, upgrade it now at &c{store}&f."
+      - " &fYour current Rank is &c{rank}&f."
       - " "
 
 broadcast:
@@ -84,25 +84,39 @@ broadcast:
   list:
     message-1:
       - " "
-      - "&4&lAnnouncement:"
-      - " &fJoin our discord to get informed about news & updates!"
-      - "  &7► &c{discord}"
-      - " "
+      - "&7[&4&lArtex Network&7]"
+      - " &fJoin our discord to get informed"
+      - " &fabout news & updates!"
+      - " &c{discord}"
     message-2:
       - " "
-      - "&4&lAnnouncement:"
-      - " &fWatch us on YouTube to have some fun!"
-      - "  &7► &c{youtube}"
+      - "&7[&4&lArtex Network&7]"
+      - " &fWe now upload shorts on YouTube."
+      - " &fCheck them out at"
+      - " &c{youtube}&f."
+      - " &fDon't forget to like & subscribe!"
       - " "
     message-3:
       - " "
-      - "&4&lAnnouncement:"
-      - " &fDon't forget to check our store for exclusive offers!"
-      - "  &7► &c{store}"
+      - "&7[&4&lArtex Network&7]"
+      - " &fDon't forget to check our store"
+      - " &ffor exclusive offers at"
+      - " &c{store}&f."
       - " "
     message-4:
       - " "
-      - "&4&lAnnouncement:"
-      - " &fYour current Rank is &c{rank}&f, upgrade it now at:"
-      - "  &7► &c{store}"
+      - "&7[&4&lArtex Network&7]"
+      - " &fNew Tags available at"
+      - " &c{store}&f."
+      - " &fUse code &cTAGS50 &fto get 50% off!"
+      - " "
+    message-5:
+      - " "
+      - "&7[&4&lArtex Network&7]"
+      - " &fWe're currently on a"
+      - " &f50% sale on all ranks!"
+      - " &fYour one-time opportunity"
+      - " &fto get your rank!"
+      - " &fVisit our store at"
+      - " &c{store}&f."
       - " "

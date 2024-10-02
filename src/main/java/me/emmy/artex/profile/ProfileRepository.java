@@ -1,21 +1,19 @@
 package me.emmy.artex.profile;
 
 import com.mongodb.client.MongoCollection;
-import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.ReplaceOptions;
 import lombok.Getter;
 import me.emmy.artex.Artex;
 import me.emmy.artex.grant.Grant;
-import me.emmy.artex.grant.GrantSerializer;
 import me.emmy.artex.locale.Locale;
+import me.emmy.artex.profile.handler.impl.ProfileHandler;
+import me.emmy.artex.profile.handler.IProfile;
 import me.emmy.artex.rank.Rank;
-import me.emmy.artex.tag.Tag;
-import me.emmy.artex.tag.TagRepository;
 import me.emmy.artex.util.Logger;
-import me.emmy.artex.util.ProjectInfo;
 import org.bson.Document;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 import java.util.*;
 
@@ -26,94 +24,34 @@ import java.util.*;
  */
 @Getter
 public class ProfileRepository {
-
     private final Map<UUID, Profile> profiles = new HashMap<>();
+    public MongoCollection<Document> collection;
+    public final IProfile profile;
 
-    /**
-     * Save the profile to the database.
-     *
-     * @param profile the profile to save
-     */
-    public void saveProfile(Profile profile) {
-        MongoCollection<Document> collection = Artex.getInstance().getDatabaseService().getProfilesCollection();
-        Document document = new Document("uuid", profile.getUuid().toString())
-                .append("name", profile.getUsername())
-                .append("tag", profile.getTag() == null ? "none" : profile.getTag().getName())
-                .append("rank", profile.getHighestRankBasedOnGrant().getName())
-                .append("grants", GrantSerializer.serialize(profile.getGrants()))
+    public ProfileRepository() {
+        this.profile = new ProfileHandler();
+    }
 
-                ;
-
-
-        collection.replaceOne(Filters.eq("uuid", profile.getUuid().toString()), document, new ReplaceOptions().upsert(true));
+    public void initializeEveryProfile() {
+        this.collection = Artex.getInstance().getDatabaseService().getDatabase().getCollection("profiles");
+        this.collection.find().forEach(this::loadProfile);
     }
 
     /**
-     * Load the profile from the database.
+     * Load a profile from a document
      *
-     * @param uuid the UUID of the profile
+     * @param document the document to load the profile from
      */
-    public void loadProfile(UUID uuid) {
-        MongoCollection<Document> collection = Artex.getInstance().getDatabaseService().getProfilesCollection();
-        Document document = collection.find(Filters.eq("uuid", uuid.toString())).first();
-
-        if (document != null) {
-            Profile profile = new Profile(uuid);
-            profile.setUsername(document.getString("name"));
-            profile.setTag(Artex.getInstance().getTagRepository().getTag(document.getString("tag")).getName());
-            profile.setRank(Artex.getInstance().getRankRepository().getRank(document.getString("rank")));
-            profile.setGrants(GrantSerializer.deserialize(document.getList("grants", String.class)));
-
-            profiles.put(uuid, profile);
-        } else {
-            Logger.debug("Profile not found for " + uuid + ".");
-        }
-    }
-
-    /**
-     * Add a new profile or retrieve an existing one.
-     *
-     * @param uuid the UUID of the profile
-     */
-    public void addProfile(UUID uuid) {
+    private void loadProfile(Document document) {
+        UUID uuid = UUID.fromString(document.getString("uuid"));
         Profile profile = new Profile(uuid);
-        profiles.put(uuid, profile);
+        profile.load();
+
+        profiles.put(profile.getUuid(), profile);
     }
 
     /**
-     * Add a new profile with default values.
-     *
-     * @param uuid the UUID of the profile
-     * @return the profile
-     */
-    public Profile addProfileWithDefaultValues(UUID uuid) {
-        Profile profile = new Profile(uuid);
-        profiles.put(uuid, profile);
-        profile.setUsername(Bukkit.getOfflinePlayer(uuid).getName());
-        profile.setRank(Artex.getInstance().getRankRepository().getDefaultRank());
-        profile.setGrants(new ArrayList<>());
-        profile.setTag(null);
-        Artex.getInstance().getProfileRepository().addFirstDefaultGrant(uuid);
-        return profile;
-    }
-
-    /**
-     * Get a profile by UUID, or create a new one if it doesn't exist.
-     *
-     * @param uuid the UUID of the profile
-     * @return the profile
-     */
-    public Profile getProfile(UUID uuid) {
-        if (profiles.get(uuid) == null) {
-            Logger.debug("getProfile method called for " + uuid.toString() + ", adding new profile.");
-            return addProfileWithDefaultValues(uuid);
-        }
-
-        return profiles.get(uuid);
-    }
-
-    /**
-     * Get a profile by UUID without adding a new one if it doesn't exist.
+     * Get a profile by its UUID without adding it to the map if it doesn't exist
      *
      * @param uuid the UUID of the profile
      * @return the profile
@@ -123,21 +61,38 @@ public class ProfileRepository {
     }
 
     /**
-     * Remove a profile from the repository and database.
+     * Get a profile by its UUID and add it to the map if it doesn't exist
      *
      * @param uuid the UUID of the profile
+     * @return the profile
      */
-    public void removeProfile(UUID uuid) {
-        profiles.remove(uuid);
-        MongoCollection<Document> collection = Artex.getInstance().getDatabaseService().getProfilesCollection();
-        collection.deleteOne(Filters.eq("uuid", uuid.toString()));
+    public Profile getProfile(UUID uuid) {
+        if (profiles.containsKey(uuid)) {
+            return profiles.get(uuid);
+        }
+
+        Profile profile = new Profile(uuid);
+        profile.load();
+
+        addProfile(uuid, profile);
+        return profile;
+    }
+
+    /**
+     * Add or update a profile by its UUID.
+     *
+     * @param uuid    the UUID of the profile
+     * @param profile the profile to add or update
+     */
+    public void addProfile(UUID uuid, Profile profile) {
+        profiles.put(uuid, profile);
     }
 
     /**
      * Save all profiles to the database.
      */
     public void saveProfiles() {
-        profiles.values().forEach(this::saveProfile);
+        profiles.values().forEach(Profile::save);
     }
 
     /**

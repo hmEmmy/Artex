@@ -1,5 +1,6 @@
 package me.emmy.artex.tag;
 
+import com.mongodb.client.model.ReplaceOptions;
 import lombok.Getter;
 import lombok.var;
 import me.emmy.artex.Artex;
@@ -8,8 +9,8 @@ import org.bson.Document;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Emmy
@@ -19,7 +20,7 @@ import java.util.Map;
 @Getter
 public class TagRepository {
 
-    private Map<String, Tag> tags = new HashMap<>();
+    private List<Tag> tags = new ArrayList<>();
 
     /**
      * Automatically load the tags
@@ -45,7 +46,7 @@ public class TagRepository {
 
         for (var document : cursor) {
             Tag tag = documentToTag(document);
-            tags.put(tag.getName(), tag);
+            tags.add(tag);
         }
     }
 
@@ -59,10 +60,10 @@ public class TagRepository {
         Logger.debug("Deleting all tags from the database.");
         tagCollection.deleteMany(new Document());
 
-        for (Tag tag : tags.values()) {
+        for (Tag tag : tags) {
             Logger.debug("Saving tag " + tag.getName() + " to the database.");
             Document rankDocument = tagToDocument(tag);
-            tagCollection.insertOne(rankDocument);
+            tagCollection.replaceOne(new Document("name", tag.getName()), rankDocument, new ReplaceOptions().upsert(true));
         }
     }
 
@@ -140,27 +141,27 @@ public class TagRepository {
         Tag Prince = new Tag("Prince", "Prince", Material.RED_ROSE, ChatColor.LIGHT_PURPLE, 1, false, false);
         Tag Princess = new Tag("Princess", "Princess", Material.RED_ROSE, ChatColor.LIGHT_PURPLE, 7, false, false);
 
-        tags.put(Heart.getName(), Heart);
-        tags.put(Diamond.getName(), Diamond);
-        tags.put(Star.getName(), Star);
-        tags.put(BlackHeart.getName(), BlackHeart);
-        tags.put(BestWW.getName(), BestWW);
-        tags.put(Crown.getName(), Crown);
-        tags.put(King.getName(), King);
-        tags.put(Queen.getName(), Queen);
-        tags.put(Tick.getName(), Tick);
-        tags.put(Flower.getName(), Flower);
-        tags.put(Cross.getName(), Cross);
-        tags.put(Blood.getName(), Blood);
-        tags.put(Goat.getName(), Goat);
-        tags.put(Banana.getName(), Banana);
-        tags.put(Love.getName(), Love);
-        tags.put(Yurrrrrrr.getName(), Yurrrrrrr);
-        tags.put(Legend.getName(), Legend);
-        tags.put(First.getName(), First);
-        tags.put(Godly.getName(), Godly);
-        tags.put(Prince.getName(), Prince);
-        tags.put(Princess.getName(), Princess);
+        tags.add(Heart);
+        tags.add(BlackHeart);
+        tags.add(Diamond);
+        tags.add(Star);
+        tags.add(BestWW);
+        tags.add(Crown);
+        tags.add(King);
+        tags.add(Queen);
+        tags.add(Tick);
+        tags.add(Flower);
+        tags.add(Cross);
+        tags.add(Blood);
+        tags.add(Goat);
+        tags.add(Banana);
+        tags.add(Love);
+        tags.add(Yurrrrrrr);
+        tags.add(Legend);
+        tags.add(First);
+        tags.add(Godly);
+        tags.add(Prince);
+        tags.add(Princess);
 
         saveTags();
     }
@@ -172,22 +173,15 @@ public class TagRepository {
      * @return the tag
      */
     public Tag getTag(String name) {
-        return tags.get(name);
-    }
-
-    /**
-     * Get a tag by the tag object
-     *
-     * @param tag the tag
-     * @return the tag
-     */
-    public Tag getTag(Tag tag) {
-        return tags.get(tag.getName());
+        return tags.stream()
+                .filter(tag -> tag.getName().equalsIgnoreCase(name))
+                .findFirst()
+                .orElse(null);
     }
 
     public void createTag(String name, String displayName, Material icon, ChatColor color, int durability, boolean bold, boolean italic) {
         Tag tag = new Tag(name, displayName, icon, color, durability, bold, italic);
-        tags.put(name, tag);
+        tags.add(tag);
         saveTag(tag);
     }
 
@@ -197,7 +191,7 @@ public class TagRepository {
      * @param tag the tag to delete
      */
     public void deleteTag(Tag tag) {
-        tags.remove(tag.getName());
+        tags.remove(tag);
         saveTags();
     }
 }
