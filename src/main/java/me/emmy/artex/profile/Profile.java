@@ -36,9 +36,9 @@ public class Profile {
     public Profile(UUID uuid) {
         this.uuid = uuid;
         this.username = Bukkit.getOfflinePlayer(this.uuid).getName();
-        this.grants = new ArrayList<>();
-        this.rank = Artex.getInstance().getRankRepository().getDefaultRank();
         this.tag = "";
+        this.rank = Artex.getInstance().getRankRepository().getDefaultRank();
+        this.grants = new ArrayList<>();
     }
 
     public void load() {

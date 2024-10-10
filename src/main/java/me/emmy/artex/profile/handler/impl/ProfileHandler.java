@@ -9,15 +9,12 @@ import me.emmy.artex.profile.handler.IProfile;
 import me.emmy.artex.util.Logger;
 import org.bson.Document;
 
-import javax.swing.text.html.HTML;
-
 /**
  * @author Emmy
  * @project Artex
  * @date 29/09/2024 - 09:58
  */
 public class ProfileHandler implements IProfile {
-
     /**
      * Load a profile from the database
      *
@@ -35,9 +32,7 @@ public class ProfileHandler implements IProfile {
         Logger.debug("Loading profile for " + profile.getUsername() + ".");
         profile.setUsername(document.getString("name"));
 
-        //TODO: Tag is null in document and therefore saving doesnt work either. unsure why but i cba to fix this rn SO WHO CARES
-
-        profile.setTag(document.getString("tag") == null ? "" : document.getString("tag"));
+        if (document.getString("tag") != null) profile.setTag(document.getString("tag"));
         profile.setRank(Artex.getInstance().getRankRepository().getRank(document.getString("rank")));
         profile.setGrants(GrantSerializer.deserialize(document.getList("grants", String.class)));
     }
@@ -52,7 +47,7 @@ public class ProfileHandler implements IProfile {
         Logger.debug("Saving profile for " + profile.getUsername() + ".");
         document.put("uuid", profile.getUuid().toString());
         document.put("name", profile.getUsername());
-        document.put("tag", profile.getTag());
+        if (profile.getTag() != null) document.put("tag", profile.getTag().getName());
         document.put("rank", profile.getHighestRankBasedOnGrant().getName());
         document.put("grants", GrantSerializer.serialize(profile.getGrants()));
 
