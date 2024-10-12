@@ -24,21 +24,18 @@ public class ConversationHandler {
     private final String receivedFormat = CC.translate(Artex.getInstance().getConfig().getString("conversation.format.received"));
 
     /**
-     * Sends a message to a player.
+     * Starts a conversation across two players.
      *
-     * @param sender  The sender of the message.
-     * @param target  The target of the message.
+     * @param sender  The player who is starting the conversation.
+     * @param target  The player who is being messaged.
      * @param message The message to send.
      */
-    public void sendMessage(UUID sender, UUID target, String message) {
+    public void startConversation(UUID sender, UUID target, String message) {
         conversations.put(sender, target);
         conversations.put(target, sender);
 
         Player senderPlayer = Bukkit.getServer().getPlayer(sender);
         Player targetPlayer = Bukkit.getServer().getPlayer(target);
-
-        Rank senderRank = Artex.getInstance().getProfileRepository().getProfile(sender).getHighestRankBasedOnGrant();
-        Rank targetRank = Artex.getInstance().getProfileRepository().getProfile(target).getHighestRankBasedOnGrant();
 
         if (targetPlayer == null && senderPlayer != null) {
             senderPlayer.sendMessage(CC.translate("&cThat player is currently offline."));
@@ -46,6 +43,20 @@ public class ConversationHandler {
         }
 
         assert targetPlayer != null;
+        sendMessage(message, targetPlayer, senderPlayer);
+    }
+
+    /**
+     * Sends a message to a player with the correct format and profile color.
+     *
+     * @param message     The message to send.
+     * @param targetPlayer The player to send the message to.
+     * @param senderPlayer The player who is sending the message.
+     */
+    private void sendMessage(String message, Player targetPlayer, Player senderPlayer) {
+        Rank senderRank = Artex.getInstance().getProfileRepository().getProfile(senderPlayer.getUniqueId()).getHighestRankBasedOnGrant();
+        Rank targetRank = Artex.getInstance().getProfileRepository().getProfile(targetPlayer.getUniqueId()).getHighestRankBasedOnGrant();
+
         targetPlayer.sendMessage(CC.translate(receivedFormat
                 .replace("{sender}", senderRank == null ? "&a" + senderPlayer.getName() : senderRank.getColor() + senderPlayer.getName())
                 .replace("{message}", message)));

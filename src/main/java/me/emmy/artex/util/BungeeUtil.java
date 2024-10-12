@@ -16,7 +16,6 @@ import java.io.IOException;
  */
 @UtilityClass
 public class BungeeUtil {
-
     /**
      * Sends a player to a server
      *

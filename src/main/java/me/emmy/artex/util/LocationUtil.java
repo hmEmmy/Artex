@@ -7,7 +7,6 @@ import org.bukkit.World;
 
 @UtilityClass
 public class LocationUtil {
-
 	/**
 	 * Serialize a location to a string.
 	 *

@@ -34,6 +34,6 @@ public class MessageCommand extends BaseCommand {
         }
 
         String message = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
-        Artex.getInstance().getConversationHandler().sendMessage(player.getUniqueId(), target.getUniqueId(), message);
+        Artex.getInstance().getConversationHandler().startConversation(player.getUniqueId(), target.getUniqueId(), message);
     }
 }

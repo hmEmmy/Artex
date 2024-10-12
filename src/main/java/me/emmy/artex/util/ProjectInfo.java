@@ -11,7 +11,6 @@ import org.bukkit.Bukkit;
  */
 @UtilityClass
 public class ProjectInfo {
-
     private final Artex plugin = Artex.getInstance();
 
     public String NAME = plugin.getDescription().getName();

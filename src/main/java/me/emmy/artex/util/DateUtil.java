@@ -4,7 +4,6 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class DateUtil {
-
     /**
      * Format the time in milliseconds.
      *

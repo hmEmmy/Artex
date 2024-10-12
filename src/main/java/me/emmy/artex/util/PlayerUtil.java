@@ -17,7 +17,6 @@ import java.util.List;
  */
 @UtilityClass
 public class PlayerUtil {
-
     /**
      * Reset the player's health, food level, fire ticks, saturation, inventory, armor contents, and game mode.
      *

@@ -42,6 +42,6 @@ public class ReplyCommand extends BaseCommand {
 
         Player target = Bukkit.getServer().getPlayer(lastConversantUUID);
         String message = String.join(" ", Arrays.copyOfRange(args, 0, args.length));
-        Artex.getInstance().getConversationHandler().sendMessage(player.getUniqueId(), target.getUniqueId(), message);
+        Artex.getInstance().getConversationHandler().startConversation(player.getUniqueId(), target.getUniqueId(), message);
     }
 }

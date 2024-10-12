@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
  */
 @UtilityClass
 public class CC {
-
     public final String PREFIX = "§8[§4Artex§8] §7";
 
     /**
