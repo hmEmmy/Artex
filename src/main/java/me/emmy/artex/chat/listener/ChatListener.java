@@ -58,6 +58,16 @@ public class ChatListener implements Listener {
             return;
         }
 
+        /*String format = config.getString("chat.format");
+        event.setFormat(CC.translate(format
+                .replace("{rank-prefix}", rankPrefix)
+                .replace("{rank-color}", String.valueOf(rankColor))
+                .replace("{player}", player.getName())
+                .replace("{rank-suffix}", rankSuffix)
+                .replace("{tag-color}", String.valueOf(profile.getTag().getColor()))
+                .replace("{tag-name}", profile.getTag().getNiceName())
+                .replace("{message}", message)));*/
+
         event.setFormat(CC.translate(rankPrefix + rankColor + player.getName() + rankSuffix + " " + profile.getTag().getColor() + profile.getTag().getNiceName() + "&f" + ": " + message));
 
         if (Artex.getInstance().getChatRepository().isChatMuted()) {

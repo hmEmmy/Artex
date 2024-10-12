@@ -1,6 +1,7 @@
 package me.emmy.artex.command;
 
 import lombok.experimental.UtilityClass;
+import me.emmy.artex.Artex;
 import me.emmy.artex.chat.command.MuteChatCommand;
 import me.emmy.artex.chat.command.UnMuteChatCommand;
 import me.emmy.artex.command.impl.ArtexCommand;
@@ -15,6 +16,8 @@ import me.emmy.artex.command.impl.admin.troll.LaunchCommand;
 import me.emmy.artex.command.impl.admin.troll.TrollCommand;
 import me.emmy.artex.command.impl.user.JoinCommand;
 import me.emmy.artex.command.impl.user.ListCommand;
+import me.emmy.artex.conversation.command.MessageCommand;
+import me.emmy.artex.conversation.command.ReplyCommand;
 import me.emmy.artex.godmode.command.GodModeCommand;
 import me.emmy.artex.grant.command.GrantCommand;
 import me.emmy.artex.grant.command.GrantsCommand;
@@ -61,6 +64,11 @@ public class CommandUtility {
 
     public void registerEssentialCommands() {
         Logger.debug("Registering essential commands...");
+
+        if (Artex.getInstance().getConfig().getBoolean("conversation.enabled")) {
+            new MessageCommand();
+            new ReplyCommand();
+        }
 
         new AdventureCommand();
         new CreativeCommand();

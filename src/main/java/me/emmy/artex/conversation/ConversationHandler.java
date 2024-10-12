@@ -2,8 +2,6 @@ package me.emmy.artex.conversation;
 
 import lombok.Getter;
 import me.emmy.artex.Artex;
-import me.emmy.artex.grant.Grant;
-import me.emmy.artex.profile.Profile;
 import me.emmy.artex.rank.Rank;
 import me.emmy.artex.util.CC;
 import org.bukkit.Bukkit;
@@ -21,15 +19,9 @@ import java.util.UUID;
  */
 @Getter
 public class ConversationHandler {
-
-    private final HashMap<UUID, UUID> conversations;
-
-    /**
-     * Constructor for the ConversationHandler.
-     */
-    public ConversationHandler() {
-        conversations = new HashMap<>();
-    }
+    private final HashMap<UUID, UUID> conversations = new HashMap<>();
+    private final String sentFormat = CC.translate(Artex.getInstance().getConfig().getString("conversation.format.sent"));
+    private final String receivedFormat = CC.translate(Artex.getInstance().getConfig().getString("conversation.format.received"));
 
     /**
      * Sends a message to a player.
@@ -54,12 +46,14 @@ public class ConversationHandler {
         }
 
         assert targetPlayer != null;
-        targetPlayer.sendMessage(CC.translate(senderRank == null ? "&a" : senderRank.getColor() + senderPlayer.getName() + " &4» &f" + message));
-
+        targetPlayer.sendMessage(CC.translate(receivedFormat
+                .replace("{sender}", senderRank == null ? "&a" + senderPlayer.getName() : senderRank.getColor() + senderPlayer.getName())
+                .replace("{message}", message)));
         targetPlayer.playSound(targetPlayer.getLocation(), Sound.ORB_PICKUP, 1.0F, 1.0F);
 
-        assert senderPlayer != null;
-        senderPlayer.sendMessage(CC.translate(targetRank == null ? "&a" : targetRank.getColor() + targetPlayer.getName() + " &4» &f" + message));
+        senderPlayer.sendMessage(CC.translate(sentFormat
+                .replace("{sender}", targetRank == null ? "&a" + targetPlayer.getName() : targetRank.getColor() + targetPlayer.getName())
+                .replace("{message}", message)));
         senderPlayer.playSound(senderPlayer.getLocation(), Sound.ORB_PICKUP, 1.0F, 1.0F);
     }
 

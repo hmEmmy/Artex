@@ -8,6 +8,7 @@ import me.emmy.artex.broadcast.BroadcastTask;
 import me.emmy.artex.chat.ChatRepository;
 import me.emmy.artex.chat.listener.ChatListener;
 import me.emmy.artex.command.CommandUtility;
+import me.emmy.artex.conversation.ConversationHandler;
 import me.emmy.artex.database.DatabaseService;
 import me.emmy.artex.godmode.GodModeRepository;
 import me.emmy.artex.profile.ProfileRepository;
@@ -32,13 +33,14 @@ public class Artex extends JavaPlugin {
 
     private CommandFramework commandFramework;
     private DatabaseService databaseService;
-    private ProfileRepository profileRepository;
     private RankRepository rankRepository;
+    private ProfileRepository profileRepository;
     private TagRepository tagRepository;
     private ChatRepository chatRepository;
     private BroadcastTask broadcastTask;
     private GodModeRepository godModeRepository;
     private SpawnHandler spawnHandler;
+    private ConversationHandler conversationHandler;
 
     @Override
     public void onEnable() {
@@ -86,12 +88,12 @@ public class Artex extends JavaPlugin {
      * Initialize all repositories.
      */
     private void initializeRepositories() {
-        this.profileRepository = new ProfileRepository();
-        this.profileRepository.initializeEveryProfile();
-
         this.rankRepository = new RankRepository();
 
         this.tagRepository = new TagRepository();
+
+        this.profileRepository = new ProfileRepository();
+        this.profileRepository.initializeEveryProfile();
 
         this.chatRepository = new ChatRepository(false);
 
@@ -103,6 +105,8 @@ public class Artex extends JavaPlugin {
      */
     private void registerHandlers() {
         this.spawnHandler = new SpawnHandler();
+
+        this.conversationHandler = new ConversationHandler();
     }
 
     /**

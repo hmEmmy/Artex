@@ -9,6 +9,12 @@ server:
   name: Lobby
   region: Europe
 
+conversation:
+  enabled: true # /message and /reply won't register if set to false
+  format:
+    received: "&4{sender} &c» &f{message}"
+    sent: "&4{sender} &a» &f{message}"
+
 socials:
   store: "https://store.artex.com"
   website: "https://artex.com"
