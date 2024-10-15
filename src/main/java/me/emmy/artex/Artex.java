@@ -8,6 +8,7 @@ import me.emmy.artex.broadcast.BroadcastTask;
 import me.emmy.artex.chat.ChatRepository;
 import me.emmy.artex.chat.listener.ChatListener;
 import me.emmy.artex.command.CommandUtility;
+import me.emmy.artex.config.ConfigHandler;
 import me.emmy.artex.conversation.ConversationHandler;
 import me.emmy.artex.database.DatabaseService;
 import me.emmy.artex.godmode.GodModeRepository;
@@ -31,6 +32,7 @@ public class Artex extends JavaPlugin {
     @Getter
     private static Artex instance;
 
+    private ConfigHandler configHandler;
     private CommandFramework commandFramework;
     private DatabaseService databaseService;
     private RankRepository rankRepository;
@@ -49,6 +51,7 @@ public class Artex extends JavaPlugin {
         registerChannels();
         registerCommands();
         saveDefaultConfig();
+        initializeConfigHandler();
         setupMongoDatabase();
         initializeRepositories();
         registerHandlers();
@@ -67,6 +70,10 @@ public class Artex extends JavaPlugin {
 
     private void registerChannels() {
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+    }
+
+    private void initializeConfigHandler() {
+        this.configHandler = new ConfigHandler();
     }
 
     /**
@@ -89,14 +96,10 @@ public class Artex extends JavaPlugin {
      */
     private void initializeRepositories() {
         this.rankRepository = new RankRepository();
-
         this.tagRepository = new TagRepository();
-
         this.profileRepository = new ProfileRepository();
         this.profileRepository.initializeEveryProfile();
-
         this.chatRepository = new ChatRepository(false);
-
         this.godModeRepository = new GodModeRepository();
     }
 
@@ -105,7 +108,6 @@ public class Artex extends JavaPlugin {
      */
     private void registerHandlers() {
         this.spawnHandler = new SpawnHandler();
-
         this.conversationHandler = new ConversationHandler();
     }
 

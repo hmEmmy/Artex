@@ -9,7 +9,7 @@ import lombok.Getter;
  */
 @Getter
 public enum EnumDefaultConfigSettings {
-    TEST_MESSAGE("test.messages.config", "This is a test message to be saved in the messages config.")
+    TEST_MESSAGE("test.messages.config", "This is a test message to be saved in the settings config.")
 
     ;
 

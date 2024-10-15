@@ -4,6 +4,7 @@ import lombok.Getter;
 import me.emmy.artex.Artex;
 import me.emmy.artex.config.values.EnumDefaultConfigMessages;
 import me.emmy.artex.config.values.EnumDefaultConfigSettings;
+import me.emmy.artex.util.Logger;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -36,7 +37,7 @@ public class ConfigHandler {
     }
 
     /**
-     * Load the configuration files
+     * Load the configuration files.
      *
      * @param configNames the names of the configuration files
      */
@@ -44,8 +45,7 @@ public class ConfigHandler {
         for (String configName : configNames) {
             File configFile = new File(Artex.getInstance().getDataFolder(), configName + ".yml");
             if (!configFile.exists()) {
-                configFile.getParentFile().mkdirs();
-                Artex.getInstance().saveResource(configName + ".yml", false);
+                this.createDefaultConfig(configFile, configName);
             }
             FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
             configs.put(configName, config);
@@ -68,7 +68,38 @@ public class ConfigHandler {
                     break;
             }
 
-            saveConfig(config, configName);
+            saveConfig(configFile, config);
+        }
+    }
+
+    /**
+     * Create a default configuration file.
+     *
+     * @param configFile the file to create
+     * @param configName the name of the configuration file
+     */
+    private void createDefaultConfig(File configFile, String configName) {
+        try {
+            configFile.getParentFile().mkdirs();
+            configFile.createNewFile();
+            FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
+
+            switch (configName) {
+                case "settings":
+                    for (EnumDefaultConfigSettings utility : EnumDefaultConfigSettings.values()) {
+                        config.set(utility.getPath(), utility.getDefaultValue());
+                    }
+                    break;
+                case "messages":
+                    for (EnumDefaultConfigMessages message : EnumDefaultConfigMessages.values()) {
+                        config.set(message.getPath(), message.getDefaultValue());
+                    }
+                    break;
+            }
+
+            config.save(configFile);
+        } catch (IOException e) {
+            Logger.debug("Could not create the " + configFile.getName() + " file: " + e.getMessage());
         }
     }
 
@@ -95,22 +126,24 @@ public class ConfigHandler {
     /**
      * Save a configuration file
      *
-     * @param config the configuration file
+     * @param file the file to save
      * @param configName the name of the configuration file
      */
-    public void saveConfig(FileConfiguration config, String configName) {
-        try {
-            config.save(configFiles.get(configName));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public void saveConfig(File file, String configName) {
+        saveConfig(file, configs.get(configName));
     }
 
+    /**
+     * Save a configuration file
+     *
+     * @param file the file to save
+     * @param config the configuration file
+     */
     public void saveConfig(File file, FileConfiguration config) {
         try {
             config.save(file);
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.debug("Could not save the " + file.getName() + " file: " + e.getMessage());
         }
     }
 }
