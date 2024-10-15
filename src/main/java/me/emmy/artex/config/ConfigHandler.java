@@ -78,6 +78,7 @@ public class ConfigHandler {
      * @param configFile the file to create
      * @param configName the name of the configuration file
      */
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     private void createDefaultConfig(File configFile, String configName) {
         try {
             configFile.getParentFile().mkdirs();
