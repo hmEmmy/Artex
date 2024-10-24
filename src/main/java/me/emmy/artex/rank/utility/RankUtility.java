@@ -17,7 +17,6 @@ import java.util.ArrayList;
  */
 @UtilityClass
 public class RankUtility {
-
     /**
      * Create default ranks and debug each step.
      */

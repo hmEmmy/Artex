@@ -28,6 +28,7 @@ public class ConfigHandler {
     private final String[] configurations = {
             "settings",
             "messages",
+            "profiles"
     };
 
     public ConfigHandler() {

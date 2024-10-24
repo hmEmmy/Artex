@@ -18,7 +18,6 @@ import java.util.Random;
  * @date 01/09/2024 - 10:56
  */
 public class BroadcastTask extends BukkitRunnable {
-
     private final List<Broadcast> announcements = new ArrayList<>();
     private final Random random = new Random();
 

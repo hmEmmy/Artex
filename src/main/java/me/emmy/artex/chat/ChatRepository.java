@@ -11,7 +11,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class ChatRepository {
-
     private boolean isChatMuted;
 
     /**

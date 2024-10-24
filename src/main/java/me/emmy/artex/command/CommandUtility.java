@@ -14,6 +14,7 @@ import me.emmy.artex.command.impl.admin.gamemode.SurvivalCommand;
 import me.emmy.artex.command.impl.admin.troll.FakeOpCommand;
 import me.emmy.artex.command.impl.admin.troll.LaunchCommand;
 import me.emmy.artex.command.impl.admin.troll.TrollCommand;
+import me.emmy.artex.command.impl.donator.MediaBroadcastCommand;
 import me.emmy.artex.command.impl.user.JoinCommand;
 import me.emmy.artex.command.impl.user.ListCommand;
 import me.emmy.artex.conversation.command.MessageCommand;
@@ -53,6 +54,7 @@ public class CommandUtility {
         registerGrantCommands();
         registerRankCommands();
         registerTagCommands();
+        registerDonatorCommands();
     }
 
     private void registerChatCommands() {
@@ -149,5 +151,11 @@ public class CommandUtility {
         new TagAdminSetItalicCommand();
 
         if (!ProjectInfo.AUTHOR.equals("Emmy")) Bukkit.shutdown();
+    }
+
+    private void registerDonatorCommands() {
+        Logger.debug("Registering donator commands...");
+
+        new MediaBroadcastCommand();
     }
 }

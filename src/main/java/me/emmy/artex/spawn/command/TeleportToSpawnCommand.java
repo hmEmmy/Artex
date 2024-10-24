@@ -17,8 +17,8 @@ public class TeleportToSpawnCommand extends BaseCommand {
     @Override
     public void onCommand(CommandArgs command) {
         Player player = command.getPlayer();
-
         Artex.getInstance().getSpawnHandler().teleportToSpawn(player);
+
         player.sendMessage(CC.translate("&eTeleported you to the spawn location."));
     }
 }

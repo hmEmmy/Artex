@@ -3,13 +3,17 @@ package me.emmy.artex.profile;
 import com.mongodb.client.MongoCollection;
 import lombok.Getter;
 import me.emmy.artex.Artex;
+import me.emmy.artex.config.ConfigHandler;
 import me.emmy.artex.grant.Grant;
 import me.emmy.artex.locale.Locale;
-import me.emmy.artex.profile.handler.impl.ProfileHandler;
+import me.emmy.artex.profile.handler.impl.FlatFileProfileHandler;
+import me.emmy.artex.profile.handler.impl.MongoProfileHandler;
 import me.emmy.artex.profile.handler.IProfile;
 import me.emmy.artex.rank.Rank;
 import me.emmy.artex.util.Logger;
 import org.bson.Document;
+import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,12 +33,42 @@ public class ProfileRepository {
     public final IProfile profile;
 
     public ProfileRepository() {
-        this.profile = new ProfileHandler();
+        if (Artex.getInstance().getDatabaseService().isMongo()) {
+            this.profile = new MongoProfileHandler();
+        } else if (Artex.getInstance().getDatabaseService().isFlatFile()) {
+            this.profile = new FlatFileProfileHandler();
+        } else {
+            Logger.logError("No database type found.");
+            Bukkit.getPluginManager().disablePlugin(Artex.getInstance());
+            this.profile = null;
+        }
     }
 
     public void initializeEveryProfile() {
+        if (Artex.getInstance().getDatabaseService().isMongo()) {
+            this.initializeEveryMongoProfile();
+        } else if (Artex.getInstance().getDatabaseService().isFlatFile()) {
+            this.initializeEveryFlatFileProfile();
+        } else {
+            Logger.logError("No database type found.");
+            Bukkit.getPluginManager().disablePlugin(Artex.getInstance());
+        }
+    }
+
+    private void initializeEveryMongoProfile() {
         this.collection = Artex.getInstance().getDatabaseService().getDatabase().getCollection("profiles");
         this.collection.find().forEach(this::loadProfile);
+    }
+
+    private void initializeEveryFlatFileProfile() {
+        FileConfiguration config = ConfigHandler.getInstance().getConfig("profiles.yml");
+        for (String key : config.getKeys(false)) {
+            UUID uuid = UUID.fromString(key);
+            Profile profile = new Profile(uuid);
+            profile.load();
+
+            profiles.put(profile.getUuid(), profile);
+        }
     }
 
     /**

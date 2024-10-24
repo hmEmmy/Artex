@@ -12,7 +12,6 @@ import org.bukkit.configuration.file.FileConfiguration;
  */
 @Getter
 public enum Locale {
-
     SERVER_NAME("server.name"),
     SERVER_REGION("server.region"),
 
@@ -30,7 +29,7 @@ public enum Locale {
 
     ;
 
-    private String string;
+    private final String string;
 
     Locale(String string) {
         this.string = Artex.getInstance().getConfig().getString(string);

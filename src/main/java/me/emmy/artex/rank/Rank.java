@@ -14,7 +14,6 @@ import java.util.List;
 @Getter
 @Setter
 public class Rank {
-
     private String name;
     private String prefix;
     private String suffix;

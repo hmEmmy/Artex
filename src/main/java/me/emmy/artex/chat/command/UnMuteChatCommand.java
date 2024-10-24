@@ -14,8 +14,8 @@ import org.bukkit.command.CommandSender;
  * @date 04/06/2024 - 20:41
  */
 public class UnMuteChatCommand extends BaseCommand {
-    @Override
     @Command(name = "unmutechat", permission = "artex.command.unmutechat", inGameOnly = false)
+    @Override
     public void onCommand(CommandArgs command) {
         CommandSender sender = command.getSender();
 

@@ -16,14 +16,13 @@ import org.bukkit.entity.Player;
  */
 @Getter
 public class SpawnHandler {
-
     private Location location;
 
     /**
      * Automatically load the spawn location
      */
     public SpawnHandler() {
-        loadLocation();
+        this.loadLocation();
     }
 
     /**
@@ -31,7 +30,6 @@ public class SpawnHandler {
      */
     public void loadLocation() {
         FileConfiguration config = Artex.getInstance().getConfig();
-
         Location location = LocationUtil.deserialize(config.getString("spawn.join-location"));
 
         if (location == null) {
@@ -62,7 +60,7 @@ public class SpawnHandler {
      * @param player the player to teleport
      */
     public void teleportToSpawn(Player player) {
-        Location location = getLocation();
+        Location location = this.location;
         if (location == null) {
             Logger.logError("Spawn location is null.");
             return;

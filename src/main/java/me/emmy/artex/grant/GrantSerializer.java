@@ -17,7 +17,6 @@ import java.util.List;
  */
 @UtilityClass
 public class GrantSerializer {
-
     private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     /**

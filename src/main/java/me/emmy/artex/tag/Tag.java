@@ -13,7 +13,6 @@ import org.bukkit.Material;
 @Getter
 @Setter
 public class Tag {
-
     private String name;
     private String displayName;
 

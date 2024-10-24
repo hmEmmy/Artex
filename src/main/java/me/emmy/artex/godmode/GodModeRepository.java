@@ -15,7 +15,6 @@ import java.util.Set;
 @Getter
 @Setter
 public class GodModeRepository {
-
     private Set<Player> godModePlayers = new HashSet<>();
 
     /**
@@ -27,7 +26,7 @@ public class GodModeRepository {
         player.setAllowFlight(true);
         player.setFlying(true);
 
-        godModePlayers.add(player);
+        this.godModePlayers.add(player);
     }
 
     /**
@@ -39,7 +38,7 @@ public class GodModeRepository {
         player.setAllowFlight(false);
         player.setFlying(false);
 
-        godModePlayers.remove(player);
+        this.godModePlayers.remove(player);
     }
 
     /**
@@ -49,6 +48,6 @@ public class GodModeRepository {
      * @return If the player is in godmode
      */
     public boolean isGodModeEnabled(Player player) {
-        return godModePlayers.contains(player);
+        return this.godModePlayers.contains(player);
     }
 }

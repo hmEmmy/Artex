@@ -21,7 +21,6 @@ import java.util.List;
 @Getter
 @Setter
 public class RankRepository {
-
     private List<Rank> ranks = new ArrayList<>();
 
     public RankRepository() {

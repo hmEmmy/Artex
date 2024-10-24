@@ -11,7 +11,6 @@ import java.util.List;
  */
 @Getter
 public class Broadcast {
-
     private final List<String> lines;
 
     /**

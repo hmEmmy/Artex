@@ -1,7 +1,6 @@
 package me.emmy.artex.godmode.listener;
 
 import me.emmy.artex.Artex;
-import me.emmy.artex.godmode.GodModeRepository;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,13 +15,11 @@ import org.bukkit.event.entity.EntityDamageEvent;
  */
 public class GodModeListener implements Listener {
 
-    private final GodModeRepository godModeRepository = Artex.getInstance().getGodModeRepository();
-
     @EventHandler
     private void onDamage(EntityDamageEvent event) {
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
-            if (godModeRepository.isGodModeEnabled(player)) {
+            if (Artex.getInstance().getGodModeRepository().isGodModeEnabled(player)) {
                 event.setCancelled(true);
             }
         }
@@ -32,7 +29,7 @@ public class GodModeListener implements Listener {
     private void onEntityDamageByEntity(EntityDamageByEntityEvent event) {
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
-            if (godModeRepository.isGodModeEnabled(player)) {
+            if (Artex.getInstance().getGodModeRepository().isGodModeEnabled(player)) {
                 event.setCancelled(true);
             }
         }
@@ -42,7 +39,7 @@ public class GodModeListener implements Listener {
     private void onEntityDamageByBlock(EntityDamageByBlockEvent event) {
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
-            if (godModeRepository.isGodModeEnabled(player)) {
+            if (Artex.getInstance().getGodModeRepository().isGodModeEnabled(player)) {
                 event.setCancelled(true);
             }
         }

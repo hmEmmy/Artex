@@ -8,6 +8,7 @@ import com.mongodb.client.MongoDatabase;
 import lombok.Getter;
 import me.emmy.artex.Artex;
 import me.emmy.artex.util.CC;
+import me.emmy.artex.util.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 
@@ -35,25 +36,48 @@ public class DatabaseService {
      * Start the MongoDB connection
      */
     public void startMongo() {
-        try {
-            FileConfiguration config = Artex.getInstance().getConfig();
+        if (this.isMongo()) {
+            try {
+                FileConfiguration config = Artex.getInstance().getConfig();
 
-            String databaseName = config.getString("mongo.database");
-            Bukkit.getConsoleSender().sendMessage(CC.translate("&6Connecting to the MongoDB database..."));
+                String databaseName = config.getString("mongo.database");
+                Bukkit.getConsoleSender().sendMessage(CC.translate("&6Connecting to the MongoDB database..."));
 
-            ConnectionString connectionString = new ConnectionString(Objects.requireNonNull(config.getString("mongo.uri")));
-            MongoClientSettings.Builder settings = MongoClientSettings.builder();
-            settings.applyConnectionString(connectionString);
-            settings.applyToConnectionPoolSettings(builder -> builder.maxConnectionIdleTime(30, TimeUnit.SECONDS));
-            settings.retryWrites(true);
+                ConnectionString connectionString = new ConnectionString(Objects.requireNonNull(config.getString("mongo.uri")));
+                MongoClientSettings.Builder settings = MongoClientSettings.builder();
+                settings.applyConnectionString(connectionString);
+                settings.applyToConnectionPoolSettings(builder -> builder.maxConnectionIdleTime(30, TimeUnit.SECONDS));
+                settings.retryWrites(true);
 
-            this.mongoClient = MongoClients.create(settings.build());
-            this.database = mongoClient.getDatabase(databaseName);
+                this.mongoClient = MongoClients.create(settings.build());
+                this.database = mongoClient.getDatabase(databaseName);
 
-            Bukkit.getConsoleSender().sendMessage(CC.translate("&aSuccessfully connected to the MongoDB database."));
-        } catch (Exception exception) {
-            Bukkit.getConsoleSender().sendMessage(CC.translate("&cFailed to connect to the MongoDB database."));
+                Bukkit.getConsoleSender().sendMessage(CC.translate("&aSuccessfully connected to the MongoDB database."));
+            } catch (Exception exception) {
+                Bukkit.getConsoleSender().sendMessage(CC.translate("&cFailed to connect to the MongoDB database."));
+                Bukkit.getPluginManager().disablePlugin(Artex.getInstance());
+            }
+        } else {
+            Logger.debug("The storage type is not set to MongoDB.");
             Bukkit.getPluginManager().disablePlugin(Artex.getInstance());
         }
+    }
+
+    /**
+     * Check if the database type is MongoDB
+     *
+     * @return true if the database type is MongoDB
+     */
+    public boolean isMongo() {
+        return Artex.getInstance().getConfig().getString("storage-type").equalsIgnoreCase("MONGO");
+    }
+
+    /**
+     * Check if the database type is flat file
+     *
+     * @return true if the database type is flat file
+     */
+    public boolean isFlatFile() {
+        return Artex.getInstance().getConfig().getString("storage-type").equalsIgnoreCase("FLAT_FILE");
     }
 }

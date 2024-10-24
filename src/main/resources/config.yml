@@ -1,6 +1,8 @@
 plugin:
   debugging: true #Sends debug messages to the console (development purposes)
 
+storage-type: "MONGO" #MONGO or FLAT_FILE (Currently only mongo supported)
+
 mongo:
   uri: mongodb://localhost:27017
   database: Artex-Core

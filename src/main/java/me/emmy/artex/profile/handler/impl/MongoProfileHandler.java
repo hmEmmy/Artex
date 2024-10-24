@@ -14,7 +14,7 @@ import org.bson.Document;
  * @project Artex
  * @date 29/09/2024 - 09:58
  */
-public class ProfileHandler implements IProfile {
+public class MongoProfileHandler implements IProfile {
     /**
      * Load a profile from the database
      *
