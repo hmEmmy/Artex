@@ -30,7 +30,7 @@ public class RankRepository {
     private List<Rank> ranks = new ArrayList<>();
 
     public RankRepository() {
-        loadRanks();
+        this.loadRanks();
     }
 
     /**
@@ -104,9 +104,12 @@ public class RankRepository {
         } else if (this.isFlatFile()) {
             Logger.debug("Saving ranks to the YAML file.");
             FileConfiguration config = ConfigHandler.getInstance().getConfig("ranks");
+
+            Logger.debug("Deleting all ranks from the YAML file.");
             config.set("ranks", null);
 
             for (Rank rank : ranks) {
+                Logger.debug("Saving rank " + rank.getName() + " to the YAML file.");
                 config.set("ranks." + rank.getName() + ".prefix", rank.getPrefix());
                 config.set("ranks." + rank.getName() + ".suffix", rank.getSuffix());
                 config.set("ranks." + rank.getName() + ".weight", rank.getWeight());

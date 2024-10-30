@@ -20,13 +20,13 @@ import java.util.List;
  */
 @Getter
 public class TagRepository {
-    private List<Tag> tags = new ArrayList<>();
+    private final List<Tag> tags = new ArrayList<>();
 
     /**
      * Automatically load the tags
      */
     public TagRepository() {
-        loadTags();
+        this.loadTags();
     }
 
     /**

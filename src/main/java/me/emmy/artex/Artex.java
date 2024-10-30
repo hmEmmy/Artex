@@ -25,6 +25,18 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * |------------------------------------------------------------------------------------------------------------------------------------------------|
+ *   This project is licensed under Apache License 2.0, see LICENSE.
+ *   Copying, modifying or distributing this project is allowed as long as credits maintain.
+ *   Credentials are these file headers, the plugin.yml and anything else in relation with the author's name, including the LICENSE file.
+ *   Basically, if you do not follow the usage, you're stealing this project, aka. skidding it, which is not cool :|
+ * |------------------------------------------------------------------------------------------------------------------------------------------------|
+ *
+ * @author Emmy
+ * @project Artex
+ * @date 15/08/2024 - 20:11
+ */
 @Getter
 @Setter
 public class Artex extends JavaPlugin {
@@ -48,15 +60,15 @@ public class Artex extends JavaPlugin {
     public void onEnable() {
         instance = this;
 
-        registerChannels();
-        registerCommands();
-        saveDefaultConfig();
-        initializeConfigHandler();
-        setupMongoDatabase();
-        initializeRepositories();
-        registerHandlers();
-        registerEvents();
-        runTasks();
+        this.registerChannels();
+        this.registerCommands();
+        this.saveDefaultConfig();
+        this.initializeConfigHandler();
+        this.setupMongoDatabase();
+        this.initializeRepositories();
+        this.registerHandlers();
+        this.registerEvents();
+        this.runTasks();
 
         CC.sendEnableMessage();
     }
@@ -76,24 +88,15 @@ public class Artex extends JavaPlugin {
         this.configHandler = new ConfigHandler();
     }
 
-    /**
-     * Register all commands.
-     */
     private void registerCommands() {
         this.commandFramework = new CommandFramework();
         CommandUtility.registerCommands();
     }
 
-    /**
-     * Connect to the mongo database.
-     */
     private void setupMongoDatabase() {
         this.databaseService = new DatabaseService();
     }
 
-    /**
-     * Initialize all repositories.
-     */
     private void initializeRepositories() {
         this.rankRepository = new RankRepository();
         this.tagRepository = new TagRepository();
@@ -103,17 +106,11 @@ public class Artex extends JavaPlugin {
         this.godModeRepository = new GodModeRepository();
     }
 
-    /**
-     * Register all handlers.
-     */
     private void registerHandlers() {
         this.spawnHandler = new SpawnHandler();
         this.conversationHandler = new ConversationHandler();
     }
 
-    /**
-     * Register all events by looping through a list of listeners.
-     */
     private void registerEvents() {
         List<Listener> listeners = Arrays.asList(
                 new ProfileListener(),
@@ -123,9 +120,6 @@ public class Artex extends JavaPlugin {
         listeners.forEach(event -> Bukkit.getPluginManager().registerEvents(event, this));
     }
 
-    /**
-     * Run all tasks.
-     */
     private void runTasks() {
         this.broadcastTask = new BroadcastTask();
         if (getConfig().getBoolean("broadcast.enabled")) {
