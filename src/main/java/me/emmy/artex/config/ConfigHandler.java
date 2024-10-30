@@ -28,7 +28,9 @@ public class ConfigHandler {
     private final String[] configurations = {
             "settings",
             "messages",
-            "profiles"
+            "profiles",
+            "ranks",
+            "tags"
     };
 
     public ConfigHandler() {
