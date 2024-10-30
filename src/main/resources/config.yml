@@ -96,6 +96,7 @@ broadcast:
       - " &fJoin our discord to get informed"
       - " &fabout news & updates!"
       - " &c{discord}"
+      - " "
     message-2:
       - " "
       - "&7[&4&lArtex Network&7]"
