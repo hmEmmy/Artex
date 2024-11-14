@@ -22,7 +22,7 @@ import java.util.List;
 @Getter
 public class RankRepository {
     private final List<Rank> ranks = new ArrayList<>();
-    FileConfiguration ranksConfig;
+    private final FileConfiguration ranksConfig;
 
     public RankRepository() {
         this.ranksConfig = Artex.getInstance().getConfigHandler().getConfigs().get("ranks");

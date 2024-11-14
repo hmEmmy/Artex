@@ -23,7 +23,7 @@ import java.util.List;
 @Getter
 public class TagRepository {
     private final List<Tag> tags = new ArrayList<>();
-    FileConfiguration tagsConfig;
+    private final FileConfiguration tagsConfig;
 
     /**
      * Automatically load the tags
