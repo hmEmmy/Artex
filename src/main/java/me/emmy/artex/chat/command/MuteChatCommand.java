@@ -19,7 +19,7 @@ public class MuteChatCommand extends BaseCommand {
     public void onCommand(CommandArgs command) {
         CommandSender sender = command.getSender();
 
-        Artex.getInstance().getChatRepository().setChatMuted(true);
-        Bukkit.broadcastMessage(CC.translate("&cChat has been muted by " + sender.getName() + "."));
+        Artex.getInstance().getChatService().setChatMuted(true);
+        Bukkit.broadcastMessage(CC.translate("&c&lChat has been muted by " + sender.getName() + "."));
     }
 }

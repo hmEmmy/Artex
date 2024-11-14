@@ -26,7 +26,7 @@ public class TagAdminInfoCommand extends BaseCommand {
         }
 
         String name = args[0];
-        Tag tag = Artex.getInstance().getTagRepository().getTag(name);
+        Tag tag = Artex.getInstance().getTagService().getTag(name);
         if (tag == null) {
             sender.sendMessage(CC.translate("&cA tag with that name does not exist."));
             return;

@@ -16,11 +16,15 @@ import org.bukkit.entity.Player;
 @Getter
 public class SpawnHandler {
     private Location location;
+    private final FileConfiguration config;
 
     /**
-     * Automatically load the spawn location
+     * Constructor for the SpawnHandler class.
+     *
+     * @param config the config file
      */
-    public SpawnHandler() {
+    public SpawnHandler(FileConfiguration config) {
+        this.config = config;
         this.loadLocation();
     }
 
@@ -28,9 +32,7 @@ public class SpawnHandler {
      * Load the spawn location from the config file
      */
     public void loadLocation() {
-        FileConfiguration config = Artex.getInstance().getConfig();
-        Location location = LocationUtil.deserialize(config.getString("spawn.join-location"));
-
+        Location location = LocationUtil.deserialize(this.config.getString("spawn.join-location"));
         if (location == null) {
             Logger.logError("Spawn location is null.");
             return;
@@ -46,10 +48,7 @@ public class SpawnHandler {
      */
     public void saveLocation(Location location) {
         this.location = location;
-        FileConfiguration config = Artex.getInstance().getConfig();
-
-        config.set("spawn.join-location", LocationUtil.serialize(location));
-
+        this.config.set("spawn.join-location", LocationUtil.serialize(location));
         Artex.getInstance().saveConfig();
     }
 

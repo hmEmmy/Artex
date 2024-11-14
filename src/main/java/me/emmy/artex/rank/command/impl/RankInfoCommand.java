@@ -6,7 +6,6 @@ import me.emmy.artex.api.command.CommandArgs;
 import me.emmy.artex.api.command.annotation.Command;
 import me.emmy.artex.rank.Rank;
 import me.emmy.artex.util.CC;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 /**
@@ -27,7 +26,7 @@ public class RankInfoCommand extends BaseCommand {
         }
 
         String name = args[0];
-        Rank rank = Artex.getInstance().getRankRepository().getRank(name);
+        Rank rank = Artex.getInstance().getRankService().getRank(name);
         if (rank == null) {
             sender.sendMessage(CC.translate("&cA rank with that name does not exist."));
             return;
@@ -51,9 +50,7 @@ public class RankInfoCommand extends BaseCommand {
             return;
         }
 
-        rank.getPermissions().forEach(permission -> {
-            sender.sendMessage(CC.translate("   &f- &7" + permission));
-        });
+        rank.getPermissions().forEach(permission -> sender.sendMessage(CC.translate("   &f- &7" + permission)));
         sender.sendMessage("");
     }
 }

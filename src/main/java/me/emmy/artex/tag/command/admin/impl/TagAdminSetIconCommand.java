@@ -26,7 +26,7 @@ public class TagAdminSetIconCommand extends BaseCommand {
         }
 
         String name = args[0];
-        Tag tag = Artex.getInstance().getTagRepository().getTag(name);
+        Tag tag = Artex.getInstance().getTagService().getTag(name);
         if (tag == null) {
             player.sendMessage(CC.translate("&cA tag with that name does not exist."));
             return;
@@ -34,7 +34,7 @@ public class TagAdminSetIconCommand extends BaseCommand {
 
         tag.setIcon(player.getItemInHand().getType());
         tag.setDurability(player.getItemInHand().getDurability());
-        Artex.getInstance().getTagRepository().saveTag(tag);
+        Artex.getInstance().getTagService().saveTag(tag);
         player.sendMessage(CC.translate("&aSuccessfully set the icon of the tag &f" + name + "&r&a to &f" + player.getItemInHand().getType().name() + "&r&a."));
     }
 }

@@ -20,17 +20,22 @@ import java.util.List;
  * @date 15/08/2024 - 22:22
  */
 @Getter
-public class RankRepository {
+public class RankService {
     private final List<Rank> ranks = new ArrayList<>();
     private final FileConfiguration ranksConfig;
 
-    public RankRepository() {
-        this.ranksConfig = Artex.getInstance().getConfigHandler().getConfigs().get("ranks");
+    /**
+     * Constructor for the RankRepository class.
+     *
+     * @param configHandler the config handler
+     */
+    public RankService(ConfigHandler configHandler) {
+        this.ranksConfig = configHandler.getConfig("ranks");
         this.loadRanks();
     }
 
     /**
-     * Initialize the rank repository
+     * Load the ranks based on the database type.
      */
     public void loadRanks() {
         if (this.isMongo()) {
@@ -112,7 +117,7 @@ public class RankRepository {
                 this.ranksConfig.set("ranks." + rank.getName() + ".permissions", rank.getPermissions());
             }
 
-            ConfigHandler.getInstance().saveConfig(ConfigHandler.getInstance().getConfigFile("ranks"), this.ranksConfig);
+            Artex.getInstance().getConfigHandler().saveConfig(Artex.getInstance().getConfigHandler().getConfigFile("ranks"), this.ranksConfig);
         } else {
             Logger.logError("No database type found. Please check your configuration.");
         }
@@ -139,7 +144,7 @@ public class RankRepository {
             this.ranksConfig.set("ranks." + rank.getName() + ".defaultRank", rank.isDefaultRank());
             this.ranksConfig.set("ranks." + rank.getName() + ".permissions", rank.getPermissions());
 
-            ConfigHandler.getInstance().saveConfig(ConfigHandler.getInstance().getConfigFile("ranks"), this.ranksConfig);
+            Artex.getInstance().getConfigHandler().saveConfig(Artex.getInstance().getConfigHandler().getConfigFile("ranks"), this.ranksConfig);
         } else {
             Logger.logError("No database type found. Please check your configuration.");
         }
@@ -207,10 +212,12 @@ public class RankRepository {
 
             this.ranks.add(rank);
         } else if (this.isFlatFile()) {
-            for (String rankName : this.ranksConfig.getConfigurationSection("ranks").getKeys(false)) {
-                if (this.ranksConfig.getBoolean("ranks." + rankName + ".defaultRank")) {
-                    Logger.debug(rankName + " has defaultRank set as true. Not creating the default rank.");
-                    return;
+            if (this.ranksConfig.contains("ranks")) {
+                for (String rankName : this.ranksConfig.getConfigurationSection("ranks").getKeys(false)) {
+                    if (this.ranksConfig.getBoolean("ranks." + rankName + ".defaultRank")) {
+                        Logger.debug(rankName + " has defaultRank set as true. Not creating the default rank.");
+                        return;
+                    }
                 }
             }
 
@@ -301,7 +308,7 @@ public class RankRepository {
             this.saveRanks();
         } else if (this.isFlatFile()) {
             this.ranksConfig.set("ranks." + rank.getName(), null);
-            ConfigHandler.getInstance().saveConfig(ConfigHandler.getInstance().getConfigFile("ranks"), this.ranksConfig);
+            Artex.getInstance().getConfigHandler().saveConfig(Artex.getInstance().getConfigHandler().getConfigFile("ranks"), this.ranksConfig);
         } else {
             Logger.logError("No database type found. Please check your configuration.");
         }

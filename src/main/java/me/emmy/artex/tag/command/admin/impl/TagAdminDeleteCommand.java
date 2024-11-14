@@ -26,13 +26,13 @@ public class TagAdminDeleteCommand extends BaseCommand {
         }
 
         String name = args[0];
-        Tag tag = Artex.getInstance().getTagRepository().getTag(name);
+        Tag tag = Artex.getInstance().getTagService().getTag(name);
         if (tag == null) {
             sender.sendMessage(CC.translate("&cA tag with that name does not exist."));
             return;
         }
 
-        Artex.getInstance().getTagRepository().deleteTag(tag);
+        Artex.getInstance().getTagService().deleteTag(tag);
         sender.sendMessage(CC.translate("&aSuccessfully deleted the tag &f" + name + "&r&a."));
     }
 }

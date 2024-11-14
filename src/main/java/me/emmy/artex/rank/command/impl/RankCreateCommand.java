@@ -28,7 +28,7 @@ public class RankCreateCommand extends BaseCommand {
         }
 
         String name = args[0];
-        Rank rank = Artex.getInstance().getRankRepository().getRank(name);
+        Rank rank = Artex.getInstance().getRankService().getRank(name);
         if (rank != null) {
             sender.sendMessage(CC.translate("&cA rank with that name already exists."));
             return;
@@ -46,7 +46,7 @@ public class RankCreateCommand extends BaseCommand {
                 return;
         }
 
-        Artex.getInstance().getRankRepository().createRank(name, doPrefix);
+        Artex.getInstance().getRankService().createRank(name, doPrefix);
         sender.sendMessage(CC.translate("&aSuccessfully created a new rank called &4" + name + "&a."));
     }
 }

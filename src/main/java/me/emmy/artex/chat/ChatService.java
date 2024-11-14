@@ -10,7 +10,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class ChatRepository {
+public class ChatService {
     private boolean isChatMuted;
 
     /**
@@ -18,7 +18,7 @@ public class ChatRepository {
      *
      * @param isChatMuted boolean
      */
-    public ChatRepository(boolean isChatMuted) {
+    public ChatService(boolean isChatMuted) {
         this.isChatMuted = isChatMuted;
     }
 }

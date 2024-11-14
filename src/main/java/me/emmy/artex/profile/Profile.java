@@ -37,17 +37,17 @@ public class Profile {
         this.uuid = uuid;
         this.username = Bukkit.getOfflinePlayer(this.uuid).getName();
         this.tag = "";
-        this.rank = Artex.getInstance().getRankRepository().getDefaultRank();
+        this.rank = Artex.getInstance().getRankService().getDefaultRank();
         this.grants = new ArrayList<>();
     }
 
     public void load() {
-        Artex.getInstance().getProfileRepository().getProfile().loadProfile(this);
+        Artex.getInstance().getProfileRepository().getIProfile().loadProfile(this);
         Logger.debug("Loaded profile for " + this.username + ".");
     }
 
     public void save() {
-        Artex.getInstance().getProfileRepository().getProfile().saveProfile(this);
+        Artex.getInstance().getProfileRepository().getIProfile().saveProfile(this);
         Logger.debug("Saved profile for " + this.username + ".");
     }
 
@@ -62,7 +62,7 @@ public class Profile {
                 .filter(Grant::isActive)
                 .max(Comparator.comparingInt(grant -> grant.getRank().getWeight()))
                 .map(Grant::getRank)
-                .orElse(Artex.getInstance().getRankRepository().getDefaultRank());
+                .orElse(Artex.getInstance().getRankService().getDefaultRank());
     }
 
     /**
@@ -77,6 +77,6 @@ public class Profile {
     }
 
     public Tag getTag() {
-        return Artex.getInstance().getTagRepository().getTag(this.tag);
+        return Artex.getInstance().getTagService().getTag(this.tag);
     }
 }

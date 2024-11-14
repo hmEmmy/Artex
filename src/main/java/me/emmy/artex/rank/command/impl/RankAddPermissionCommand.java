@@ -26,7 +26,7 @@ public class RankAddPermissionCommand extends BaseCommand {
         }
 
         String name = args[0];
-        Rank rank = Artex.getInstance().getRankRepository().getRank(name);
+        Rank rank = Artex.getInstance().getRankService().getRank(name);
         if (rank == null) {
             sender.sendMessage(CC.translate("&cA rank with that name does not exist."));
             return;
@@ -36,13 +36,13 @@ public class RankAddPermissionCommand extends BaseCommand {
 
         if (rank.getPermissions().contains(permission)) {
             rank.getPermissions().remove(permission);
-            Artex.getInstance().getRankRepository().saveRank(rank);
+            Artex.getInstance().getRankService().saveRank(rank);
             sender.sendMessage(CC.translate("&aSuccessfully &cremoved &athe permission &4" + permission + " &afrom &4" + name + "&a."));
             return;
         }
 
         rank.getPermissions().add(permission);
-        Artex.getInstance().getRankRepository().saveRank(rank);
+        Artex.getInstance().getRankService().saveRank(rank);
         sender.sendMessage(CC.translate("&aSuccessfully &eadded the permission &4" + permission + " &ato &4" + name + "&a."));
     }
 }

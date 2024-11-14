@@ -6,6 +6,7 @@ import me.emmy.artex.rank.Rank;
 import me.emmy.artex.util.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import java.util.HashMap;
 import java.util.UUID;
@@ -18,13 +19,20 @@ import java.util.UUID;
 @Getter
 public class ConversationHandler {
     private final HashMap<UUID, UUID> conversations;
-    private final String sentFormat;
+    private final FileConfiguration config;
     private final String receivedFormat;
+    private final String sentFormat;
 
-    public ConversationHandler() {
+    /**
+     * Constructor for the ConversationHandler class.
+     *
+     * @param config the configuration file
+     */
+    public ConversationHandler(FileConfiguration config) {
         this.conversations = new HashMap<>();
-        this.sentFormat = CC.translate(Artex.getInstance().getConfig().getString("conversation.format.sent"));
-        this.receivedFormat = CC.translate(Artex.getInstance().getConfig().getString("conversation.format.received"));
+        this.config = config;
+        this.receivedFormat = CC.translate(config.getString("conversation.format.received"));
+        this.sentFormat = CC.translate(config.getString("conversation.format.sent"));
     }
 
     /**
@@ -58,8 +66,8 @@ public class ConversationHandler {
      * @param senderPlayer The player who is sending the message.
      */
     private void sendMessage(String message, Player targetPlayer, Player senderPlayer) {
-        Rank senderRank = Artex.getInstance().getProfileRepository().getProfile(senderPlayer.getUniqueId()).getHighestRankBasedOnGrant();
-        Rank targetRank = Artex.getInstance().getProfileRepository().getProfile(targetPlayer.getUniqueId()).getHighestRankBasedOnGrant();
+        Rank senderRank = Artex.getInstance().getProfileRepository().getIProfile(senderPlayer.getUniqueId()).getHighestRankBasedOnGrant();
+        Rank targetRank = Artex.getInstance().getProfileRepository().getIProfile(targetPlayer.getUniqueId()).getHighestRankBasedOnGrant();
 
         targetPlayer.sendMessage(CC.translate(this.receivedFormat
                 .replace("{sender}", senderRank == null ? "&a" + senderPlayer.getName() : senderRank.getColor() + senderPlayer.getName())

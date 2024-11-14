@@ -29,14 +29,14 @@ public class TagAdminSetDisplayNameCommand extends BaseCommand {
 
         String name = args[0];
         String displayName = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
-        Tag tag = Artex.getInstance().getTagRepository().getTag(name);
+        Tag tag = Artex.getInstance().getTagService().getTag(name);
         if (tag == null) {
             sender.sendMessage(CC.translate("&cA tag with that name does not exist."));
             return;
         }
 
         tag.setDisplayName(displayName);
-        Artex.getInstance().getTagRepository().saveTag(tag);
+        Artex.getInstance().getTagService().saveTag(tag);
         sender.sendMessage(CC.translate("&aSuccessfully set the display name of the tag &f" + name + "&r&a to &f" + displayName + "&r&a."));
     }
 }

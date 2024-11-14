@@ -3,23 +3,21 @@ package me.emmy.artex.profile;
 import com.mongodb.client.MongoCollection;
 import lombok.Getter;
 import me.emmy.artex.Artex;
-import me.emmy.artex.config.ConfigHandler;
+import me.emmy.artex.database.DatabaseService;
 import me.emmy.artex.grant.Grant;
 import me.emmy.artex.locale.Locale;
+import me.emmy.artex.profile.handler.IProfile;
 import me.emmy.artex.profile.handler.impl.FlatFileProfileHandler;
 import me.emmy.artex.profile.handler.impl.MongoProfileHandler;
-import me.emmy.artex.profile.handler.IProfile;
 import me.emmy.artex.rank.Rank;
 import me.emmy.artex.util.Logger;
 import org.bson.Document;
 import org.bukkit.Bukkit;
-import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import java.util.*;
 
 /**
  * @author Emmy
@@ -28,60 +26,21 @@ import java.util.*;
  */
 @Getter
 public class ProfileRepository {
-    private final Map<UUID, Profile> profiles = new HashMap<>();
+    private final DatabaseService databaseService;
     public MongoCollection<Document> collection;
-    public final IProfile profile;
-
-    public ProfileRepository() {
-        if (Artex.getInstance().getDatabaseService().isMongo()) {
-            this.profile = new MongoProfileHandler();
-        } else if (Artex.getInstance().getDatabaseService().isFlatFile()) {
-            this.profile = new FlatFileProfileHandler();
-        } else {
-            Logger.logError("No database type found.");
-            Bukkit.getPluginManager().disablePlugin(Artex.getInstance());
-            this.profile = null;
-        }
-    }
-
-    public void initializeEveryProfile() {
-        if (Artex.getInstance().getDatabaseService().isMongo()) {
-            this.initializeEveryMongoProfile();
-        } else if (Artex.getInstance().getDatabaseService().isFlatFile()) {
-            this.initializeEveryFlatFileProfile();
-        } else {
-            Logger.logError("No database type found.");
-            Bukkit.getPluginManager().disablePlugin(Artex.getInstance());
-        }
-    }
-
-    private void initializeEveryMongoProfile() {
-        this.collection = Artex.getInstance().getDatabaseService().getDatabase().getCollection("profiles");
-        this.collection.find().forEach(this::loadProfile);
-    }
-
-    private void initializeEveryFlatFileProfile() {
-        FileConfiguration config = ConfigHandler.getInstance().getConfig("profiles.yml");
-        for (String key : config.getKeys(false)) {
-            UUID uuid = UUID.fromString(key);
-            Profile profile = new Profile(uuid);
-            profile.load();
-
-            this.profiles.put(profile.getUuid(), profile);
-        }
-    }
+    private final Map<UUID, Profile> profiles;
+    public final IProfile iProfile;
 
     /**
-     * Load a profile from a document
+     * Constructor for the ProfileRepository class
      *
-     * @param document the document to load the profile from
+     * @param databaseService the database service
      */
-    private void loadProfile(Document document) {
-        UUID uuid = UUID.fromString(document.getString("uuid"));
-        Profile profile = new Profile(uuid);
-        profile.load();
+    public ProfileRepository(DatabaseService databaseService) {
+        this.databaseService = databaseService;
+        this.profiles = new HashMap<>();
 
-        this.profiles.put(profile.getUuid(), profile);
+        this.iProfile = this.determineHandler();
     }
 
     /**
@@ -100,7 +59,7 @@ public class ProfileRepository {
      * @param uuid the UUID of the profile
      * @return the profile
      */
-    public Profile getProfile(UUID uuid) {
+    public Profile getIProfile(UUID uuid) {
         if (this.profiles.containsKey(uuid)) {
             return this.profiles.get(uuid);
         }
@@ -137,7 +96,7 @@ public class ProfileRepository {
     public void addFirstDefaultGrant(UUID uuid) {
         Logger.debug("addFirstDefaultGrant method called for " + uuid.toString() + ".");
         Grant grant = new Grant();
-        grant.setRank(Artex.getInstance().getRankRepository().getDefaultRank().getName());
+        grant.setRank(Artex.getInstance().getRankService().getDefaultRank().getName());
         grant.setPermanent(true);
         grant.setDuration(0);
         grant.setReason("Default rank");
@@ -146,7 +105,7 @@ public class ProfileRepository {
         grant.setAddedOn(Locale.SERVER_NAME.getString());
         grant.setActive(true);
 
-        Artex.getInstance().getProfileRepository().getProfile(uuid).setRank(Artex.getInstance().getRankRepository().getDefaultRank());
+        Artex.getInstance().getProfileRepository().getIProfile(uuid).setRank(Artex.getInstance().getRankService().getDefaultRank());
 
         this.addGrant(uuid, grant);
     }
@@ -176,5 +135,25 @@ public class ProfileRepository {
         Logger.debug("Getting highest rank based on grant for " + profile.getUsername() + ".");
         Rank highestGrant = profile.getHighestRankBasedOnGrant();
         profile.setRank(highestGrant);
+    }
+
+    /**
+     * Determine the handler for the profile
+     *
+     * @return the handler for the profile
+     */
+    private IProfile determineHandler() {
+        IProfile iProfile;
+        if (this.databaseService.isMongo()) {
+            this.collection = this.databaseService.getDatabase().getCollection("profiles");
+            iProfile = new MongoProfileHandler();
+        } else if (this.databaseService.isFlatFile()) {
+            iProfile = new FlatFileProfileHandler();
+        } else {
+            Logger.logError("No database type found.");
+            Bukkit.getPluginManager().disablePlugin(Artex.getInstance());
+            iProfile = null;
+        }
+        return iProfile;
     }
 }

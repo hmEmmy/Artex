@@ -5,7 +5,7 @@ import me.emmy.artex.api.command.BaseCommand;
 import me.emmy.artex.api.command.CommandArgs;
 import me.emmy.artex.api.command.annotation.Command;
 import me.emmy.artex.rank.Rank;
-import me.emmy.artex.rank.RankRepository;
+import me.emmy.artex.rank.RankService;
 import me.emmy.artex.util.CC;
 import org.bukkit.command.CommandSender;
 
@@ -28,14 +28,14 @@ public class RankListCommand extends BaseCommand {
         sender.sendMessage(CC.translate("&4&lArtex &8- &7Ranks"));
         sender.sendMessage("");
 
-        RankRepository rankRepository = Artex.getInstance().getRankRepository();
-        if (rankRepository.getRanks() == null || rankRepository.getRanks().isEmpty()) {
+        RankService rankService = Artex.getInstance().getRankService();
+        if (rankService.getRanks() == null || rankService.getRanks().isEmpty()) {
             sender.sendMessage(CC.translate("&f&l● &4No ranks found."));
             sender.sendMessage("");
             return;
         }
 
-        List<Rank> sortedRanks = rankRepository.getRanks().stream()
+        List<Rank> sortedRanks = rankService.getRanks().stream()
                 .sorted(Comparator.comparingInt(Rank::getWeight).reversed())
                 .collect(Collectors.toList());
 

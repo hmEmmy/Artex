@@ -8,7 +8,6 @@ import me.emmy.artex.profile.Profile;
 import me.emmy.artex.rank.Rank;
 import me.emmy.artex.util.CC;
 import me.emmy.artex.util.ItemBuilder;
-import me.emmy.artex.util.ProjectInfo;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -25,20 +24,19 @@ import java.util.stream.Collectors;
  */
 @AllArgsConstructor
 public class GrantMenu extends PaginatedMenu {
-
     private OfflinePlayer target;
     private String reason;
 
     @Override
     public String getPrePaginatedTitle(Player player) {
-        return "Grant " + target.getName();
+        return "Grant " + this.target.getName();
     }
 
     @Override
     public Map<Integer, Button> getGlobalButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        addGlassHeader(buttons, 15);
+        this.addGlassHeader(buttons, 15);
 
         return buttons;
     }
@@ -47,13 +45,13 @@ public class GrantMenu extends PaginatedMenu {
     public Map<Integer, Button> getAllPagesButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        List<Rank> sortedRanks = Artex.getInstance().getRankRepository().getRanks().stream()
+        List<Rank> sortedRanks = Artex.getInstance().getRankService().getRanks().stream()
                 .sorted(Comparator.comparingInt(Rank::getWeight).reversed())
                 .collect(Collectors.toList());
 
         for (int i = 0; i < sortedRanks.size(); i++) {
             Rank rank = sortedRanks.get(i);
-            buttons.put(i, new GrantButton(target, rank, reason));
+            buttons.put(i, new GrantButton(this.target, rank, this.reason));
         }
 
         return buttons;
@@ -66,7 +64,6 @@ public class GrantMenu extends PaginatedMenu {
 
     @AllArgsConstructor
     private static class GrantButton extends Button {
-
         private OfflinePlayer target;
         private Rank rank;
         private String reason;
@@ -75,19 +72,19 @@ public class GrantMenu extends PaginatedMenu {
         public ItemStack getButtonItem(Player player) {
             List<String> lore = Arrays.asList(
                     "",
-                    rank.getColor() + "Rank info",
-                    " &f● Name: &4" + rank.getRankWithColor(),
-                    " &f● Weight: &4" + rank.getColor() + rank.getWeight(),
-                    " &f● Prefix: &4" + rank.getPrefix(),
-                    " &f● Suffix: &4" + rank.getSuffix(),
-                    " &f● Bold: &4" + rank.getColor() + rank.isBold(),
-                    " &f● Italic: &4" + rank.getColor() + rank.isItalic(),
-                    " &f● Color: &4" + rank.getColor() + rank.getColor().name(),
+                    this.rank.getColor() + "Rank info",
+                    " &f● Name: &4" + this.rank.getRankWithColor(),
+                    " &f● Weight: &4" + this.rank.getColor() + this.rank.getWeight(),
+                    " &f● Prefix: &4" + this.rank.getPrefix(),
+                    " &f● Suffix: &4" + this.rank.getSuffix(),
+                    " &f● Bold: &4" + this.rank.getColor() + this.rank.isBold(),
+                    " &f● Italic: &4" + this.rank.getColor() + this.rank.isItalic(),
+                    " &f● Color: &4" + this.rank.getColor() + this.rank.getColor().name(),
                     "",
-                    rank.isDefaultRank() ? "&cYou cannot grant the default rank." : "&aClick to grant the rank."
+                    this.rank.isDefaultRank() ? "&cYou cannot grant the default rank." : "&aClick to grant the rank."
             );
             return new ItemBuilder(Material.PAPER)
-                    .name(rank.getRankWithColor())
+                    .name(this.rank.getRankWithColor())
                     .lore(lore)
                     .build();
         }
@@ -96,18 +93,18 @@ public class GrantMenu extends PaginatedMenu {
         public void clicked(Player player, ClickType clickType) {
             if (clickType != ClickType.LEFT) return;
 
-            if (rank.isDefaultRank()) {
+            if (this.rank.isDefaultRank()) {
                 player.sendMessage(CC.translate("&cYou cannot grant the default rank."));
                 return;
             }
 
-            Profile profile = Artex.getInstance().getProfileRepository().getProfileWithNoAdding(target.getUniqueId());
-            if (profile.getGrants().stream().anyMatch(grant -> grant.getRank().equals(rank) && grant.isActive())) {
-                player.sendMessage(CC.translate("&4" + target.getName() + " &calready has that rank granted."));
+            Profile profile = Artex.getInstance().getProfileRepository().getProfileWithNoAdding(this.target.getUniqueId());
+            if (profile.getGrants().stream().anyMatch(grant -> grant.getRank().equals(this.rank) && grant.isActive())) {
+                player.sendMessage(CC.translate("&4" + this.target.getName() + " &calready has that rank granted."));
                 return;
             }
 
-            new GrantDurationMenu(target, rank, reason).openMenu(player);
+            new GrantDurationMenu(this.target, this.rank, this.reason).openMenu(player);
         }
     }
 }

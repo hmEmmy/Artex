@@ -26,7 +26,7 @@ public class TagAdminSetBoldCommand extends BaseCommand {
         }
 
         String name = args[0];
-        Tag tag = Artex.getInstance().getTagRepository().getTag(name);
+        Tag tag = Artex.getInstance().getTagService().getTag(name);
         if (tag == null) {
             sender.sendMessage(CC.translate("&cA tag with that name does not exist."));
             return;
@@ -42,7 +42,7 @@ public class TagAdminSetBoldCommand extends BaseCommand {
         }
 
         tag.setBold(bold);
-        Artex.getInstance().getTagRepository().saveTag(tag);
+        Artex.getInstance().getTagService().saveTag(tag);
         sender.sendMessage(CC.translate("&aSuccessfully set the bold of the tag &f" + name + "&r&a to &f" + bold + "&r&a."));
     }
 }

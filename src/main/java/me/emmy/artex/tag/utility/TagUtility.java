@@ -3,7 +3,7 @@ package me.emmy.artex.tag.utility;
 import lombok.experimental.UtilityClass;
 import me.emmy.artex.Artex;
 import me.emmy.artex.tag.Tag;
-import me.emmy.artex.tag.TagRepository;
+import me.emmy.artex.tag.TagService;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
@@ -18,7 +18,7 @@ public class TagUtility {
      * Create the default tag
      */
     public void createDefaultTags() {
-        TagRepository tagRepository = Artex.getInstance().getTagRepository();
+        TagService tagService = Artex.getInstance().getTagService();
         
         Tag Heart = new Tag("Heart", "❤", Material.NAME_TAG, ChatColor.RED, 0, false, false);
         Tag BlackHeart = new Tag("BlackHeart", "❤", Material.NAME_TAG, ChatColor.BLACK, 0, true, false);
@@ -42,28 +42,28 @@ public class TagUtility {
         Tag Prince = new Tag("Prince", "Prince", Material.RED_ROSE, ChatColor.LIGHT_PURPLE, 1, false, false);
         Tag Princess = new Tag("Princess", "Princess", Material.RED_ROSE, ChatColor.LIGHT_PURPLE, 7, false, false);
 
-        tagRepository.getTags().add(Heart);
-        tagRepository.getTags().add(BlackHeart);
-        tagRepository.getTags().add(Diamond);
-        tagRepository.getTags().add(Star);
-        tagRepository.getTags().add(BestWW);
-        tagRepository.getTags().add(Crown);
-        tagRepository.getTags().add(King);
-        tagRepository.getTags().add(Queen);
-        tagRepository.getTags().add(Tick);
-        tagRepository.getTags().add(Flower);
-        tagRepository.getTags().add(Cross);
-        tagRepository.getTags().add(Blood);
-        tagRepository.getTags().add(Goat);
-        tagRepository.getTags().add(Banana);
-        tagRepository.getTags().add(Love);
-        tagRepository.getTags().add(Yurrrrrrr);
-        tagRepository.getTags().add(Legend);
-        tagRepository.getTags().add(First);
-        tagRepository.getTags().add(Godly);
-        tagRepository.getTags().add(Prince);
-        tagRepository.getTags().add(Princess);
+        tagService.getTags().add(Heart);
+        tagService.getTags().add(BlackHeart);
+        tagService.getTags().add(Diamond);
+        tagService.getTags().add(Star);
+        tagService.getTags().add(BestWW);
+        tagService.getTags().add(Crown);
+        tagService.getTags().add(King);
+        tagService.getTags().add(Queen);
+        tagService.getTags().add(Tick);
+        tagService.getTags().add(Flower);
+        tagService.getTags().add(Cross);
+        tagService.getTags().add(Blood);
+        tagService.getTags().add(Goat);
+        tagService.getTags().add(Banana);
+        tagService.getTags().add(Love);
+        tagService.getTags().add(Yurrrrrrr);
+        tagService.getTags().add(Legend);
+        tagService.getTags().add(First);
+        tagService.getTags().add(Godly);
+        tagService.getTags().add(Prince);
+        tagService.getTags().add(Princess);
 
-        tagRepository.saveTags();
+        tagService.saveTags();
     }
 }

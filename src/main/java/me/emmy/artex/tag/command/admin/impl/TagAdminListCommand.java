@@ -4,7 +4,7 @@ import me.emmy.artex.Artex;
 import me.emmy.artex.api.command.BaseCommand;
 import me.emmy.artex.api.command.CommandArgs;
 import me.emmy.artex.api.command.annotation.Command;
-import me.emmy.artex.tag.TagRepository;
+import me.emmy.artex.tag.TagService;
 import me.emmy.artex.util.CC;
 import org.bukkit.command.CommandSender;
 
@@ -18,21 +18,19 @@ public class TagAdminListCommand extends BaseCommand {
     @Override
     public void onCommand(CommandArgs command) {
         CommandSender sender = command.getSender();
-        TagRepository tagRepository = Artex.getInstance().getTagRepository();
+        TagService tagService = Artex.getInstance().getTagService();
 
         sender.sendMessage("");
         sender.sendMessage(CC.translate("&4&lArtex &8- &7Tag List"));
         sender.sendMessage("");
 
-        if (tagRepository.getTags().isEmpty()) {
+        if (tagService.getTags().isEmpty()) {
             sender.sendMessage(CC.translate("&f&l● &4No tags found."));
             sender.sendMessage("");
             return;
         }
 
-        tagRepository.getTags().stream().sorted().forEach(tag -> {
-            sender.sendMessage(CC.translate("&f&l● &7" + tag.getName() + " &f- &7" + tag.getNiceName()));
-        });
+        tagService.getTags().stream().sorted().forEach(tag -> sender.sendMessage(CC.translate("&f&l● &7" + tag.getName() + " &f- &7" + tag.getNiceName())));
 
         sender.sendMessage("");
     }

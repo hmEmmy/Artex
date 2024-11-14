@@ -1,7 +1,6 @@
 package me.emmy.artex.profile.handler.impl;
 
 import me.emmy.artex.Artex;
-import me.emmy.artex.config.ConfigHandler;
 import me.emmy.artex.grant.GrantSerializer;
 import me.emmy.artex.profile.Profile;
 import me.emmy.artex.profile.handler.IProfile;
@@ -23,7 +22,7 @@ public class FlatFileProfileHandler implements IProfile {
      * @param profile the profile of the player
      */
     public void loadProfile(Profile profile) {
-        FileConfiguration config = ConfigHandler.getInstance().getConfig("profiles.yml");
+        FileConfiguration config = Artex.getInstance().getConfigHandler().getConfig("profiles");
         UUID uuid = profile.getUuid();
 
         if (!config.contains(uuid.toString())) {
@@ -32,8 +31,8 @@ public class FlatFileProfileHandler implements IProfile {
         }
 
         profile.setUsername(config.getString(uuid + ".username"));
-        profile.setTag(config.getString(uuid + ".tag"));
-        profile.setRank(Artex.getInstance().getRankRepository().getRank(config.getString(uuid + ".rank")));
+        if (config.contains(uuid + ".tag")) profile.setTag(config.getString(uuid + ".tag"));
+        profile.setRank(Artex.getInstance().getRankService().getRank(config.getString(uuid + ".rank")));
 
         List<String> grants = config.getStringList(uuid + ".grants");
         profile.setGrants(GrantSerializer.deserialize(grants));
@@ -45,15 +44,14 @@ public class FlatFileProfileHandler implements IProfile {
      * @param profile the profile of the player
      */
     public void saveProfile(Profile profile) {
-        FileConfiguration config = ConfigHandler.getInstance().getConfig("profiles.yml");
+        FileConfiguration config = Artex.getInstance().getConfigHandler().getConfig("profiles");
         UUID uuid = profile.getUuid();
 
-        config.set(uuid + ".uuid", uuid.toString());
         config.set(uuid + ".username", profile.getUsername());
-        config.set(uuid + ".tag", profile.getTag());
+        if (profile.getTag() != null) config.set(uuid + ".tag", profile.getTag().getName());
         config.set(uuid + ".rank", profile.getHighestRankBasedOnGrant().getName());
         config.set(uuid + ".grants", GrantSerializer.serialize(profile.getGrants()));
 
-        ConfigHandler.getInstance().saveConfig(ConfigHandler.getInstance().getConfigFile("profiles.yml"), config);
+        Artex.getInstance().getConfigHandler().saveConfig(Artex.getInstance().getConfigHandler().getConfigFile("profiles"), config);
     }
 }

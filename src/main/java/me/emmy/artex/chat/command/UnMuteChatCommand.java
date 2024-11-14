@@ -19,7 +19,7 @@ public class UnMuteChatCommand extends BaseCommand {
     public void onCommand(CommandArgs command) {
         CommandSender sender = command.getSender();
 
-        Artex.getInstance().getChatRepository().setChatMuted(false);
-        Bukkit.broadcastMessage(CC.translate("&aChat has been unmuted by " + sender.getName() + "."));
+        Artex.getInstance().getChatService().setChatMuted(false);
+        Bukkit.broadcastMessage(CC.translate("&a&lChat has been unmuted by " + sender.getName() + "."));
     }
 }

@@ -27,7 +27,6 @@ import java.util.Map;
  */
 @AllArgsConstructor
 public class GrantConfirmMenu extends Menu {
-
     private OfflinePlayer target;
     private Rank rank;
     private String reason;
@@ -44,10 +43,9 @@ public class GrantConfirmMenu extends Menu {
         Map<Integer, Button> buttons = new HashMap<>();
 
         buttons.put(12, new CancelButton());
+        buttons.put(14, new ConfirmButton(this.target, this.rank, this.reason, this.duration, this.permanent));
 
-        buttons.put(14, new ConfirmButton(target, rank, reason, duration, permanent));
-
-        addGlass(buttons, 15);
+        this.addGlass(buttons, 15);
 
         return buttons;
     }
@@ -59,7 +57,6 @@ public class GrantConfirmMenu extends Menu {
 
     @AllArgsConstructor
     private static class ConfirmButton extends Button {
-
         private OfflinePlayer target;
         private Rank rank;
         private String reason;
@@ -71,26 +68,26 @@ public class GrantConfirmMenu extends Menu {
         public ItemStack getButtonItem(Player player) {
             return new ItemBuilder(Material.EMERALD)
                     .name("&aConfirm")
-                    .lore(Collections.singletonList("&7Click to confirm the grant of &e" + target.getName() + " &7the rank &e" + rank.getName() + "&7."))
+                    .lore(Collections.singletonList("&7Click to confirm the grant of &e" + this.target.getName() + " &7the rank &e" + this.rank.getName() + "&7."))
                     .build();
         }
 
         @Override
         public void clicked(Player player, ClickType clickType) {
             if (clickType != ClickType.LEFT) return;
-            Profile profile = Artex.getInstance().getProfileRepository().getProfile(target.getUniqueId());
+            Profile profile = Artex.getInstance().getProfileRepository().getIProfile(this.target.getUniqueId());
 
             Grant grant = new Grant();
             grant.setAddedBy(player.getName());
             grant.setAddedAt(System.currentTimeMillis());
             grant.setAddedOn(Locale.SERVER_NAME.getString());
-            grant.setReason(reason);
-            grant.setPermanent(permanent);
-            grant.setRank(rank.getName());
+            grant.setReason(this.reason);
+            grant.setPermanent(this.permanent);
+            grant.setRank(this.rank.getName());
             grant.setActive(true);
 
-            if (!permanent) {
-                grant.setDuration((long) duration);
+            if (!this.permanent) {
+                grant.setDuration((long) this.duration);
             } else {
                 grant.setDuration(0);
             }
@@ -99,9 +96,9 @@ public class GrantConfirmMenu extends Menu {
             profile.save();
 
             player.closeInventory();
-            player.sendMessage(CC.translate("&aYou have granted &e" + target.getName() + " &athe rank &e" + rank.getName() + "&a."));
-            if (target.isOnline()) {
-                target.getPlayer().sendMessage(CC.translate("&aYou have been granted the rank &e" + rank.getName() + "&a."));
+            player.sendMessage(CC.translate("&aYou have granted &e" + this.target.getName() + " &athe rank &e" + this.rank.getName() + "&a."));
+            if (this.target.isOnline()) {
+                this.target.getPlayer().sendMessage(CC.translate("&aYou have been granted the rank &e" + this.rank.getName() + "&a."));
             }
         }
     }

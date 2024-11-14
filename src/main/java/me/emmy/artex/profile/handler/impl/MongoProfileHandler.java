@@ -33,7 +33,7 @@ public class MongoProfileHandler implements IProfile {
         profile.setUsername(document.getString("name"));
 
         if (document.getString("tag") != null) profile.setTag(document.getString("tag"));
-        profile.setRank(Artex.getInstance().getRankRepository().getRank(document.getString("rank")));
+        profile.setRank(Artex.getInstance().getRankService().getRank(document.getString("rank")));
         profile.setGrants(GrantSerializer.deserialize(document.getList("grants", String.class)));
     }
 

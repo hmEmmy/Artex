@@ -35,7 +35,7 @@ public class Grant {
      * @return the rank object
      */
     public Rank getRank() {
-        return Artex.getInstance().getRankRepository().getRank(this.rank);
+        return Artex.getInstance().getRankService().getRank(this.rank);
     }
 
     /**

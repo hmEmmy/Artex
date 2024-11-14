@@ -30,14 +30,14 @@ public class RankSetSuffixCommand extends BaseCommand {
         String name = args[0];
         String suffix = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
 
-        Rank rank = Artex.getInstance().getRankRepository().getRank(name);
+        Rank rank = Artex.getInstance().getRankService().getRank(name);
         if (rank == null) {
             sender.sendMessage(CC.translate("&cA rank with that name does not exist."));
             return;
         }
 
         rank.setSuffix(suffix);
-        Artex.getInstance().getRankRepository().saveRank(rank);
+        Artex.getInstance().getRankService().saveRank(rank);
         sender.sendMessage(CC.translate("&aSuccessfully set the suffix of &4" + name + " &ato &4" + suffix + "&a."));
     }
 }

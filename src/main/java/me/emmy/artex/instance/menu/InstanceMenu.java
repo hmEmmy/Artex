@@ -7,7 +7,6 @@ import me.emmy.artex.instance.menu.button.ShutDownButton;
 import me.emmy.artex.locale.Locale;
 import me.emmy.artex.util.DateUtil;
 import me.emmy.artex.util.ProjectInfo;
-import me.emmy.artex.util.TPSUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -51,7 +50,7 @@ public class InstanceMenu extends Menu {
                         "",
                         "&f● Online Players: &4" + Bukkit.getOnlinePlayers().size(),
                         "&f● Max Players: &4" + Bukkit.getMaxPlayers(),
-                        "&f● Server TPS: &4" + TPSUtil.getTPSStatus(TPSUtil.getRecentTps()[0]),
+                        //"&f● Server TPS: &4" + TPSUtil.getTPSStatus(TPSUtil.getRecentTps()[0]),
                         "&f● Uptime: &4" + DateUtil.formatTimeMillis(System.currentTimeMillis() - ManagementFactory.getRuntimeMXBean().getStartTime()),
                         ""
                 )));
@@ -72,7 +71,7 @@ public class InstanceMenu extends Menu {
                         ""
                 )));
 
-        addGlass(buttons, 15);
+        this.addGlass(buttons, 15);
         
         return buttons;
     }

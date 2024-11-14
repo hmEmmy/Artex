@@ -27,7 +27,7 @@ public class RankSetColorCommand extends BaseCommand {
         }
 
         String name = args[0];
-        Rank rank = Artex.getInstance().getRankRepository().getRank(name);
+        Rank rank = Artex.getInstance().getRankService().getRank(name);
         if (rank == null) {
             sender.sendMessage(CC.translate("&cA rank with that name does not exist."));
             return;
@@ -43,7 +43,7 @@ public class RankSetColorCommand extends BaseCommand {
         }
 
         rank.setColor(color);
-        Artex.getInstance().getRankRepository().saveRank(rank);
+        Artex.getInstance().getRankService().saveRank(rank);
         sender.sendMessage(CC.translate("&aSuccessfully set the color of &4" + name + " &ato &4" + color + "&a."));
     }
 }

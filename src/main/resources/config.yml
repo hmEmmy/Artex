@@ -1,7 +1,7 @@
 plugin:
   debugging: true #Sends debug messages to the console (development purposes)
 
-storage-type: "MONGO" #MONGO or FLAT_FILE (Currently only mongo supported)
+storage-type: "FLAT_FILE" #MONGO or FLAT_FILE
 
 mongo:
   uri: mongodb://localhost:27017
@@ -24,45 +24,13 @@ socials:
   youtube: "https://youtube.com/Artex"
   twitter: "https://twitter.com/Artex"
   tiktok: "https://tiktok.com/Artex"
-  github: "https://github.com/Cloudy-Development/Artex"
+  github: "https://github.com/hmEmmy/Artex"
   teamspeak: "ts.artex.com"
   facebook: "facebook.com/Artex"
   instagram: "instagram.com/Artex"
 
 grant:
   default-reason: "No reason specified."
-
-chat-replies:
-  enabled: false
-  replies:
-    reply-1:
-      trigger:
-        - "hi"
-        - "hello"
-        - "hey"
-      response: "&7&oServer whispers to you: &f&oWhat's up? If you wanna communicate with me, I have to shock you... Because you apparently can't."
-    reply-2:
-      trigger:
-        - "best server"
-        - "i love the kb"
-        - "great server"
-        - "awesome kb"
-        - "better than hypixel"
-      response: "&7&oServer whispers to you: &f&oIf you wanna make me happy, please buy me a sandwich! &c&o{store} &4&l❤"
-    reply-3:
-      trigger:
-        - "good server"
-        - "w server"
-        - "nice kb"
-        - "better than mmc"
-      response: "&7&oServer whispers to you: &f&oWe're glad you're enjoying the server! Consider checking out our ranks at: &c&o{store}"
-    reply-4:
-      trigger:
-        - "bad server"
-        - "poor server"
-        - "awful server"
-        - "shitty kb"
-      response: "&7&oServer whispers to you: &f&oSorry to hear that you're not satisfied. We're working on improvements."
 
 spawn:
   join-location: world:0.5:73.0:0.5:90.0:0.0
@@ -79,9 +47,9 @@ on-join:
       - " "
       - "&fWelcome to &4Artex Network, &f{color}{player}&f!"
       - " "
-      - " &e► &fWebsite: &4{website}"
-      - " &e► &fDiscord: &4{discord}"
-      - " &e► &fStore: &4{store}"
+      - " &c► &fWebsite: &4{website}"
+      - " &c► &fDiscord: &4{discord}"
+      - " &c► &fStore: &4{store}"
       - " "
       - " &fYour current Rank is &c{rank}&f."
       - " "
@@ -92,14 +60,14 @@ broadcast:
   list:
     message-1:
       - " "
-      - "&7[&4&lArtex Network&7]"
+      - "&7[&4&lArtex&7] &4&lDiscord"
       - " &fJoin our discord to get informed"
       - " &fabout news & updates!"
       - " &c{discord}"
       - " "
     message-2:
       - " "
-      - "&7[&4&lArtex Network&7]"
+      - "&7[&4&lArtex&7] &4&lSocial Media"
       - " &fWe now upload shorts on YouTube."
       - " &fCheck them out at"
       - " &c{youtube}&f."
@@ -107,21 +75,21 @@ broadcast:
       - " "
     message-3:
       - " "
-      - "&7[&4&lArtex Network&7]"
+      - "&7[&4&lArtex&7] &4&lStore"
       - " &fDon't forget to check our store"
       - " &ffor exclusive offers at"
       - " &c{store}&f."
       - " "
     message-4:
       - " "
-      - "&7[&4&lArtex Network&7]"
+      - "&7[&4&lArtex&7] &4&lStore"
       - " &fNew Tags available at"
       - " &c{store}&f."
       - " &fUse code &cTAGS50 &fto get 50% off!"
       - " "
     message-5:
       - " "
-      - "&7[&4&lArtex Network&7]"
+      - "&7[&4&lArtex&7] &4&lStore"
       - " &fWe're currently on a"
       - " &f50% sale on all ranks!"
       - " &fYour one-time opportunity"

@@ -15,8 +15,6 @@ import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.UUID;
-
 /**
  * @author Emmy
  * @project Artex
@@ -45,7 +43,7 @@ public class ProfileListener implements Listener {
     @EventHandler(priority = EventPriority.HIGHEST)
     private void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        Profile profile = Artex.getInstance().getProfileRepository().getProfile(player.getUniqueId());
+        Profile profile = Artex.getInstance().getProfileRepository().getIProfile(player.getUniqueId());
         profile.setUsername(player.getName());
 
         FileConfiguration config = Artex.getInstance().getConfig();
@@ -66,7 +64,7 @@ public class ProfileListener implements Listener {
     @EventHandler
     private void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        Profile profile = Artex.getInstance().getProfileRepository().getProfile(player.getUniqueId());
+        Profile profile = Artex.getInstance().getProfileRepository().getIProfile(player.getUniqueId());
         profile.save();
 
         event.setQuitMessage(null);
@@ -75,7 +73,7 @@ public class ProfileListener implements Listener {
     @EventHandler
     private void onKick(PlayerKickEvent event) {
         Player player = event.getPlayer();
-        Profile profile = Artex.getInstance().getProfileRepository().getProfile(player.getUniqueId());
+        Profile profile = Artex.getInstance().getProfileRepository().getIProfile(player.getUniqueId());
         profile.save();
     }
 }

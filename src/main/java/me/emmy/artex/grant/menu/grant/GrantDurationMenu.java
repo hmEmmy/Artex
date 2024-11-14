@@ -22,11 +22,9 @@ import java.util.Map;
  */
 @AllArgsConstructor
 public class GrantDurationMenu extends Menu {
-
     private OfflinePlayer target;
     private Rank rank;
     private String reason;
-
 
     @Override
     public String getTitle(Player player) {
@@ -37,10 +35,10 @@ public class GrantDurationMenu extends Menu {
     public Map<Integer, Button> getButtons(Player player) {
         Map<Integer, Button> buttons = new HashMap<>();
 
-        buttons.put(21, new GrantSelectDurationButton(target, rank, reason));
-        buttons.put(23, new GrantPermanentButton(target, rank, reason));
+        buttons.put(21, new GrantSelectDurationButton(this.target, this.rank, this.reason));
+        buttons.put(23, new GrantPermanentButton(this.target, this.rank, this.reason));
 
-        addBorder(buttons, (byte) 15, 5);
+        this.addBorder(buttons, (byte) 15, 5);
 
         return buttons;
     }
@@ -52,7 +50,6 @@ public class GrantDurationMenu extends Menu {
 
     @AllArgsConstructor
     private static class GrantPermanentButton extends Button {
-
         private OfflinePlayer target;
         private Rank rank;
         private String reason;
@@ -69,13 +66,12 @@ public class GrantDurationMenu extends Menu {
         public void clicked(Player player, ClickType clickType) {
             if (clickType != ClickType.LEFT) return;
 
-            new GrantConfirmMenu(target, rank, reason, 0, true).openMenu(player);
+            new GrantConfirmMenu(this.target, this.rank, this.reason, 0, true).openMenu(player);
         }
     }
 
     @AllArgsConstructor
     private static class GrantSelectDurationButton extends Button {
-
         private final OfflinePlayer target;
         private final Rank rank;
         private final String reason;
@@ -94,7 +90,7 @@ public class GrantDurationMenu extends Menu {
 
             long durationInMillis = 30L * 24 * 60 * 60 * 1000;
 
-            new GrantConfirmMenu(target, rank, reason, durationInMillis, false).openMenu(player);
+            new GrantConfirmMenu(this.target, this.rank, this.reason, durationInMillis, false).openMenu(player);
         }
     }
 }

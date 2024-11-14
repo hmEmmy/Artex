@@ -21,20 +21,23 @@ import java.util.List;
  * @date 30/08/2024 - 20:27
  */
 @Getter
-public class TagRepository {
-    private final List<Tag> tags = new ArrayList<>();
+public class TagService {
+    private final List<Tag> tags;
     private final FileConfiguration tagsConfig;
 
     /**
-     * Automatically load the tags
+     * Constructor for the TagRepository class.
+     *
+     * @param configHandler the config handler
      */
-    public TagRepository() {
-        this.tagsConfig = Artex.getInstance().getConfigHandler().getConfigs().get("tags");
+    public TagService(ConfigHandler configHandler) {
+        this.tags = new ArrayList<>();
+        this.tagsConfig = configHandler.getConfig("tags");
         this.loadTags();
     }
 
     /**
-     * Load the tags from the database
+     * Load the tags based on the database type.
      */
     public void loadTags() {
         if (this.isMongo()) {
@@ -54,11 +57,12 @@ public class TagRepository {
                 this.tags.add(tag);
             }
         } else if (this.isFlatFile()) {
-            this.tags.clear();
+            if (!this.tags.isEmpty()) {
+                this.tags.clear();
+            }
 
-            if (!this.tagsConfig.contains("tags")) {
-                Logger.debug("No tags found in the flat file, creating default tags.");
-                TagUtility.createDefaultTags();
+            if (this.tagsConfig.getConfigurationSection("tags") == null || this.tagsConfig.getConfigurationSection("tags").getKeys(false).isEmpty()) {
+                Logger.debug("No tags found in the flat file.");
                 return;
             }
 
@@ -74,7 +78,7 @@ public class TagRepository {
                 this.tags.add(tag);
             });
 
-            Logger.debug("Loaded " + this.tags.size() + " tags from the flat file.");
+            Logger.debug("Loaded " + this.tags.size() + " tags from the YAML file.");
         } else {
             Logger.logError("No database type found.");
         }
@@ -98,7 +102,10 @@ public class TagRepository {
             }
         } else if (this.isFlatFile()) {
             Logger.debug("Saving tags to the flat file.");
-            this.tagsConfig.set("tags", null);
+
+            if (this.tagsConfig.contains("tags")) {
+                this.tagsConfig.set("tags", null);
+            }
 
             for (Tag tag : this.tags) {
                 Logger.debug("Saving tag " + tag.getName() + " to the flat file.");
@@ -110,7 +117,7 @@ public class TagRepository {
                 this.tagsConfig.set("tags." + tag.getName() + ".italic", tag.isItalic());
             }
 
-            ConfigHandler.getInstance().saveConfig(ConfigHandler.getInstance().getConfigFile("tags"), this.tagsConfig);
+            Artex.getInstance().getConfigHandler().saveConfig(Artex.getInstance().getConfigHandler().getConfigFile("tags"), this.tagsConfig);
         } else {
             Logger.logError("No database type found.");
         }
@@ -135,7 +142,7 @@ public class TagRepository {
             this.tagsConfig.set("tags." + tag.getName() + ".bold", tag.isBold());
             this.tagsConfig.set("tags." + tag.getName() + ".italic", tag.isItalic());
 
-            ConfigHandler.getInstance().saveConfig(ConfigHandler.getInstance().getConfigFile("tags"), this.tagsConfig);
+            Artex.getInstance().getConfigHandler().saveConfig(Artex.getInstance().getConfigHandler().getConfigFile("tags"), this.tagsConfig);
         } else {
             Logger.logError("No database type found.");
         }

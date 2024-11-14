@@ -31,7 +31,7 @@ public class ConfirmMenu extends Menu {
         buttons.put(12, new CancelButton());
         buttons.put(14, new ConfirmButton());
 
-        addGlass(buttons, 15);
+        this.addGlass(buttons, 15);
 
         return buttons;
     }

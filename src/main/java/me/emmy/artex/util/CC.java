@@ -8,7 +8,6 @@ import org.bukkit.ChatColor;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author Emmy
@@ -30,54 +29,76 @@ public class CC {
     }
 
     /**
-     * Make a string readable by capitalizing the first letter of each word
-     * and splitting the words by spaces and underscores
-     *
-     * @param name the name to make readable
-     * @return the readable name
-     */
-    public String toReadAble(String name) {
-        return Arrays.stream(name.split("_"))
-                .map(word -> word.substring(0, 1).toUpperCase() + word.substring(1).toLowerCase())
-                .collect(Collectors.joining(" "));
-    }
-
-    /**
      * Send an enable message
      */
     public void sendEnableMessage() {
-        List<String> message = Arrays.asList(
-                "",
-                " &c<---------- &4&l" + ProjectInfo.NAME + " Core &c---------->",
-                "",
-                "   &4Plugin Info:",
-                "   &7| &4&lAuthor: &f" + ProjectInfo.AUTHOR,
-                "   &7| &4&lVersion: &f" + ProjectInfo.VERSION,
-                "   &7| &4&lWebsite: &f" + ProjectInfo.WEBSITE,
-                "   &7| &4&lDescription: &f" + ProjectInfo.DESCRIPTION,
-                "   &7| &4&lDiscord: &f" + ProjectInfo.DISCORD,
-                "   &7| &4&lGitHub: &f" + ProjectInfo.GITHUB,
-                "",
-                "   &4Database Info:",
-                "   &7| &4Uri: &f" + Artex.getInstance().getConfig().getString("mongo.uri"),
-                "   &7| &4Database: &f" + Artex.getInstance().getConfig().getString("mongo.database"),
-                "",
-                "   &4Instance:",
-                "   &7| &4&lServer Name: &f" + Locale.SERVER_NAME.getString(),
-                "   &7| &4&lServer Region: &f" + Locale.SERVER_REGION.getString(),
-                "   &7| &4&lServer Version: &f" + ProjectInfo.BUKKIT_VERSION_EXACT,
-                "   &7| &4&lSpigot: &f" + Bukkit.getName(),
-                "",
-                "   &4&lStorage:",
-                "   &7| &4&lRanks: &f" + Artex.getInstance().getRankRepository().getRanks().size(),
-                "   &7| &4&lTags: &f" + Artex.getInstance().getTagRepository().getTags().size(),
-                "",
-                " &c<-------------------------------->",
-                ""
-        );
+        if (Artex.getInstance().getDatabaseService().isMongo()) {
+            List<String> message = Arrays.asList(
+                    "",
+                    " &c<---------- &4&l" + ProjectInfo.NAME + " Core &c---------->",
+                    "",
+                    "   &4Plugin Info:",
+                    "   &7| &4&lAuthor: &f" + ProjectInfo.AUTHOR,
+                    "   &7| &4&lVersion: &f" + ProjectInfo.VERSION,
+                    "   &7| &4&lWebsite: &f" + ProjectInfo.WEBSITE,
+                    "   &7| &4&lDescription: &f" + ProjectInfo.DESCRIPTION,
+                    "   &7| &4&lDiscord: &f" + ProjectInfo.DISCORD,
+                    "   &7| &4&lGitHub: &f" + ProjectInfo.GITHUB,
+                    "",
+                    "   &4Database Info: &a&lMongoDB",
+                    "   &7| &4Uri: &f" + Artex.getInstance().getConfig().getString("mongo.uri"),
+                    "   &7| &4Database: &f" + Artex.getInstance().getConfig().getString("mongo.database"),
+                    "",
+                    "   &4Instance:",
+                    "   &7| &4&lServer Name: &f" + Locale.SERVER_NAME.getString(),
+                    "   &7| &4&lServer Region: &f" + Locale.SERVER_REGION.getString(),
+                    "   &7| &4&lServer Version: &f" + ProjectInfo.BUKKIT_VERSION_EXACT,
+                    "   &7| &4&lSpigot: &f" + Bukkit.getName(),
+                    "",
+                    "   &4&lStorage:",
+                    "   &7| &4&lRanks: &f" + Artex.getInstance().getRankService().getRanks().size(),
+                    "   &7| &4&lTags: &f" + Artex.getInstance().getTagService().getTags().size(),
+                    "",
+                    " &c<-------------------------------->",
+                    ""
+            );
 
-        for (String line : message) {
-            Bukkit.getConsoleSender().sendMessage(translate(line));
+            for (String line : message) {
+                Bukkit.getConsoleSender().sendMessage(translate(line));
+            }
+        } else if (Artex.getInstance().getDatabaseService().isFlatFile()) {
+            List<String> message = Arrays.asList(
+                    "",
+                    " &c<---------- &4&l" + ProjectInfo.NAME + " Core &c---------->",
+                    "",
+                    "   &4Plugin Info:",
+                    "   &7| &4&lAuthor: &f" + ProjectInfo.AUTHOR,
+                    "   &7| &4&lVersion: &f" + ProjectInfo.VERSION,
+                    "   &7| &4&lWebsite: &f" + ProjectInfo.WEBSITE,
+                    "   &7| &4&lDescription: &f" + ProjectInfo.DESCRIPTION,
+                    "   &7| &4&lDiscord: &f" + ProjectInfo.DISCORD,
+                    "   &7| &4&lGitHub: &f" + ProjectInfo.GITHUB,
+                    "",
+                    "   &4Database Info: &a&lFlatFile",
+                    "   &7| &7&oProfiles are stored in 'profiles.yml'.",
+                    "",
+                    "   &4Instance:",
+                    "   &7| &4&lServer Name: &f" + Locale.SERVER_NAME.getString(),
+                    "   &7| &4&lServer Region: &f" + Locale.SERVER_REGION.getString(),
+                    "   &7| &4&lServer Version: &f" + ProjectInfo.BUKKIT_VERSION_EXACT,
+                    "   &7| &4&lSpigot: &f" + Bukkit.getName(),
+                    "",
+                    "   &4&lStorage:",
+                    "   &7| &4&lRanks: &f" + Artex.getInstance().getRankService().getRanks().size(),
+                    "   &7| &4&lTags: &f" + Artex.getInstance().getTagService().getTags().size(),
+                    "",
+                    " &c<-------------------------------->",
+                    ""
+            );
+
+            for (String line : message) {
+                Bukkit.getConsoleSender().sendMessage(translate(line));
+            }
         }
     }
 

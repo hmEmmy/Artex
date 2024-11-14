@@ -20,8 +20,6 @@ import java.util.Map;
  */
 @Getter
 public class ConfigHandler {
-    @Getter private static ConfigHandler instance;
-
     private final Map<String, FileConfiguration> configs = new HashMap<>();
     private final Map<String, File> configFiles = new HashMap<>();
 
@@ -30,13 +28,13 @@ public class ConfigHandler {
             "messages",
             "profiles",
             "ranks",
-            "tags"
+            "tags",
+            "profiles"
     };
 
     public ConfigHandler() {
-        instance = this;
-
         this.loadConfigs(configurations);
+        Logger.debug("Loaded Config files: " + this.configs.keySet());
     }
 
     /**
@@ -125,16 +123,6 @@ public class ConfigHandler {
      */
     public File getConfigFile(String configName) {
         return this.configFiles.get(configName);
-    }
-
-    /**
-     * Save a configuration file
-     *
-     * @param file the file to save
-     * @param configName the name of the configuration file
-     */
-    public void saveConfig(File file, String configName) {
-        saveConfig(file, this.configs.get(configName));
     }
 
     /**

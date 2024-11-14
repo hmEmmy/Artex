@@ -31,7 +31,7 @@ public class ReplyCommand extends BaseCommand {
                 return;
             }
 
-            player.sendMessage(CC.translate("&bYou've last messaged: &3" + Artex.getInstance().getProfileRepository().getProfile(lastConversantUUID).getHighestRankBasedOnGrant().getColor() + lastConversant.getName()));
+            player.sendMessage(CC.translate("&bYou've last messaged: &3" + Artex.getInstance().getProfileRepository().getIProfile(lastConversantUUID).getHighestRankBasedOnGrant().getColor() + lastConversant.getName()));
             return;
         }
 

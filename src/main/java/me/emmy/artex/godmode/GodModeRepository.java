@@ -15,7 +15,11 @@ import java.util.Set;
 @Getter
 @Setter
 public class GodModeRepository {
-    private Set<Player> godModePlayers = new HashSet<>();
+    private Set<Player> godModePlayers;
+
+    public GodModeRepository() {
+        this.godModePlayers = new HashSet<>();
+    }
 
     /**
      * Enable godmode for a player

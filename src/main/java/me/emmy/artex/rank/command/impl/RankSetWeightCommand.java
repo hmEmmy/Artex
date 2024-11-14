@@ -26,7 +26,7 @@ public class RankSetWeightCommand extends BaseCommand {
         }
 
         String name = args[0];
-        Rank rank = Artex.getInstance().getRankRepository().getRank(name);
+        Rank rank = Artex.getInstance().getRankService().getRank(name);
         if (rank == null) {
             sender.sendMessage(CC.translate("&cA rank with that name does not exist."));
             return;
@@ -42,7 +42,7 @@ public class RankSetWeightCommand extends BaseCommand {
         }
 
         rank.setWeight(weight);
-        Artex.getInstance().getRankRepository().saveRank(rank);
+        Artex.getInstance().getRankService().saveRank(rank);
         sender.sendMessage(CC.translate("&aSuccessfully set the weight of &4" + name + " &ato &4" + weight + "&a."));
     }
 }

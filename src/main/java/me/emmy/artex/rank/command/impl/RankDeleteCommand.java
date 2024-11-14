@@ -26,13 +26,13 @@ public class RankDeleteCommand extends BaseCommand {
         }
 
         String name = args[0];
-        Rank rank = Artex.getInstance().getRankRepository().getRank(name);
+        Rank rank = Artex.getInstance().getRankService().getRank(name);
         if (rank == null) {
             sender.sendMessage(CC.translate("&cA rank with that name does not exist."));
             return;
         }
 
-        Artex.getInstance().getRankRepository().deleteRank(rank);
+        Artex.getInstance().getRankService().deleteRank(rank);
         sender.sendMessage(CC.translate("&aSuccessfully deleted the rank " + rank.getName() + "."));
     }
 }

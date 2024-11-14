@@ -19,11 +19,15 @@ import java.util.concurrent.ThreadLocalRandom;
  */
 public class BroadcastTask extends BukkitRunnable {
     private final List<Broadcast> broadcasts;
+    private final FileConfiguration config;
 
     /**
      * Constructor for the BroadcastTask class.
+     *
+     * @param config the configuration file
      */
-    public BroadcastTask() {
+    public BroadcastTask(FileConfiguration config) {
+        this.config = config;
         this.broadcasts = new ArrayList<>();
         this.loadBroadcastMessages();
     }
@@ -32,12 +36,10 @@ public class BroadcastTask extends BukkitRunnable {
      * Load the broadcast messages from the configuration file.
      */
     public void loadBroadcastMessages() {
-        FileConfiguration config = Artex.getInstance().getConfig();
-
         this.broadcasts.clear();
 
-        for (String key : config.getConfigurationSection("broadcast.list").getKeys(false)) {
-            List<String> list = config.getStringList("broadcast.list." + key);
+        for (String key : this.config.getConfigurationSection("broadcast.list").getKeys(false)) {
+            List<String> list = this.config.getStringList("broadcast.list." + key);
             this.broadcasts.add(new Broadcast(list));
         }
     }
@@ -50,24 +52,23 @@ public class BroadcastTask extends BukkitRunnable {
 
         for (String line : this.broadcasts.get(ThreadLocalRandom.current().nextInt(this.broadcasts.size())).getLines()) {
             for (Player player : Bukkit.getOnlinePlayers()) {
-                FileConfiguration config = Artex.getInstance().getConfig();
                 Rank playerRank = Artex.getInstance().getProfileRepository().getProfileWithNoAdding(player.getUniqueId()).getHighestRankBasedOnGrant();
                 player.sendMessage(CC.translate(line)
                         .replace("{online}", String.valueOf(Bukkit.getOnlinePlayers().size()))
                         .replace("{max}", String.valueOf(Bukkit.getMaxPlayers()))
                         .replace("{player}", player.getName())
-                        .replace("{server}", config.getString("server.name"))
-                        .replace("{region}", config.getString("server.region"))
-                        .replace("{discord}", config.getString("socials.discord"))
-                        .replace("{youtube}", config.getString("socials.youtube"))
-                        .replace("{twitter}", config.getString("socials.twitter"))
-                        .replace("{website}", config.getString("socials.website"))
-                        .replace("{tiktok}", config.getString("socials.tiktok"))
-                        .replace("{store}", config.getString("socials.store"))
-                        .replace("{github}", config.getString("socials.github"))
-                        .replace("{teamspeak}", config.getString("socials.teamspeak"))
-                        .replace("{facebook}", config.getString("socials.facebook"))
-                        .replace("{instagram}", config.getString("socials.instagram"))
+                        .replace("{server}", this.config.getString("server.name"))
+                        .replace("{region}", this.config.getString("server.region"))
+                        .replace("{discord}", this.config.getString("socials.discord"))
+                        .replace("{youtube}", this.config.getString("socials.youtube"))
+                        .replace("{twitter}", this.config.getString("socials.twitter"))
+                        .replace("{website}", this.config.getString("socials.website"))
+                        .replace("{tiktok}", this.config.getString("socials.tiktok"))
+                        .replace("{store}", this.config.getString("socials.store"))
+                        .replace("{github}", this.config.getString("socials.github"))
+                        .replace("{teamspeak}", this.config.getString("socials.teamspeak"))
+                        .replace("{facebook}", this.config.getString("socials.facebook"))
+                        .replace("{instagram}", this.config.getString("socials.instagram"))
                         .replace("{rank}", playerRank.getRankWithColor())
                 );
             }

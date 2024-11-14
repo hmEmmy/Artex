@@ -38,13 +38,13 @@ public class TagAdminCreateCommand extends BaseCommand {
 
         String name = args[0];
         String displayName = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
-        Tag tag = Artex.getInstance().getTagRepository().getTag(name);
+        Tag tag = Artex.getInstance().getTagService().getTag(name);
         if (tag != null) {
             sender.sendMessage(CC.translate("&cA tag with that name already exists."));
             return;
         }
 
-        Artex.getInstance().getTagRepository().createTag(name, displayName, Material.NAME_TAG, ChatColor.WHITE, 0, false, false);
+        Artex.getInstance().getTagService().createTag(name, displayName, Material.NAME_TAG, ChatColor.WHITE, 0, false, false);
         sender.sendMessage(CC.translate("&aSuccessfully created a new tag called &f" + name + " &awith the display name &f" + displayName + "&r&a."));
     }
 }

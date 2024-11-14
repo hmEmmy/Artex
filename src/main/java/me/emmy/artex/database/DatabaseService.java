@@ -29,36 +29,39 @@ public class DatabaseService {
      * Constructor for the DatabaseService class
      */
     public DatabaseService() {
-        this.startMongo();
+        if (this.isFlatFile()) {
+            Logger.debug("The storage type is set to flat file.");
+        } else if (this.isMongo()) {
+            Logger.debug("The storage type is set to MongoDB.");
+            this.startMongo();
+        } else {
+            Logger.debug("The storage type is not set to MongoDB.");
+            Bukkit.getPluginManager().disablePlugin(Artex.getInstance());
+        }
     }
 
     /**
      * Start the MongoDB connection
      */
     public void startMongo() {
-        if (this.isMongo()) {
-            try {
-                FileConfiguration config = Artex.getInstance().getConfig();
+        try {
+            FileConfiguration config = Artex.getInstance().getConfig();
 
-                String databaseName = config.getString("mongo.database");
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&6Connecting to the MongoDB database..."));
+            String databaseName = config.getString("mongo.database");
+            Bukkit.getConsoleSender().sendMessage(CC.translate("&6Connecting to the MongoDB database..."));
 
-                ConnectionString connectionString = new ConnectionString(Objects.requireNonNull(config.getString("mongo.uri")));
-                MongoClientSettings.Builder settings = MongoClientSettings.builder();
-                settings.applyConnectionString(connectionString);
-                settings.applyToConnectionPoolSettings(builder -> builder.maxConnectionIdleTime(30, TimeUnit.SECONDS));
-                settings.retryWrites(true);
+            ConnectionString connectionString = new ConnectionString(Objects.requireNonNull(config.getString("mongo.uri")));
+            MongoClientSettings.Builder settings = MongoClientSettings.builder();
+            settings.applyConnectionString(connectionString);
+            settings.applyToConnectionPoolSettings(builder -> builder.maxConnectionIdleTime(30, TimeUnit.SECONDS));
+            settings.retryWrites(true);
 
-                this.mongoClient = MongoClients.create(settings.build());
-                this.database = this.mongoClient.getDatabase(databaseName);
+            this.mongoClient = MongoClients.create(settings.build());
+            this.database = this.mongoClient.getDatabase(databaseName);
 
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&aSuccessfully connected to the MongoDB database."));
-            } catch (Exception exception) {
-                Bukkit.getConsoleSender().sendMessage(CC.translate("&cFailed to connect to the MongoDB database."));
-                Bukkit.getPluginManager().disablePlugin(Artex.getInstance());
-            }
-        } else {
-            Logger.debug("The storage type is not set to MongoDB.");
+            Bukkit.getConsoleSender().sendMessage(CC.translate("&aSuccessfully connected to the MongoDB database."));
+        } catch (Exception exception) {
+            Bukkit.getConsoleSender().sendMessage(CC.translate("&cFailed to connect to the MongoDB database."));
             Bukkit.getPluginManager().disablePlugin(Artex.getInstance());
         }
     }

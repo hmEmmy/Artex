@@ -4,7 +4,7 @@ import lombok.Getter;
 import me.emmy.artex.api.command.CommandFramework;
 import me.emmy.artex.api.menu.listener.MenuListener;
 import me.emmy.artex.broadcast.BroadcastTask;
-import me.emmy.artex.chat.ChatRepository;
+import me.emmy.artex.chat.ChatService;
 import me.emmy.artex.chat.listener.ChatListener;
 import me.emmy.artex.command.CommandUtility;
 import me.emmy.artex.config.ConfigHandler;
@@ -13,9 +13,9 @@ import me.emmy.artex.database.DatabaseService;
 import me.emmy.artex.godmode.GodModeRepository;
 import me.emmy.artex.profile.ProfileRepository;
 import me.emmy.artex.profile.listener.ProfileListener;
-import me.emmy.artex.rank.RankRepository;
+import me.emmy.artex.rank.RankService;
 import me.emmy.artex.spawn.SpawnHandler;
-import me.emmy.artex.tag.TagRepository;
+import me.emmy.artex.tag.TagService;
 import me.emmy.artex.util.CC;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Listener;
@@ -45,10 +45,10 @@ public class Artex extends JavaPlugin {
     private ConfigHandler configHandler;
     private CommandFramework commandFramework;
     private DatabaseService databaseService;
-    private RankRepository rankRepository;
+    private RankService rankService;
     private ProfileRepository profileRepository;
-    private TagRepository tagRepository;
-    private ChatRepository chatRepository;
+    private TagService tagService;
+    private ChatService chatService;
     private GodModeRepository godModeRepository;
     private SpawnHandler spawnHandler;
     private ConversationHandler conversationHandler;
@@ -61,12 +61,13 @@ public class Artex extends JavaPlugin {
         this.registerCommands();
         this.saveDefaultConfig();
         this.initializeConfigHandler();
-        this.setupMongoDatabase();
-        this.initializeRepositories();
+        this.setupDatabase();
+        this.initializeRepositoriesAndServices();
         this.registerHandlers();
         this.registerEvents();
         this.runTasks();
 
+        //this.sendCustomFont();
         CC.sendEnableMessage();
     }
 
@@ -78,34 +79,33 @@ public class Artex extends JavaPlugin {
     }
 
     private void registerChannels() {
-        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        this.measureRuntime("register", "BungeeChannel", () -> this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord"));
     }
 
     private void initializeConfigHandler() {
-        this.configHandler = new ConfigHandler();
+        this.measureRuntime("initialize", "ConfigHandler", () -> this.configHandler = new ConfigHandler());
     }
 
     private void registerCommands() {
-        this.commandFramework = new CommandFramework();
-        CommandUtility.registerCommands();
+        this.measureRuntime("initialize", "CommandFramework", () -> this.commandFramework = new CommandFramework());
+        this.measureRuntime("register", "Commands", CommandUtility::registerCommands);
     }
 
-    private void setupMongoDatabase() {
-        this.databaseService = new DatabaseService();
+    private void setupDatabase() {
+        this.measureRuntime("setup", "DatabaseService", () -> this.databaseService = new DatabaseService());
     }
 
-    private void initializeRepositories() {
-        this.rankRepository = new RankRepository();
-        this.tagRepository = new TagRepository();
-        this.profileRepository = new ProfileRepository();
-        this.profileRepository.initializeEveryProfile();
-        this.chatRepository = new ChatRepository(false);
-        this.godModeRepository = new GodModeRepository();
+    private void initializeRepositoriesAndServices() {
+        this.measureRuntime("load", "RankService", () -> this.rankService = new RankService(this.configHandler));
+        this.measureRuntime("load", "TagService", () -> this.tagService = new TagService(this.configHandler));
+        this.measureRuntime("initialize", "ProfileRepository", () -> this.profileRepository = new ProfileRepository(this.databaseService));
+        this.measureRuntime("load", "ChatService", () -> this.chatService = new ChatService(false));
+        this.measureRuntime("initialize", "GodModeRepository", () -> this.godModeRepository = new GodModeRepository());
     }
 
     private void registerHandlers() {
-        this.spawnHandler = new SpawnHandler();
-        this.conversationHandler = new ConversationHandler();
+        this.measureRuntime("load", "SpawnHandler", () -> this.spawnHandler = new SpawnHandler(this.getConfig()));
+        this.measureRuntime("load", "ConversationHandler", () -> this.conversationHandler = new ConversationHandler(this.getConfig()));
     }
 
     private void registerEvents() {
@@ -119,8 +119,7 @@ public class Artex extends JavaPlugin {
 
     private void runTasks() {
         if (this.getConfig().getBoolean("broadcast.enabled")) {
-            BroadcastTask broadcastTask = new BroadcastTask();
-            broadcastTask.runTaskTimerAsynchronously(this, 20L * this.broadcastInterval(), 20L * this.broadcastInterval());
+            this.measureRuntime("run", "BroadcastTask", () -> new BroadcastTask(this.getConfig()).runTaskTimerAsynchronously(this, 20L * this.broadcastInterval(), 20L * this.broadcastInterval()));
         }
     }
 
@@ -144,4 +143,32 @@ public class Artex extends JavaPlugin {
     private int broadcastInterval() {
         return this.getConfig().getInt("broadcast.send-every");
     }
+
+    /**
+     * Measure the runtime of a task
+     *
+     * @param action the action
+     * @param task the task to measure
+     * @param runnable the runnable to run
+     */
+    private void measureRuntime(String action, String task, Runnable runnable) {
+        long start = System.currentTimeMillis();
+        runnable.run();
+        long runtime = System.currentTimeMillis() - start;
+        Bukkit.getConsoleSender().sendMessage(CC.translate("&7(&4&l" + this.getDescription().getName() + "&7) " + "&c" + task + " &ftook &4" + runtime + "ms &fto " + action + "."));
+    }
+
+    private void sendCustomFont() {
+        Arrays.stream(ARTEX_ASCII).forEach(line -> Bukkit.getConsoleSender().sendMessage(CC.translate(line)));
+    }
+
+    private final String[] ARTEX_ASCII = {
+            "",
+            "        _         _            ",
+            "       / \\   _ __| |_ _____  __",
+            "      / _ \\ | '__| __/ _ \\ \\/ /",
+            "     / ___ \\| |  | ||  __/>  < ",
+            "    /_/   \\_\\_|   \\__\\___/_/\\_\\",
+            ""
+    };
 }

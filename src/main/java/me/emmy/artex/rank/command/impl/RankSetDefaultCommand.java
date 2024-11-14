@@ -9,7 +9,6 @@ import me.emmy.artex.util.CC;
 import me.emmy.artex.util.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 /**
  * @author Emmy
@@ -34,7 +33,7 @@ public class RankSetDefaultCommand extends BaseCommand {
         }
 
         String name = args[0];
-        Rank rank = Artex.getInstance().getRankRepository().getRank(name);
+        Rank rank = Artex.getInstance().getRankService().getRank(name);
         if (rank == null) {
             sender.sendMessage(CC.translate("&cA rank with that name does not exist."));
             return;
@@ -42,14 +41,14 @@ public class RankSetDefaultCommand extends BaseCommand {
 
         Logger.debug("Set default command executed by " + sender.getName() + " for rank " + rank.getName());
         Logger.debug("Getting default rank and setting it to false");
-        Artex.getInstance().getRankRepository().getRanks().stream().filter(Rank::isDefaultRank).forEach(rank1 -> {
+        Artex.getInstance().getRankService().getRanks().stream().filter(Rank::isDefaultRank).forEach(rank1 -> {
             rank1.setDefaultRank(false);
-            Artex.getInstance().getRankRepository().saveRank(rank1);
+            Artex.getInstance().getRankService().saveRank(rank1);
         });
 
         Logger.debug("Setting rank " + rank.getName() + " as default");
         rank.setDefaultRank(true);
-        Artex.getInstance().getRankRepository().saveRank(rank);
+        Artex.getInstance().getRankService().saveRank(rank);
 
         sender.sendMessage(CC.translate("&aSuccessfully set &4" + name + " &ato the default rank&a."));
     }
