@@ -35,7 +35,7 @@ public class Grant {
      * @return the rank object
      */
     public Rank getRank() {
-        return Artex.getInstance().getRankRepository().getRank(rank);
+        return Artex.getInstance().getRankRepository().getRank(this.rank);
     }
 
     /**
@@ -44,6 +44,6 @@ public class Grant {
      * @return if the grant has expired
      */
     public boolean hasExpired() {
-        return !permanent && System.currentTimeMillis() >= addedAt + duration;
+        return !this.permanent && System.currentTimeMillis() >= this.addedAt + this.duration;
     }
 }

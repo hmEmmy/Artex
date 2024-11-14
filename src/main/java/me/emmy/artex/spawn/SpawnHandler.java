@@ -8,7 +8,6 @@ import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-
 /**
  * @author Emmy
  * @project Artex

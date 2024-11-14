@@ -43,12 +43,12 @@ public class Profile {
 
     public void load() {
         Artex.getInstance().getProfileRepository().getProfile().loadProfile(this);
-        Logger.debug("Loaded profile for " + username + ".");
+        Logger.debug("Loaded profile for " + this.username + ".");
     }
 
     public void save() {
         Artex.getInstance().getProfileRepository().getProfile().saveProfile(this);
-        Logger.debug("Saved profile for " + username + ".");
+        Logger.debug("Saved profile for " + this.username + ".");
     }
 
     /**
@@ -71,12 +71,12 @@ public class Profile {
      * @return true if the player has the default grant, false otherwise
      */
     public boolean hasDefaultGrant() {
-        return Artex.getInstance().getProfileRepository().getProfileWithNoAdding(uuid).getGrants()
+        return Artex.getInstance().getProfileRepository().getProfileWithNoAdding(this.uuid).getGrants()
                 .stream()
                 .anyMatch(grant -> grant.getRank().isDefaultRank());
     }
 
     public Tag getTag() {
-        return Artex.getInstance().getTagRepository().getTag(tag);
+        return Artex.getInstance().getTagRepository().getTag(this.tag);
     }
 }

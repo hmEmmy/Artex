@@ -36,7 +36,7 @@ public class ConfigHandler {
     public ConfigHandler() {
         instance = this;
 
-        loadConfigs(configurations);
+        this.loadConfigs(configurations);
     }
 
     /**
@@ -51,8 +51,8 @@ public class ConfigHandler {
                 this.createDefaultConfig(configFile, configName);
             }
             FileConfiguration config = YamlConfiguration.loadConfiguration(configFile);
-            configs.put(configName, config);
-            configFiles.put(configName, configFile);
+            this.configs.put(configName, config);
+            this.configFiles.put(configName, configFile);
 
             switch (configName) {
                 case "settings":
@@ -71,7 +71,7 @@ public class ConfigHandler {
                     break;
             }
 
-            saveConfig(configFile, config);
+            this.saveConfig(configFile, config);
         }
     }
 
@@ -90,13 +90,13 @@ public class ConfigHandler {
 
             switch (configName) {
                 case "settings":
-                    for (EnumDefaultConfigSettings utility : EnumDefaultConfigSettings.values()) {
-                        config.set(utility.getPath(), utility.getDefaultValue());
+                    for (EnumDefaultConfigSettings defaultConfigSettings : EnumDefaultConfigSettings.values()) {
+                        config.set(defaultConfigSettings.getPath(), defaultConfigSettings.getDefaultValue());
                     }
                     break;
                 case "messages":
-                    for (EnumDefaultConfigMessages message : EnumDefaultConfigMessages.values()) {
-                        config.set(message.getPath(), message.getDefaultValue());
+                    for (EnumDefaultConfigMessages defaultConfigMessages : EnumDefaultConfigMessages.values()) {
+                        config.set(defaultConfigMessages.getPath(), defaultConfigMessages.getDefaultValue());
                     }
                     break;
             }
@@ -114,7 +114,7 @@ public class ConfigHandler {
      * @return the configuration file
      */
     public FileConfiguration getConfig(String configName) {
-        return configs.get(configName);
+        return this.configs.get(configName);
     }
 
     /**
@@ -124,7 +124,7 @@ public class ConfigHandler {
      * @return the configuration file
      */
     public File getConfigFile(String configName) {
-        return configFiles.get(configName);
+        return this.configFiles.get(configName);
     }
 
     /**
@@ -134,7 +134,7 @@ public class ConfigHandler {
      * @param configName the name of the configuration file
      */
     public void saveConfig(File file, String configName) {
-        saveConfig(file, configs.get(configName));
+        saveConfig(file, this.configs.get(configName));
     }
 
     /**

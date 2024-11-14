@@ -29,7 +29,7 @@ public class DatabaseService {
      * Constructor for the DatabaseService class
      */
     public DatabaseService() {
-        startMongo();
+        this.startMongo();
     }
 
     /**
@@ -50,7 +50,7 @@ public class DatabaseService {
                 settings.retryWrites(true);
 
                 this.mongoClient = MongoClients.create(settings.build());
-                this.database = mongoClient.getDatabase(databaseName);
+                this.database = this.mongoClient.getDatabase(databaseName);
 
                 Bukkit.getConsoleSender().sendMessage(CC.translate("&aSuccessfully connected to the MongoDB database."));
             } catch (Exception exception) {

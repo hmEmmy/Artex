@@ -4,11 +4,13 @@ import com.mongodb.client.model.ReplaceOptions;
 import lombok.Getter;
 import lombok.var;
 import me.emmy.artex.Artex;
+import me.emmy.artex.config.ConfigHandler;
 import me.emmy.artex.tag.utility.TagUtility;
 import me.emmy.artex.util.Logger;
 import org.bson.Document;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +23,13 @@ import java.util.List;
 @Getter
 public class TagRepository {
     private final List<Tag> tags = new ArrayList<>();
+    FileConfiguration tagsConfig;
 
     /**
      * Automatically load the tags
      */
     public TagRepository() {
+        this.tagsConfig = Artex.getInstance().getConfigHandler().getConfigs().get("tags");
         this.loadTags();
     }
 
@@ -33,20 +37,46 @@ public class TagRepository {
      * Load the tags from the database
      */
     public void loadTags() {
-        tags.clear();
+        if (this.isMongo()) {
+            tags.clear();
 
-        var tagCollection = Artex.getInstance().getDatabaseService().getDatabase().getCollection("tags");
+            var tagCollection = Artex.getInstance().getDatabaseService().getDatabase().getCollection("tags");
 
-        var cursor = tagCollection.find();
-        if (!cursor.iterator().hasNext()) {
-            Logger.debug("No tags found in the database, creating default tags.");
-            TagUtility.createDefaultTags();
-            return;
-        }
+            var cursor = tagCollection.find();
+            if (!cursor.iterator().hasNext()) {
+                Logger.debug("No tags found in the database, creating default tags.");
+                TagUtility.createDefaultTags();
+                return;
+            }
 
-        for (var document : cursor) {
-            Tag tag = documentToTag(document);
-            tags.add(tag);
+            for (var document : cursor) {
+                Tag tag = this.documentToTag(document);
+                this.tags.add(tag);
+            }
+        } else if (this.isFlatFile()) {
+            this.tags.clear();
+
+            if (!this.tagsConfig.contains("tags")) {
+                Logger.debug("No tags found in the flat file, creating default tags.");
+                TagUtility.createDefaultTags();
+                return;
+            }
+
+            this.tagsConfig.getConfigurationSection("tags").getKeys(false).forEach(tagName -> {
+                String displayName = tagsConfig.getString("tags." + tagName + ".displayName");
+                Material icon = Material.valueOf(tagsConfig.getString("tags." + tagName + ".icon"));
+                ChatColor color = ChatColor.valueOf(tagsConfig.getString("tags." + tagName + ".color"));
+                int durability = tagsConfig.getInt("tags." + tagName + ".durability");
+                boolean bold = tagsConfig.getBoolean("tags." + tagName + ".bold");
+                boolean italic = tagsConfig.getBoolean("tags." + tagName + ".italic");
+
+                Tag tag = new Tag(tagName, displayName, icon, color, durability, bold, italic);
+                this.tags.add(tag);
+            });
+
+            Logger.debug("Loaded " + this.tags.size() + " tags from the flat file.");
+        } else {
+            Logger.logError("No database type found.");
         }
     }
 
@@ -54,16 +84,35 @@ public class TagRepository {
      * Save the tags to the database
      */
     public void saveTags() {
-        Logger.debug("Saving tags to the database.");
-        var tagCollection = Artex.getInstance().getDatabaseService().getDatabase().getCollection("tags");
+        if (this.isMongo()) {
+            Logger.debug("Saving tags to the database.");
+            var tagCollection = Artex.getInstance().getDatabaseService().getDatabase().getCollection("tags");
 
-        Logger.debug("Deleting all tags from the database.");
-        tagCollection.deleteMany(new Document());
+            Logger.debug("Deleting all tags from the database.");
+            tagCollection.deleteMany(new Document());
 
-        for (Tag tag : tags) {
-            Logger.debug("Saving tag " + tag.getName() + " to the database.");
-            Document rankDocument = tagToDocument(tag);
-            tagCollection.replaceOne(new Document("name", tag.getName()), rankDocument, new ReplaceOptions().upsert(true));
+            for (Tag tag : this.tags) {
+                Logger.debug("Saving tag " + tag.getName() + " to the database.");
+                Document rankDocument = this.tagToDocument(tag);
+                tagCollection.replaceOne(new Document("name", tag.getName()), rankDocument, new ReplaceOptions().upsert(true));
+            }
+        } else if (this.isFlatFile()) {
+            Logger.debug("Saving tags to the flat file.");
+            this.tagsConfig.set("tags", null);
+
+            for (Tag tag : this.tags) {
+                Logger.debug("Saving tag " + tag.getName() + " to the flat file.");
+                this.tagsConfig.set("tags." + tag.getName() + ".displayName", tag.getDisplayName());
+                this.tagsConfig.set("tags." + tag.getName() + ".icon", tag.getIcon().name());
+                this.tagsConfig.set("tags." + tag.getName() + ".color", tag.getColor().name());
+                this.tagsConfig.set("tags." + tag.getName() + ".durability", tag.getDurability());
+                this.tagsConfig.set("tags." + tag.getName() + ".bold", tag.isBold());
+                this.tagsConfig.set("tags." + tag.getName() + ".italic", tag.isItalic());
+            }
+
+            ConfigHandler.getInstance().saveConfig(ConfigHandler.getInstance().getConfigFile("tags"), this.tagsConfig);
+        } else {
+            Logger.logError("No database type found.");
         }
     }
 
@@ -73,10 +122,23 @@ public class TagRepository {
      * @param tag the tag to save
      */
     public void saveTag(Tag tag) {
-        var tagCollection = Artex.getInstance().getDatabaseService().getDatabase().getCollection("tags");
+        if (this.isMongo()) {
+            var tagCollection = Artex.getInstance().getDatabaseService().getDatabase().getCollection("tags");
 
-        Document tagDocument = tagToDocument(tag);
-        tagCollection.replaceOne(new Document("name", tag.getName()), tagDocument);
+            Document tagDocument = this.tagToDocument(tag);
+            tagCollection.replaceOne(new Document("name", tag.getName()), tagDocument);
+        } else if (this.isFlatFile()) {
+            this.tagsConfig.set("tags." + tag.getName() + ".displayName", tag.getDisplayName());
+            this.tagsConfig.set("tags." + tag.getName() + ".icon", tag.getIcon().name());
+            this.tagsConfig.set("tags." + tag.getName() + ".color", tag.getColor().name());
+            this.tagsConfig.set("tags." + tag.getName() + ".durability", tag.getDurability());
+            this.tagsConfig.set("tags." + tag.getName() + ".bold", tag.isBold());
+            this.tagsConfig.set("tags." + tag.getName() + ".italic", tag.isItalic());
+
+            ConfigHandler.getInstance().saveConfig(ConfigHandler.getInstance().getConfigFile("tags"), this.tagsConfig);
+        } else {
+            Logger.logError("No database type found.");
+        }
     }
 
     /**
@@ -122,7 +184,7 @@ public class TagRepository {
      * @return the tag
      */
     public Tag getTag(String name) {
-        return tags.stream()
+        return this.tags.stream()
                 .filter(tag -> tag.getName().equalsIgnoreCase(name))
                 .findFirst()
                 .orElse(null);
@@ -130,8 +192,8 @@ public class TagRepository {
 
     public void createTag(String name, String displayName, Material icon, ChatColor color, int durability, boolean bold, boolean italic) {
         Tag tag = new Tag(name, displayName, icon, color, durability, bold, italic);
-        tags.add(tag);
-        saveTag(tag);
+        this.tags.add(tag);
+        this.saveTag(tag);
     }
 
     /**
@@ -140,7 +202,25 @@ public class TagRepository {
      * @param tag the tag to delete
      */
     public void deleteTag(Tag tag) {
-        tags.remove(tag);
-        saveTags();
+        this.tags.remove(tag);
+        this.saveTags();
+    }
+
+    /**
+     * Check if the database is mongo
+     *
+     * @return if the database is mongo
+     */
+    private boolean isMongo() {
+        return Artex.getInstance().getDatabaseService().isMongo();
+    }
+
+    /**
+     * Check if the database is flat file
+     *
+     * @return if the database is flat file
+     */
+    private boolean isFlatFile() {
+        return Artex.getInstance().getDatabaseService().isFlatFile();
     }
 }

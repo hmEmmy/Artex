@@ -67,7 +67,7 @@ public class ProfileRepository {
             Profile profile = new Profile(uuid);
             profile.load();
 
-            profiles.put(profile.getUuid(), profile);
+            this.profiles.put(profile.getUuid(), profile);
         }
     }
 
@@ -81,7 +81,7 @@ public class ProfileRepository {
         Profile profile = new Profile(uuid);
         profile.load();
 
-        profiles.put(profile.getUuid(), profile);
+        this.profiles.put(profile.getUuid(), profile);
     }
 
     /**
@@ -91,7 +91,7 @@ public class ProfileRepository {
      * @return the profile
      */
     public Profile getProfileWithNoAdding(UUID uuid) {
-        return profiles.get(uuid);
+        return this.profiles.get(uuid);
     }
 
     /**
@@ -101,14 +101,14 @@ public class ProfileRepository {
      * @return the profile
      */
     public Profile getProfile(UUID uuid) {
-        if (profiles.containsKey(uuid)) {
-            return profiles.get(uuid);
+        if (this.profiles.containsKey(uuid)) {
+            return this.profiles.get(uuid);
         }
 
         Profile profile = new Profile(uuid);
         profile.load();
 
-        addProfile(uuid, profile);
+        this.addProfile(uuid, profile);
         return profile;
     }
 
@@ -119,14 +119,14 @@ public class ProfileRepository {
      * @param profile the profile to add or update
      */
     public void addProfile(UUID uuid, Profile profile) {
-        profiles.put(uuid, profile);
+        this.profiles.put(uuid, profile);
     }
 
     /**
      * Save all profiles to the database.
      */
     public void saveProfiles() {
-        profiles.values().forEach(Profile::save);
+        this.profiles.values().forEach(Profile::save);
     }
 
     /**
@@ -148,11 +148,11 @@ public class ProfileRepository {
 
         Artex.getInstance().getProfileRepository().getProfile(uuid).setRank(Artex.getInstance().getRankRepository().getDefaultRank());
 
-        addGrant(uuid, grant);
+        this.addGrant(uuid, grant);
     }
 
     public void addGrant(UUID playerUUID, Grant grant) {
-        Profile profile = profiles.get(playerUUID);
+        Profile profile = this.profiles.get(playerUUID);
         List<Grant> grants = profile.getGrants();
 
         Logger.debug("addGrant method called for " + profile.getUsername() + " with rank " + grant.getRank().getName() + ".");
@@ -167,12 +167,10 @@ public class ProfileRepository {
      * @param profile the player's profile
      */
     public void determineRank(Profile profile) {
-        ProfileRepository profileRepository = Artex.getInstance().getProfileRepository();
-
         Logger.debug("Checking if player has default grant for " + profile.getUsername() + ".");
         if (!profile.hasDefaultGrant()) {
             Logger.debug("Adding default grant for " + profile.getUsername() + ".");
-            profileRepository.addFirstDefaultGrant(profile.getUuid());
+            this.addFirstDefaultGrant(profile.getUuid());
         }
 
         Logger.debug("Getting highest rank based on grant for " + profile.getUsername() + ".");

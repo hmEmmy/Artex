@@ -44,18 +44,23 @@ public class Tag {
         this.italic = italic;
     }
 
+    /**
+     * Get the formatted display-name of the tag which includes the color, italics, bold, etc.
+     *
+     * @return the nice name of the tag
+     */
     public String getNiceName() {
         String coloredName;
 
-        if (isBold()) {
-            displayName = ChatColor.BOLD + displayName;
+        if (this.isBold()) {
+            this.displayName = ChatColor.BOLD + this.displayName;
         }
 
-        if (isItalic()) {
-            displayName = ChatColor.ITALIC + displayName;
+        if (this.isItalic()) {
+            this.displayName = ChatColor.ITALIC + this.displayName;
         }
 
-        coloredName = getColor() + displayName;
+        coloredName = this.color + this.displayName;
 
         return coloredName;
     }

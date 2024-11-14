@@ -11,17 +11,21 @@ import java.util.HashMap;
 import java.util.UUID;
 
 /**
- * Skidded from FlowerCore, I couldn't be bothered to write this again. (REAL)
- *
  * @author Emmy
  * @project Skidding FlowerCore session
  * @date 11/09/2024 - 12:43
  */
 @Getter
 public class ConversationHandler {
-    private final HashMap<UUID, UUID> conversations = new HashMap<>();
-    private final String sentFormat = CC.translate(Artex.getInstance().getConfig().getString("conversation.format.sent"));
-    private final String receivedFormat = CC.translate(Artex.getInstance().getConfig().getString("conversation.format.received"));
+    private final HashMap<UUID, UUID> conversations;
+    private final String sentFormat;
+    private final String receivedFormat;
+
+    public ConversationHandler() {
+        this.conversations = new HashMap<>();
+        this.sentFormat = CC.translate(Artex.getInstance().getConfig().getString("conversation.format.sent"));
+        this.receivedFormat = CC.translate(Artex.getInstance().getConfig().getString("conversation.format.received"));
+    }
 
     /**
      * Starts a conversation across two players.
@@ -31,8 +35,8 @@ public class ConversationHandler {
      * @param message The message to send.
      */
     public void startConversation(UUID sender, UUID target, String message) {
-        conversations.put(sender, target);
-        conversations.put(target, sender);
+        this.conversations.put(sender, target);
+        this.conversations.put(target, sender);
 
         Player senderPlayer = Bukkit.getServer().getPlayer(sender);
         Player targetPlayer = Bukkit.getServer().getPlayer(target);
@@ -43,7 +47,7 @@ public class ConversationHandler {
         }
 
         assert targetPlayer != null;
-        sendMessage(message, targetPlayer, senderPlayer);
+        this.sendMessage(message, targetPlayer, senderPlayer);
     }
 
     /**
@@ -57,12 +61,12 @@ public class ConversationHandler {
         Rank senderRank = Artex.getInstance().getProfileRepository().getProfile(senderPlayer.getUniqueId()).getHighestRankBasedOnGrant();
         Rank targetRank = Artex.getInstance().getProfileRepository().getProfile(targetPlayer.getUniqueId()).getHighestRankBasedOnGrant();
 
-        targetPlayer.sendMessage(CC.translate(receivedFormat
+        targetPlayer.sendMessage(CC.translate(this.receivedFormat
                 .replace("{sender}", senderRank == null ? "&a" + senderPlayer.getName() : senderRank.getColor() + senderPlayer.getName())
                 .replace("{message}", message)));
         targetPlayer.playSound(targetPlayer.getLocation(), Sound.ORB_PICKUP, 1.0F, 1.0F);
 
-        senderPlayer.sendMessage(CC.translate(sentFormat
+        senderPlayer.sendMessage(CC.translate(this.sentFormat
                 .replace("{sender}", targetRank == null ? "&a" + targetPlayer.getName() : targetRank.getColor() + targetPlayer.getName())
                 .replace("{message}", message)));
         senderPlayer.playSound(senderPlayer.getLocation(), Sound.ORB_PICKUP, 1.0F, 1.0F);
@@ -75,6 +79,6 @@ public class ConversationHandler {
      * @return The last conversant of the player.
      */
     public UUID getLastConversant(UUID player) {
-        return conversations.get(player);
+        return this.conversations.get(player);
     }
 }

@@ -10,7 +10,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * @author Emmy
@@ -18,14 +18,14 @@ import java.util.Random;
  * @date 01/09/2024 - 10:56
  */
 public class BroadcastTask extends BukkitRunnable {
-    private final List<Broadcast> announcements = new ArrayList<>();
-    private final Random random = new Random();
+    private final List<Broadcast> broadcasts;
 
     /**
      * Constructor for the BroadcastTask class.
      */
     public BroadcastTask() {
-        loadBroadcastMessages();
+        this.broadcasts = new ArrayList<>();
+        this.loadBroadcastMessages();
     }
 
     /**
@@ -34,25 +34,24 @@ public class BroadcastTask extends BukkitRunnable {
     public void loadBroadcastMessages() {
         FileConfiguration config = Artex.getInstance().getConfig();
 
-        announcements.clear();
+        this.broadcasts.clear();
 
         for (String key : config.getConfigurationSection("broadcast.list").getKeys(false)) {
             List<String> list = config.getStringList("broadcast.list." + key);
-            announcements.add(new Broadcast(list));
+            this.broadcasts.add(new Broadcast(list));
         }
     }
 
     @Override
     public void run() {
-        if (announcements.isEmpty()) {
+        if (this.broadcasts.isEmpty()) {
             return;
         }
 
-        for (String line : announcements.get(random.nextInt(announcements.size())).getLines()) {
+        for (String line : this.broadcasts.get(ThreadLocalRandom.current().nextInt(this.broadcasts.size())).getLines()) {
             for (Player player : Bukkit.getOnlinePlayers()) {
                 FileConfiguration config = Artex.getInstance().getConfig();
                 Rank playerRank = Artex.getInstance().getProfileRepository().getProfileWithNoAdding(player.getUniqueId()).getHighestRankBasedOnGrant();
-
                 player.sendMessage(CC.translate(line)
                         .replace("{online}", String.valueOf(Bukkit.getOnlinePlayers().size()))
                         .replace("{max}", String.valueOf(Bukkit.getMaxPlayers()))

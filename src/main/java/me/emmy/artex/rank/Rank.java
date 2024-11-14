@@ -34,6 +34,6 @@ public class Rank {
      * @return the rank color and the rank name
      */
     public String getRankWithColor() {
-        return color + name;
+        return this.color + this.name;
     }
 }

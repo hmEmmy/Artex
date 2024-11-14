@@ -1,7 +1,6 @@
 package me.emmy.artex;
 
 import lombok.Getter;
-import lombok.Setter;
 import me.emmy.artex.api.command.CommandFramework;
 import me.emmy.artex.api.menu.listener.MenuListener;
 import me.emmy.artex.broadcast.BroadcastTask;
@@ -38,7 +37,6 @@ import java.util.List;
  * @date 15/08/2024 - 20:11
  */
 @Getter
-@Setter
 public class Artex extends JavaPlugin {
 
     @Getter
@@ -51,7 +49,6 @@ public class Artex extends JavaPlugin {
     private ProfileRepository profileRepository;
     private TagRepository tagRepository;
     private ChatRepository chatRepository;
-    private BroadcastTask broadcastTask;
     private GodModeRepository godModeRepository;
     private SpawnHandler spawnHandler;
     private ConversationHandler conversationHandler;
@@ -81,7 +78,7 @@ public class Artex extends JavaPlugin {
     }
 
     private void registerChannels() {
-        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
 
     private void initializeConfigHandler() {
@@ -121,10 +118,9 @@ public class Artex extends JavaPlugin {
     }
 
     private void runTasks() {
-        this.broadcastTask = new BroadcastTask();
-        if (getConfig().getBoolean("broadcast.enabled")) {
-            int interval = getConfig().getInt("broadcast.send-every");
-            this.broadcastTask.runTaskTimerAsynchronously(this, 20L * interval, 20L * interval);
+        if (this.getConfig().getBoolean("broadcast.enabled")) {
+            BroadcastTask broadcastTask = new BroadcastTask();
+            broadcastTask.runTaskTimerAsynchronously(this, 20L * this.broadcastInterval(), 20L * this.broadcastInterval());
         }
     }
 
@@ -138,5 +134,14 @@ public class Artex extends JavaPlugin {
         version = version.split("MC: ")[1];
         version = version.split("\\)")[0];
         return version;
+    }
+
+    /**
+     * Get the broadcast interval from the config
+     *
+     * @return the broadcast interval
+     */
+    private int broadcastInterval() {
+        return this.getConfig().getInt("broadcast.send-every");
     }
 }
