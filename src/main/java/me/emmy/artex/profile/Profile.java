@@ -8,6 +8,7 @@ import me.emmy.artex.rank.Rank;
 import me.emmy.artex.tag.Tag;
 import me.emmy.artex.util.Logger;
 import org.bukkit.Bukkit;
+import org.bukkit.permissions.Permission;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -59,7 +60,7 @@ public class Profile {
      */
     public Rank getHighestRankBasedOnGrant() {
         return this.getGrants().stream()
-                .filter(Grant::isActive)
+                .filter(grant -> grant.isActive() && grant.getRank() != null)
                 .max(Comparator.comparingInt(grant -> grant.getRank().getWeight()))
                 .map(Grant::getRank)
                 .orElse(Artex.getInstance().getRankService().getDefaultRank());
@@ -87,5 +88,28 @@ public class Profile {
      */
     public void removeGrantWithNullRank() {
         //this.grants.removeIf(grant -> grant.getRank() == null);
+    }
+
+    /**
+     * Get all ranks from the grants and return their permissions.
+     *
+     * @return a list of permissions
+     */
+    private List<Permission> getAllRanksAndTheirPerms() {
+        List<Permission> permissions = new ArrayList<>();
+        this.grants.forEach(grant -> {
+            if (grant.getRank() != null) {
+                grant.getRank().getPermissions().forEach(permission -> permissions.add(new Permission(permission)));
+            }
+        });
+        return permissions;
+    }
+
+    /**
+     * Attach permissions to the player based on their rank.
+     */
+    public void attachPermsBasedOnRank() {
+        List<Permission> permissions = getAllRanksAndTheirPerms();
+        permissions.forEach(permission -> Bukkit.getPlayer(this.uuid).addAttachment(Artex.getInstance(), permission.getName(), true));
     }
 }
