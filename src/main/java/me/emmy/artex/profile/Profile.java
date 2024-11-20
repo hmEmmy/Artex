@@ -130,7 +130,7 @@ public class Profile {
         List<Permission> permissions = this.getRankPermissionsBasedOnGrant();
         permissions.forEach(permission -> Bukkit.getPlayer(this.uuid).addAttachment(Artex.getInstance(), permission.getName(), true));
 
-        if (!hasDefaultGrant()) {
+        if (!this.hasDefaultGrant()) {
             this.addFirstDefaultGrant();
         }
 
