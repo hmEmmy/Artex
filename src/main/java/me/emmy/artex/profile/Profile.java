@@ -127,14 +127,14 @@ public class Profile {
      * Determine the players rank and attach its perms.
      */
     public void determineRankAndAttachPerms() {
-        List<Permission> permissions = this.getRankPermissionsBasedOnGrant();
-        permissions.forEach(permission -> Bukkit.getPlayer(this.uuid).addAttachment(Artex.getInstance(), permission.getName(), true));
-
         if (!this.hasDefaultGrant()) {
             this.addFirstDefaultGrant();
         }
 
         Rank highestGrant = this.getHighestRankBasedOnGrant();
         this.setRank(highestGrant);
+        
+        List<Permission> permissions = this.getRankPermissionsBasedOnGrant();
+        permissions.forEach(permission -> Bukkit.getPlayer(this.uuid).addAttachment(Artex.getInstance(), permission.getName(), true));
     }
 }
