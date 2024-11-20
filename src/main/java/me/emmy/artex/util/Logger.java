@@ -1,7 +1,6 @@
 package me.emmy.artex.util;
 
 import lombok.experimental.UtilityClass;
-import me.emmy.artex.Artex;
 import org.bukkit.Bukkit;
 
 /**
@@ -11,15 +10,6 @@ import org.bukkit.Bukkit;
  */
 @UtilityClass
 public class Logger {
-    /**
-     * Log a message to the console.
-     *
-     * @param message The message to log.
-     */
-    public void debug(String message) {
-        Bukkit.getConsoleSender().sendMessage(CC.translate("&8&o[&7&oDEBUG&8&o] &f&o" + message));
-    }
-
     /**
      * Log a message to the console.
      *

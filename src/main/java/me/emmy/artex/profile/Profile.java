@@ -44,12 +44,10 @@ public class Profile {
 
     public void load() {
         Artex.getInstance().getProfileRepository().getIProfile().loadProfile(this);
-        Logger.debug("Loaded profile for " + this.username + ".");
     }
 
     public void save() {
         Artex.getInstance().getProfileRepository().getIProfile().saveProfile(this);
-        Logger.debug("Saved profile for " + this.username + ".");
     }
 
     /**

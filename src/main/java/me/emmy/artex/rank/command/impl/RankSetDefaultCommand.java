@@ -39,14 +39,11 @@ public class RankSetDefaultCommand extends BaseCommand {
             return;
         }
 
-        Logger.debug("Set default command executed by " + sender.getName() + " for rank " + rank.getName());
-        Logger.debug("Getting default rank and setting it to false");
         Artex.getInstance().getRankService().getRanks().stream().filter(Rank::isDefaultRank).forEach(rank1 -> {
             rank1.setDefaultRank(false);
             Artex.getInstance().getRankService().saveRank(rank1);
         });
 
-        Logger.debug("Setting rank " + rank.getName() + " as default");
         rank.setDefaultRank(true);
         Artex.getInstance().getRankService().saveRank(rank);
 

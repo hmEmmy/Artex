@@ -35,9 +35,7 @@ public class ProfileListener implements Listener {
         ProfileRepository profileRepository = Artex.getInstance().getProfileRepository();
         profileRepository.addProfile(profile.getUuid(), profile);
 
-        Logger.debug("(!) Determining rank for " + event.getPlayer().getName() + ".");
         profileRepository.determineRank(profile);
-        Logger.debug("(!) Attaching permissions based on rank for " + event.getPlayer().getName() + ".");
         profile.attachPermsBasedOnRank();
     }
 
@@ -54,7 +52,6 @@ public class ProfileListener implements Listener {
 
         event.setJoinMessage(null);
 
-        Logger.debug("Resetting player (on join) for " + player.getName() + ".");
         if (config.getBoolean("on-join.reset-player", false)) {
             PlayerUtil.onJoinReset(player);
         }

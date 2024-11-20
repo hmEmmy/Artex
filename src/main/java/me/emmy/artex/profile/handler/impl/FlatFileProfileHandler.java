@@ -26,7 +26,7 @@ public class FlatFileProfileHandler implements IProfile {
         UUID uuid = profile.getUuid();
 
         if (!config.contains(uuid.toString())) {
-            Logger.debug("Profile for " + profile.getUsername() + " not found.");
+            Logger.logError("Profile for " + profile.getUsername() + " not found.");
             return;
         }
 

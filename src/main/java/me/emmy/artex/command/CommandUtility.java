@@ -61,15 +61,11 @@ public class CommandUtility {
     }
 
     private void registerChatCommands() {
-        Logger.debug("Registering chat commands...");
-
         new MuteChatCommand();
         new UnMuteChatCommand();
     }
 
     public void registerEssentialCommands() {
-        Logger.debug("Registering essential commands...");
-
         if (Artex.getInstance().getConfig().getBoolean("conversation.enabled")) {
             new MessageCommand();
             new ReplyCommand();
@@ -111,8 +107,6 @@ public class CommandUtility {
     }
 
     public void registerGrantCommands() {
-        Logger.debug("Registering grant commands...");
-
         new GrantCommand();
         new GrantsCommand();
         new RemoveRankCommand();
@@ -120,8 +114,6 @@ public class CommandUtility {
     }
 
     public void registerRankCommands() {
-        Logger.debug("Registering rank commands...");
-
         new RankCommand();
 
         new RankAddPermissionCommand();
@@ -143,8 +135,6 @@ public class CommandUtility {
     }
 
     public void registerTagCommands() {
-        Logger.debug("Registering tag commands...");
-
         new TagCommand();
         new TagAdminCommand();
         new TagAdminCreateCommand();
@@ -161,8 +151,6 @@ public class CommandUtility {
     }
 
     private void registerDonatorCommands() {
-        Logger.debug("Registering donator commands...");
-
         new MediaBroadcastCommand();
     }
 }

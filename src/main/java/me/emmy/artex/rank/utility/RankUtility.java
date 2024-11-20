@@ -4,6 +4,7 @@ import lombok.experimental.UtilityClass;
 import me.emmy.artex.Artex;
 import me.emmy.artex.rank.Rank;
 import me.emmy.artex.rank.RankService;
+import me.emmy.artex.util.CC;
 import me.emmy.artex.util.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -24,13 +25,9 @@ public class RankUtility {
         if (Artex.getInstance().getDatabaseService().getDatabase() != null && Artex.getInstance().getDatabaseService().isMongo()) {
             RankService rankService = Artex.getInstance().getRankService();
 
-            Logger.debug("Starting to create default ranks.");
-            Logger.debug("Creating default rank.");
             rankService.createDefaultRank();
-            Logger.debug("Default rank created.");
 
             if (rankService.getRank("VIP") == null) {
-                Logger.debug("Creating VIP rank.");
                 Rank VIP = new Rank();
                 VIP.setName("VIP");
                 VIP.setPrefix("&7[&2VIP&7] ");
@@ -42,16 +39,13 @@ public class RankUtility {
                 VIP.setDefaultRank(false);
                 VIP.setPermissions(new ArrayList<>());
                 VIP.getPermissions().add("artex.vip");
-                Logger.debug("Saving VIP rank.");
                 rankService.saveRank(VIP);
                 rankService.getRanks().add(VIP);
-                Logger.debug("VIP rank created.");
             } else {
-                Logger.debug("VIP rank already exists.");
+                Logger.logError("VIP rank already exists.");
             }
 
             if (rankService.getRank("Moderator") == null) {
-                Logger.debug("Creating Moderator rank.");
                 Rank Moderator = new Rank();
                 Moderator.setName("Moderator");
                 Moderator.setPrefix("&7[&3Moderator&7] ");
@@ -63,16 +57,13 @@ public class RankUtility {
                 Moderator.setDefaultRank(false);
                 Moderator.setPermissions(new ArrayList<>());
                 Moderator.getPermissions().add("artex.moderator");
-                Logger.debug("Saving Moderator rank.");
                 rankService.saveRank(Moderator);
                 rankService.getRanks().add(Moderator);
-                Logger.debug("Moderator rank created.");
             } else {
-                Logger.debug("Moderator rank already exists.");
+                Logger.logError("Moderator rank already exists.");
             }
 
             if (rankService.getRank("Admin") == null) {
-                Logger.debug("Creating Admin rank.");
                 Rank Admin = new Rank();
                 Admin.setName("Admin");
                 Admin.setPrefix("&7[&cAdmin&7] ");
@@ -84,16 +75,13 @@ public class RankUtility {
                 Admin.setDefaultRank(false);
                 Admin.setPermissions(new ArrayList<>());
                 Admin.getPermissions().add("artex.admin");
-                Logger.debug("Saving Admin rank.");
                 rankService.saveRank(Admin);
                 rankService.getRanks().add(Admin);
-                Logger.debug("Admin rank created.");
             } else {
-                Logger.debug("Admin rank already exists.");
+                Logger.logError("Admin rank already exists.");
             }
 
             if (rankService.getRank("Owner") == null) {
-                Logger.debug("Creating Owner rank.");
                 Rank Owner = new Rank();
                 Owner.setName("Owner");
                 Owner.setPrefix("&7[&4Owner&7] ");
@@ -106,24 +94,20 @@ public class RankUtility {
                 Owner.setPermissions(new ArrayList<>());
                 Owner.getPermissions().add("*");
                 Owner.getPermissions().add("artex.owner");
-                Logger.debug("Saving Owner rank.");
                 rankService.saveRank(Owner);
                 rankService.getRanks().add(Owner);
-                Logger.debug("Owner rank created.");
             } else {
-                Logger.debug("Owner rank already exists.");
+                Logger.logError("Owner rank already exists.");
             }
 
-            Logger.debug("Saving ranks.");
             rankService.saveRanks();
 
-            Logger.debug("Default ranks created.");
-            Logger.debug("&4&lShutting down server.");
+            Bukkit.getConsoleSender().sendMessage(CC.translate("&aDefault ranks have been created. &4&lRestart the server to apply the changes."));
             Bukkit.shutdown();
         } else if (Artex.getInstance().getDatabaseService().isFlatFile()) {
-            Logger.debug("Default ranks can only be created with MongoDB because the config file already has a variety of ranks.");
+            Logger.logError("Default ranks can only be created with MongoDB because the config file already has a variety of ranks.");
         } else {
-            Logger.debug("Database service is not set.");
+            Logger.logError("Database service is not set.");
         }
     }
 }

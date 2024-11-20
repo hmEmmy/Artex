@@ -42,7 +42,6 @@ public class PlayerUtil {
     public void sendWelcomeMessage(Player player, Profile profile, FileConfiguration config) {
         if (config.getBoolean("on-join.welcome-message.enabled")) {
             List<String> messages = config.getStringList("on-join.welcome-message.context");
-            Logger.debug("Sending on-join messages to " + player.getName() + ".");
             messages.forEach(message -> player.sendMessage(CC.translate(message)
                     .replace("{player}", player.getName())
                     .replace("{color}", profile.getRank().getColor().toString())

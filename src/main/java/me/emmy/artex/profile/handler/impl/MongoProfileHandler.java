@@ -25,12 +25,11 @@ public class MongoProfileHandler implements IProfile {
                 .find(Filters.eq("uuid", profile.getUuid().toString())).first();
 
         if (document == null) {
-            Logger.debug("Profile not found for " + profile.getUsername() + ".");
+            Logger.logError("Profile not found for " + profile.getUsername() + ".");
             return;
         }
 
         profile.removeGrantWithNullRank();
-        Logger.debug("Loading profile for " + profile.getUsername() + ".");
         profile.setUsername(document.getString("name"));
 
         if (document.getString("tag") != null) profile.setTag(document.getString("tag"));
@@ -45,7 +44,6 @@ public class MongoProfileHandler implements IProfile {
      */
     public void saveProfile(Profile profile) {
         Document document = new Document();
-        Logger.debug("Saving profile for " + profile.getUsername() + ".");
         document.put("uuid", profile.getUuid().toString());
         document.put("name", profile.getUsername());
         if (profile.getTag() != null) document.put("tag", profile.getTag().getName());

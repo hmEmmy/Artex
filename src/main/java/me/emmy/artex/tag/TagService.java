@@ -47,7 +47,6 @@ public class TagService {
 
             var cursor = tagCollection.find();
             if (!cursor.iterator().hasNext()) {
-                Logger.debug("No tags found in the database, creating default tags.");
                 TagUtility.createDefaultTags();
                 return;
             }
@@ -62,7 +61,7 @@ public class TagService {
             }
 
             if (this.tagsConfig.getConfigurationSection("tags") == null || this.tagsConfig.getConfigurationSection("tags").getKeys(false).isEmpty()) {
-                Logger.debug("No tags found in the flat file.");
+                Logger.logError("No tags found in the flat file.");
                 return;
             }
 
@@ -78,7 +77,6 @@ public class TagService {
                 this.tags.add(tag);
             });
 
-            Logger.debug("Loaded " + this.tags.size() + " tags from the YAML file.");
         } else {
             Logger.logError("No database type found.");
         }
@@ -89,26 +87,20 @@ public class TagService {
      */
     public void saveTags() {
         if (this.isMongo()) {
-            Logger.debug("Saving tags to the database.");
             var tagCollection = Artex.getInstance().getDatabaseService().getDatabase().getCollection("tags");
 
-            Logger.debug("Deleting all tags from the database.");
             tagCollection.deleteMany(new Document());
 
             for (Tag tag : this.tags) {
-                Logger.debug("Saving tag " + tag.getName() + " to the database.");
                 Document rankDocument = this.tagToDocument(tag);
                 tagCollection.replaceOne(new Document("name", tag.getName()), rankDocument, new ReplaceOptions().upsert(true));
             }
         } else if (this.isFlatFile()) {
-            Logger.debug("Saving tags to the flat file.");
-
             if (this.tagsConfig.contains("tags")) {
                 this.tagsConfig.set("tags", null);
             }
 
             for (Tag tag : this.tags) {
-                Logger.debug("Saving tag " + tag.getName() + " to the flat file.");
                 this.tagsConfig.set("tags." + tag.getName() + ".displayName", tag.getDisplayName());
                 this.tagsConfig.set("tags." + tag.getName() + ".icon", tag.getIcon().name());
                 this.tagsConfig.set("tags." + tag.getName() + ".color", tag.getColor().name());
@@ -155,7 +147,6 @@ public class TagService {
      * @return the converted document
      */
     public Document tagToDocument(Tag tag) {
-        Logger.debug("Converting tag " + tag.getName() + " to a document.");
         return new Document("name", tag.getName())
                 .append("displayName", tag.getDisplayName())
                 .append("icon", tag.getIcon().name())
@@ -172,7 +163,6 @@ public class TagService {
      * @return the converted tag
      */
     private Tag documentToTag(Document document) {
-        Logger.debug("Converting document to tag.");
         return new Tag(
                 document.getString("name"),
                 document.getString("displayName"),

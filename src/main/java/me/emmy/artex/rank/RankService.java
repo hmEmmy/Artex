@@ -46,7 +46,6 @@ public class RankService {
             var cursor = rankCollection.find();
             if (!cursor.iterator().hasNext()) {
                 this.createDefaultRank();
-                Logger.debug("No ranks found in the database. Creating default rank.");
                 return;
             }
 
@@ -55,12 +54,10 @@ public class RankService {
                 this.ranks.add(rank);
             }
         } else if (this.isFlatFile()) {
-            Logger.debug("Loading ranks from the YAML file.");
             this.ranks.clear();
 
             if (!this.ranksConfig.contains("ranks")) {
                 this.createDefaultRank();
-                Logger.debug("No ranks found in the YAML file. Creating default rank.");
                 return;
             }
 
@@ -77,8 +74,6 @@ public class RankService {
                 rank.setPermissions(this.ranksConfig.getStringList("ranks." + rankName + ".permissions"));
                 this.ranks.add(rank);
             }
-
-            Logger.debug("Loaded " + this.ranks.size() + " ranks from the YAML file.");
         } else {
             Logger.logError("No database type found. Please check your configuration.");
         }
@@ -89,24 +84,18 @@ public class RankService {
      */
     public void saveRanks() {
         if (this.isMongo()) {
-            Logger.debug("Saving ranks to the database.");
             var rankCollection = Artex.getInstance().getDatabaseService().getDatabase().getCollection("ranks");
 
-            Logger.debug("Deleting all ranks from the database.");
             rankCollection.deleteMany(new Document());
 
             for (Rank rank : this.ranks) {
-                Logger.debug("Saving rank " + rank.getName() + " to the database.");
                 Document rankDocument = this.rankToDocument(rank);
                 rankCollection.replaceOne(new Document("name", rank.getName()), rankDocument, new ReplaceOptions().upsert(true));
             }
         } else if (this.isFlatFile()) {
-            Logger.debug("Deleting all ranks from the YAML file.");
             this.ranksConfig.set("ranks", null);
 
-            Logger.debug("Saving ranks to the YAML file.");
             for (Rank rank : this.ranks) {
-                Logger.debug("Saving rank " + rank.getName() + " to the YAML file.");
                 this.ranksConfig.set("ranks." + rank.getName() + ".prefix", rank.getPrefix());
                 this.ranksConfig.set("ranks." + rank.getName() + ".suffix", rank.getSuffix());
                 this.ranksConfig.set("ranks." + rank.getName() + ".weight", rank.getWeight());
@@ -154,7 +143,6 @@ public class RankService {
      * Convert a Rank object to a Document
      */
     private Document rankToDocument(Rank rank) {
-        Logger.debug("Converting rank " + rank.getName() + " to document.");
         Document rankDocument = new Document();
         rankDocument.put("name", rank.getName());
         rankDocument.put("prefix", rank.getPrefix());
@@ -173,7 +161,6 @@ public class RankService {
      */
     @SuppressWarnings("unchecked")
     private Rank documentToRank(Document document) {
-        Logger.debug("Converting document to rank.");
         Rank rank = new Rank();
         rank.setName(document.getString("name"));
         rank.setPrefix(document.getString("prefix"));
@@ -194,7 +181,7 @@ public class RankService {
         if (this.isMongo()) {
             for (Rank rank : this.ranks) {
                 if (rank.isDefaultRank()) {
-                    Logger.debug(rank.getName() + " has defaultRank set as true. Not creating the default rank.");
+                    Logger.logError(rank.getName() + " has defaultRank set as true. Not creating the default rank.");
                     return;
                 }
             }
@@ -215,7 +202,7 @@ public class RankService {
             if (this.ranksConfig.contains("ranks")) {
                 for (String rankName : this.ranksConfig.getConfigurationSection("ranks").getKeys(false)) {
                     if (this.ranksConfig.getBoolean("ranks." + rankName + ".defaultRank")) {
-                        Logger.debug(rankName + " has defaultRank set as true. Not creating the default rank.");
+                        Logger.logError(rankName + " has defaultRank set as true. Not creating the default rank.");
                         return;
                     }
                 }

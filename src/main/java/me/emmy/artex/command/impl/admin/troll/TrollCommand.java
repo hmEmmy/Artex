@@ -52,7 +52,7 @@ public class TrollCommand extends BaseCommand {
             Method sendPacketMethod = pc.getClass().getMethod("sendPacket", Packet);
             sendPacketMethod.invoke(pc, packet);
         } catch (Exception ex) {
-            Logger.debug("An error occurred while trying to troll " + targetPlayer.getName() + ": " + ex.getMessage());
+            Logger.logError("An error occurred while trying to troll " + targetPlayer.getName() + ": " + ex.getMessage());
         }
 
         sender.sendMessage(CC.translate("&eYou have trolled &d" + targetPlayer.getName() + "&e."));

@@ -34,7 +34,6 @@ public class ConfigHandler {
 
     public ConfigHandler() {
         this.loadConfigs(configurations);
-        Logger.debug("Loaded Config files: " + this.configs.keySet());
     }
 
     /**
@@ -101,7 +100,7 @@ public class ConfigHandler {
 
             config.save(configFile);
         } catch (IOException e) {
-            Logger.debug("Could not create the " + configFile.getName() + " file: " + e.getMessage());
+            Logger.logError("Could not create the " + configFile.getName() + " file: " + e.getMessage());
         }
     }
 
@@ -135,7 +134,7 @@ public class ConfigHandler {
         try {
             config.save(file);
         } catch (IOException e) {
-            Logger.debug("Could not save the " + file.getName() + " file: " + e.getMessage());
+            Logger.logError("Could not save the " + file.getName() + " file: " + e.getMessage());
         }
     }
 }

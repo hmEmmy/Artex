@@ -94,7 +94,6 @@ public class ProfileRepository {
      * @param uuid player's UUID
      */
     public void addFirstDefaultGrant(UUID uuid) {
-        Logger.debug("addFirstDefaultGrant method called for " + uuid.toString() + ".");
         Grant grant = new Grant();
         grant.setRank(Artex.getInstance().getRankService().getDefaultRank().getName());
         grant.setPermanent(true);
@@ -113,9 +112,6 @@ public class ProfileRepository {
     public void addGrant(UUID playerUUID, Grant grant) {
         Profile profile = this.profiles.get(playerUUID);
         List<Grant> grants = profile.getGrants();
-
-        Logger.debug("addGrant method called for " + profile.getUsername() + " with rank " + grant.getRank().getName() + ".");
-
         grants.add(grant);
         profile.save();
     }
@@ -126,13 +122,10 @@ public class ProfileRepository {
      * @param profile the player's profile
      */
     public void determineRank(Profile profile) {
-        Logger.debug("Checking if player has default grant for " + profile.getUsername() + ".");
         if (!profile.hasDefaultGrant()) {
-            Logger.debug("Adding default grant for " + profile.getUsername() + ".");
             this.addFirstDefaultGrant(profile.getUuid());
         }
 
-        Logger.debug("Getting highest rank based on grant for " + profile.getUsername() + ".");
         Rank highestGrant = profile.getHighestRankBasedOnGrant();
         profile.setRank(highestGrant);
     }
