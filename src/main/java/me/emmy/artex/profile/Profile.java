@@ -79,4 +79,13 @@ public class Profile {
     public Tag getTag() {
         return Artex.getInstance().getTagService().getTag(this.tag);
     }
+
+    /**
+     * Usually when an admin executes /rank delete, the rank of the grant still remains (theoretically).
+     * But the rank is null, so it causes errors upon loading profile because we call getHighestRankBasedOnGrant().
+     * Therefore, we remove the grant whose rank is null.
+     */
+    public void removeGrantWithNullRank() {
+        //this.grants.removeIf(grant -> grant.getRank() == null);
+    }
 }

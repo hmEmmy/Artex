@@ -33,6 +33,11 @@ public class MessageCommand extends BaseCommand {
             return;
         }
 
+        if (target == player) {
+            player.sendMessage(CC.translate("&cYou can't message yourself."));
+            return;
+        }
+
         String message = String.join(" ", Arrays.copyOfRange(args, 1, args.length));
         Artex.getInstance().getConversationHandler().startConversation(player.getUniqueId(), target.getUniqueId(), message);
     }

@@ -29,6 +29,7 @@ public class MongoProfileHandler implements IProfile {
             return;
         }
 
+        profile.removeGrantWithNullRank();
         Logger.debug("Loading profile for " + profile.getUsername() + ".");
         profile.setUsername(document.getString("name"));
 

@@ -11,12 +11,15 @@ import me.emmy.artex.command.impl.admin.gamemode.AdventureCommand;
 import me.emmy.artex.command.impl.admin.gamemode.CreativeCommand;
 import me.emmy.artex.command.impl.admin.gamemode.SpectatorCommand;
 import me.emmy.artex.command.impl.admin.gamemode.SurvivalCommand;
+import me.emmy.artex.command.impl.admin.server.AlertCommand;
+import me.emmy.artex.command.impl.admin.server.BroadcastCommand;
 import me.emmy.artex.command.impl.admin.troll.FakeOpCommand;
 import me.emmy.artex.command.impl.admin.troll.LaunchCommand;
 import me.emmy.artex.command.impl.admin.troll.TrollCommand;
 import me.emmy.artex.command.impl.donator.MediaBroadcastCommand;
 import me.emmy.artex.command.impl.user.JoinCommand;
 import me.emmy.artex.command.impl.user.ListCommand;
+import me.emmy.artex.command.impl.user.PingCommand;
 import me.emmy.artex.conversation.command.MessageCommand;
 import me.emmy.artex.conversation.command.ReplyCommand;
 import me.emmy.artex.godmode.command.GodModeCommand;
@@ -70,12 +73,16 @@ public class CommandUtility {
         if (Artex.getInstance().getConfig().getBoolean("conversation.enabled")) {
             new MessageCommand();
             new ReplyCommand();
+            new PingCommand();
         }
 
         new AdventureCommand();
         new CreativeCommand();
         new SpectatorCommand();
         new SurvivalCommand();
+
+        new AlertCommand();
+        new BroadcastCommand();
 
         new JoinCommand();
         new ListCommand();

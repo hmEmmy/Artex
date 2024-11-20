@@ -15,7 +15,7 @@ import java.lang.reflect.Method;
 
 /**
  * @author Emmy
- * @project FlowerCore
+ * @project Artex
  * @date -
  */
 public class TrollCommand extends BaseCommand {

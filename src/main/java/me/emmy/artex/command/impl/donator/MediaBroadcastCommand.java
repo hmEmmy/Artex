@@ -25,16 +25,15 @@ public class MediaBroadcastCommand extends BaseCommand {
         String[] args = command.getArgs();
 
         if (args.length < 1) {
-            player.sendMessage(CC.translate("&6Usage: &e/mediabroadcast &b<message>"));
+            player.sendMessage(CC.translate("&6Usage: &e/mediabroadcast &b<link>"));
             return;
         }
 
         String message = String.join(" ", Arrays.copyOfRange(args, 0, args.length));
         Profile profile = Artex.getInstance().getProfileRepository().getIProfile(player.getUniqueId());
-
         List<String> broadcastMessage = Arrays.asList(
                 "",
-                "&c&l" + profile.getHighestRankBasedOnGrant().getColor() + command.getPlayer() + " &fis currently live!",
+                "&c&l" + profile.getHighestRankBasedOnGrant().getColor() + command.getPlayer().getName() + " &fis currently live!",
                 "",
                 " &7» &c" + message,
                 ""

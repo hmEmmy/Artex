@@ -1,22 +1,19 @@
-plugin:
-  debugging: true #Sends debug messages to the console (development purposes)
-
-storage-type: "FLAT_FILE" #MONGO or FLAT_FILE
-
+storage-type: "MONGO" #MONGO or FLAT_FILE
+# ------ Mongo Configuration ------
 mongo:
   uri: mongodb://localhost:27017
   database: Artex-Core
-
+# ------ Server properties ------
 server:
   name: Lobby
   region: Europe
-
+# ------ Messaging format ------
 conversation:
   enabled: true # /message and /reply won't register if set to false
   format:
-    received: "&4{sender} &c» &f{message}"
-    sent: "&4{sender} &a» &f{message}"
-
+    received: "(From &4{sender}) &c» &f{message}"
+    sent: "(To &4{sender}) &a» &f{message}"
+# ------ Socials ------
 socials:
   store: "https://store.artex.com"
   website: "https://artex.com"
@@ -28,13 +25,13 @@ socials:
   teamspeak: "ts.artex.com"
   facebook: "facebook.com/Artex"
   instagram: "instagram.com/Artex"
-
+# ------ Default reasons ------
 grant:
   default-reason: "No reason specified."
-
+# ------ spawn location of the server ------
 spawn:
   join-location: world:0.5:73.0:0.5:90.0:0.0
-
+# ------ configure player join actions ------
 on-join:
   tp-to-spawn: false #Teleports player to spawn on join
   reset-player: false #Resets player's inventory, health, hunger, and effects on join
@@ -53,7 +50,7 @@ on-join:
       - " "
       - " &fYour current Rank is &c{rank}&f."
       - " "
-
+# ------ Broadcast configuration ------
 broadcast:
   enabled: true
   send-every: 60

@@ -13,7 +13,7 @@ import java.util.UUID;
 
 /**
  * @author Emmy
- * @project Skidding FlowerCore session
+ * @project Artex
  * @date 11/09/2024 - 12:43
  */
 @Getter
