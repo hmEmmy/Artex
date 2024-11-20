@@ -93,10 +93,10 @@ public class Profile {
      *
      * @return a list of permissions
      */
-    private List<Permission> getAllRanksAndTheirPerms() {
+    private List<Permission> getRankPermissionsBasedOnGrant() {
         List<Permission> permissions = new ArrayList<>();
         this.grants.forEach(grant -> {
-            if (grant.getRank() != null) {
+            if (grant.getRank() != null || grant.getRank().getPermissions() != null) {
                 grant.getRank().getPermissions().forEach(permission -> permissions.add(new Permission(permission)));
             }
         });
@@ -127,7 +127,7 @@ public class Profile {
      * Attach permissions to the player based on their rank.
      */
     public void determineRankAndAttachPerms() {
-        List<Permission> permissions = getAllRanksAndTheirPerms();
+        List<Permission> permissions = this.getRankPermissionsBasedOnGrant();
         permissions.forEach(permission -> Bukkit.getPlayer(this.uuid).addAttachment(Artex.getInstance(), permission.getName(), true));
 
         if (!hasDefaultGrant()) {
