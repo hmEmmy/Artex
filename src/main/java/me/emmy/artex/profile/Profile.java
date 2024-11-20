@@ -124,7 +124,7 @@ public class Profile {
     }
 
     /**
-     * Attach permissions to the player based on their rank.
+     * Determine the players rank and attach its perms.
      */
     public void determineRankAndAttachPerms() {
         List<Permission> permissions = this.getRankPermissionsBasedOnGrant();
