@@ -4,9 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 import me.emmy.artex.Artex;
 import me.emmy.artex.grant.Grant;
+import me.emmy.artex.locale.Locale;
 import me.emmy.artex.rank.Rank;
 import me.emmy.artex.tag.Tag;
-import me.emmy.artex.util.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.permissions.Permission;
 
@@ -85,7 +85,7 @@ public class Profile {
      * Therefore, we remove the grant whose rank is null.
      */
     public void removeGrantWithNullRank() {
-        //this.grants.removeIf(grant -> grant.getRank() == null);
+        this.grants.removeIf(grant -> grant.getRank() == null);
     }
 
     /**
@@ -104,10 +104,37 @@ public class Profile {
     }
 
     /**
+     * Add the default grant to the player.
+     */
+    private void addFirstDefaultGrant() {
+        Grant grant = new Grant();
+        grant.setRank(Artex.getInstance().getRankService().getDefaultRank().getName());
+        grant.setPermanent(true);
+        grant.setDuration(0);
+        grant.setReason("Default rank");
+        grant.setAddedBy("Console");
+        grant.setAddedAt(System.currentTimeMillis());
+        grant.setAddedOn(Locale.SERVER_NAME.getString());
+        grant.setActive(true);
+
+        Artex.getInstance().getProfileRepository().getProfile(this.uuid).setRank(Artex.getInstance().getRankService().getDefaultRank());
+
+        this.grants.add(grant);
+        this.save();
+    }
+
+    /**
      * Attach permissions to the player based on their rank.
      */
-    public void attachPermsBasedOnRank() {
+    public void determineRankAndAttachPerms() {
         List<Permission> permissions = getAllRanksAndTheirPerms();
         permissions.forEach(permission -> Bukkit.getPlayer(this.uuid).addAttachment(Artex.getInstance(), permission.getName(), true));
+
+        if (!hasDefaultGrant()) {
+            this.addFirstDefaultGrant();
+        }
+
+        Rank highestGrant = this.getHighestRankBasedOnGrant();
+        this.setRank(highestGrant);
     }
 }

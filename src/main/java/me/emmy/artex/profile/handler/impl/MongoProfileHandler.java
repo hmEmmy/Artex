@@ -29,7 +29,6 @@ public class MongoProfileHandler implements IProfile {
             return;
         }
 
-        profile.removeGrantWithNullRank();
         profile.setUsername(document.getString("name"));
 
         if (document.getString("tag") != null) profile.setTag(document.getString("tag"));

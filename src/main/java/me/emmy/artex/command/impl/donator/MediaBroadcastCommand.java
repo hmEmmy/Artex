@@ -30,7 +30,7 @@ public class MediaBroadcastCommand extends BaseCommand {
         }
 
         String message = String.join(" ", Arrays.copyOfRange(args, 0, args.length));
-        Profile profile = Artex.getInstance().getProfileRepository().getIProfile(player.getUniqueId());
+        Profile profile = Artex.getInstance().getProfileRepository().getProfile(player.getUniqueId());
         List<String> broadcastMessage = Arrays.asList(
                 "",
                 "&c&l" + profile.getHighestRankBasedOnGrant().getColor() + command.getPlayer().getName() + " &fis currently live!",

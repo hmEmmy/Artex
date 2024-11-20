@@ -2,8 +2,6 @@ package me.emmy.artex.profile.listener;
 
 import me.emmy.artex.Artex;
 import me.emmy.artex.profile.Profile;
-import me.emmy.artex.profile.ProfileRepository;
-import me.emmy.artex.util.Logger;
 import me.emmy.artex.util.PlayerUtil;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -32,17 +30,14 @@ public class ProfileListener implements Listener {
         Profile profile = new Profile(player.getUniqueId());
         profile.load();
 
-        ProfileRepository profileRepository = Artex.getInstance().getProfileRepository();
-        profileRepository.addProfile(profile.getUuid(), profile);
-
-        profileRepository.determineRank(profile);
-        profile.attachPermsBasedOnRank();
+        Artex.getInstance().getProfileRepository().addProfile(profile.getUuid(), profile);
+        profile.determineRankAndAttachPerms();
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     private void onJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        Profile profile = Artex.getInstance().getProfileRepository().getIProfile(player.getUniqueId());
+        Profile profile = Artex.getInstance().getProfileRepository().getProfile(player.getUniqueId());
         profile.setUsername(player.getName());
 
         FileConfiguration config = Artex.getInstance().getConfig();
@@ -62,7 +57,7 @@ public class ProfileListener implements Listener {
     @EventHandler
     private void onQuit(PlayerQuitEvent event) {
         Player player = event.getPlayer();
-        Profile profile = Artex.getInstance().getProfileRepository().getIProfile(player.getUniqueId());
+        Profile profile = Artex.getInstance().getProfileRepository().getProfile(player.getUniqueId());
         profile.save();
 
         event.setQuitMessage(null);
@@ -71,7 +66,7 @@ public class ProfileListener implements Listener {
     @EventHandler
     private void onKick(PlayerKickEvent event) {
         Player player = event.getPlayer();
-        Profile profile = Artex.getInstance().getProfileRepository().getIProfile(player.getUniqueId());
+        Profile profile = Artex.getInstance().getProfileRepository().getProfile(player.getUniqueId());
         profile.save();
     }
 }

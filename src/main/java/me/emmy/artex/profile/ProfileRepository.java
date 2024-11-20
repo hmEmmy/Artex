@@ -4,18 +4,14 @@ import com.mongodb.client.MongoCollection;
 import lombok.Getter;
 import me.emmy.artex.Artex;
 import me.emmy.artex.database.DatabaseService;
-import me.emmy.artex.grant.Grant;
-import me.emmy.artex.locale.Locale;
 import me.emmy.artex.profile.handler.IProfile;
 import me.emmy.artex.profile.handler.impl.FlatFileProfileHandler;
 import me.emmy.artex.profile.handler.impl.MongoProfileHandler;
-import me.emmy.artex.rank.Rank;
 import me.emmy.artex.util.Logger;
 import org.bson.Document;
 import org.bukkit.Bukkit;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -59,7 +55,7 @@ public class ProfileRepository {
      * @param uuid the UUID of the profile
      * @return the profile
      */
-    public Profile getIProfile(UUID uuid) {
+    public Profile getProfile(UUID uuid) {
         if (this.profiles.containsKey(uuid)) {
             return this.profiles.get(uuid);
         }
@@ -86,48 +82,6 @@ public class ProfileRepository {
      */
     public void saveProfiles() {
         this.profiles.values().forEach(Profile::save);
-    }
-
-    /**
-     * Add the default grant to the player's profile
-     *
-     * @param uuid player's UUID
-     */
-    public void addFirstDefaultGrant(UUID uuid) {
-        Grant grant = new Grant();
-        grant.setRank(Artex.getInstance().getRankService().getDefaultRank().getName());
-        grant.setPermanent(true);
-        grant.setDuration(0);
-        grant.setReason("Default rank");
-        grant.setAddedBy("Console");
-        grant.setAddedAt(System.currentTimeMillis());
-        grant.setAddedOn(Locale.SERVER_NAME.getString());
-        grant.setActive(true);
-
-        Artex.getInstance().getProfileRepository().getIProfile(uuid).setRank(Artex.getInstance().getRankService().getDefaultRank());
-
-        this.addGrant(uuid, grant);
-    }
-
-    public void addGrant(UUID playerUUID, Grant grant) {
-        Profile profile = this.profiles.get(playerUUID);
-        List<Grant> grants = profile.getGrants();
-        grants.add(grant);
-        profile.save();
-    }
-
-    /**
-     * Determine the player's rank based on their grants
-     *
-     * @param profile the player's profile
-     */
-    public void determineRank(Profile profile) {
-        if (!profile.hasDefaultGrant()) {
-            this.addFirstDefaultGrant(profile.getUuid());
-        }
-
-        Rank highestGrant = profile.getHighestRankBasedOnGrant();
-        profile.setRank(highestGrant);
     }
 
     /**

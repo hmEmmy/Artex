@@ -73,7 +73,9 @@ public class Artex extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        this.profileRepository.saveProfiles();
+        if (this.profileRepository.getIProfile() != null) {
+            this.profileRepository.saveProfiles();
+        }
 
         CC.sendDisableMessage();
     }

@@ -66,8 +66,8 @@ public class ConversationHandler {
      * @param senderPlayer The player who is sending the message.
      */
     private void sendMessage(String message, Player targetPlayer, Player senderPlayer) {
-        Rank senderRank = Artex.getInstance().getProfileRepository().getIProfile(senderPlayer.getUniqueId()).getHighestRankBasedOnGrant();
-        Rank targetRank = Artex.getInstance().getProfileRepository().getIProfile(targetPlayer.getUniqueId()).getHighestRankBasedOnGrant();
+        Rank senderRank = Artex.getInstance().getProfileRepository().getProfile(senderPlayer.getUniqueId()).getHighestRankBasedOnGrant();
+        Rank targetRank = Artex.getInstance().getProfileRepository().getProfile(targetPlayer.getUniqueId()).getHighestRankBasedOnGrant();
 
         targetPlayer.sendMessage(CC.translate(this.receivedFormat
                 .replace("{sender}", senderRank == null ? "&a" + senderPlayer.getName() : senderRank.getColor() + senderPlayer.getName())

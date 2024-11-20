@@ -75,7 +75,7 @@ public class GrantConfirmMenu extends Menu {
         @Override
         public void clicked(Player player, ClickType clickType) {
             if (clickType != ClickType.LEFT) return;
-            Profile profile = Artex.getInstance().getProfileRepository().getIProfile(this.target.getUniqueId());
+            Profile profile = Artex.getInstance().getProfileRepository().getProfile(this.target.getUniqueId());
 
             Grant grant = new Grant();
             grant.setAddedBy(player.getName());

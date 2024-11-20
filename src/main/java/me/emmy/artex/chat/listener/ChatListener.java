@@ -21,7 +21,7 @@ public class ChatListener implements Listener {
     @EventHandler
     private void onChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
-        Profile profile = Artex.getInstance().getProfileRepository().getIProfile(player.getUniqueId());
+        Profile profile = Artex.getInstance().getProfileRepository().getProfile(player.getUniqueId());
 
         String message = event.getMessage();
         String rankPrefix = CC.translate(profile.getHighestRankBasedOnGrant().getPrefix());

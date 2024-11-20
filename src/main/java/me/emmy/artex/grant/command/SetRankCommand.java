@@ -39,7 +39,7 @@ public class SetRankCommand extends BaseCommand {
         String reason = String.join(" ", Arrays.copyOfRange(args, 3, args.length));
 
         OfflinePlayer target = Bukkit.getOfflinePlayer(targetName);
-        Profile profile = Artex.getInstance().getProfileRepository().getIProfile(target.getUniqueId());
+        Profile profile = Artex.getInstance().getProfileRepository().getProfile(target.getUniqueId());
         Rank grantedRank = Artex.getInstance().getRankService().getRank(rankName);
 
         if (grantedRank == null) {
