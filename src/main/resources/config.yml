@@ -2,7 +2,7 @@ storage-type: "MONGO" #MONGO or FLAT_FILE
 # ------ Mongo Configuration ------
 mongo:
   uri: mongodb://localhost:27017
-  database: Artex-Core
+  database: Artex
 # ------ Server properties ------
 server:
   name: Lobby

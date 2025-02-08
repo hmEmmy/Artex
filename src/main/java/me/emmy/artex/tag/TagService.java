@@ -47,7 +47,6 @@ public class TagService {
 
             var cursor = tagCollection.find();
             if (!cursor.iterator().hasNext()) {
-                TagUtility.createDefaultTags();
                 return;
             }
 

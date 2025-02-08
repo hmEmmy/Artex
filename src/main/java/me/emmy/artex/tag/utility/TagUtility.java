@@ -4,6 +4,7 @@ import lombok.experimental.UtilityClass;
 import me.emmy.artex.Artex;
 import me.emmy.artex.tag.Tag;
 import me.emmy.artex.tag.TagService;
+import me.emmy.artex.util.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
@@ -19,6 +20,10 @@ public class TagUtility {
      */
     public void createDefaultTags() {
         TagService tagService = Artex.getInstance().getTagService();
+
+        if (tagService == null) {
+            Logger.logError("Tag service is null.");
+        }
         
         Tag Heart = new Tag("Heart", "❤", Material.NAME_TAG, ChatColor.RED, 0, false, false);
         Tag BlackHeart = new Tag("BlackHeart", "❤", Material.NAME_TAG, ChatColor.BLACK, 0, true, false);

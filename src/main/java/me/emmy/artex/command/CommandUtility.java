@@ -36,6 +36,7 @@ import me.emmy.artex.spawn.command.TeleportToSpawnCommand;
 import me.emmy.artex.tag.command.TagCommand;
 import me.emmy.artex.tag.command.admin.TagAdminCommand;
 import me.emmy.artex.tag.command.admin.impl.*;
+import me.emmy.artex.tag.utility.command.CreateDefaultTagsCommand;
 import me.emmy.artex.util.Logger;
 import me.emmy.artex.util.ProjectInfo;
 import org.bukkit.Bukkit;
@@ -132,6 +133,7 @@ public class CommandUtility {
         new RankHelpCommand();
 
         new CreateDefaultRanksCommand();
+        new CreateDefaultTagsCommand();
     }
 
     public void registerTagCommands() {

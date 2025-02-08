@@ -32,10 +32,8 @@ public class DatabaseService {
         if (this.isFlatFile()) {
             Logger.logError("The storage type is set to flat file.");
         } else if (this.isMongo()) {
-            Logger.logError("The storage type is set to MongoDB.");
             this.startMongo();
         } else {
-            Logger.logError("The storage type is not set to MongoDB.");
             Bukkit.getPluginManager().disablePlugin(Artex.getInstance());
         }
     }

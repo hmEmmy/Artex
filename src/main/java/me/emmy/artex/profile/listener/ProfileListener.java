@@ -31,7 +31,6 @@ public class ProfileListener implements Listener {
         profile.load();
 
         Artex.getInstance().getProfileRepository().addProfile(profile.getUuid(), profile);
-        profile.determineRankAndAttachPerms();
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
@@ -39,6 +38,8 @@ public class ProfileListener implements Listener {
         Player player = event.getPlayer();
         Profile profile = Artex.getInstance().getProfileRepository().getProfile(player.getUniqueId());
         profile.setUsername(player.getName());
+
+        profile.determineRankAndAttachPerms();
 
         FileConfiguration config = Artex.getInstance().getConfig();
         if (config.getBoolean("on-join.tp-to-spawn")) {
